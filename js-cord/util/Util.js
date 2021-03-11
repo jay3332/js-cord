@@ -1,6 +1,6 @@
 export class Util {
 	constructor() {
-		throw Error(`You cannot create an instance of ${this.constructor.name}.`);
+		throw new Error(`You cannot create an instance of ${this.constructor.name}.`);
 	};
 
 	static escapeMarkdown(text, {
@@ -16,19 +16,26 @@ export class Util {
 		return text;
 	};
 	
-	static escapeCodeBlock(text)
+	static escapeCodeBlock(text) {
 		return text.replace(/```/g, '\\`\\`\\`')
-	static escapeInlineCode(text)
+	}
+	static escapeInlineCode(text) {
 		return text.replace(/[^\\]`/g, '\\`')
-	static escapeBold(text)
+	}
+	static escapeBold(text) {
 		return text.replace(/\*\*/g, '\\*\\*')
-	static escapeItalic(text)
+	}
+	static escapeItalic(text) {
 		return text.replace(/[^\\]?\*/g, '\\*')
 			.replace(/[^\\]_/g, '\\_')
-	static escapeUnderline(text)
+	}
+	static escapeUnderline(text) {
 		return text.replace(/__/g, '\\_\\_')
-	static escapeStrikethrough(text)
+	}
+	static escapeStrikethrough(text) {
 		return text.replace(/~~/g, '\\~\\~')
-	static escapeSpoiler(text)
+	}
+	static escapeSpoiler(text) {
 		return text.replace(/\|\|/g, '\\|\\|')
+	}
 }

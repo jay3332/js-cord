@@ -20,7 +20,12 @@ class Connection {
 };
 
 class Messageable {
-	
+    send(obj) {
+        if (!obj instanceof Object) {
+            obj = {content: obj}
+        }
+        
+    }
 }
 
 class Client {
@@ -30,6 +35,18 @@ class Client {
 		this.loggedIn = false;
 		this.isBotApplication = null;
 		this.listeners = new Map();
+        this.allEvents = [
+			"ready",
+			"message",
+			"messageDelete",
+			"messageEdit",
+			"messageBulkDelete",
+			"guildMemberAdd",
+			"guildMemberRemove",
+			"memberBan",
+			"guildCreate",
+			"guildDelete"
+		];
 	}
 
 	login(token, bot = true) {
@@ -54,19 +71,7 @@ class Client {
 	}
 
 	listen(event, fn) {
-		const allEvents = [
-			"ready",
-			"message",
-			"messageDelete",
-			"messageEdit",
-			"messageBulkDelete",
-			"guildMemberAdd",
-			"guildMemberRemove",
-			"memberBan",
-			"guildCreate",
-			"guildDelete"
-		];
-		if (!allEvents.includes(event))
+		if (!this.allEvents.includes(event))
 			throw new InvalidEventError(`${event} is not a valid event.`);
 		this.listeners.set(event, fn);
 	}
