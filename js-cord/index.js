@@ -1,3 +1,5 @@
+{ ConnectionError, InvalidEventError, ConstructionError } = require("./errors/DiscordEventError");
+
 module.exports = {
     Client: require("./client/Client"),
     Bot: require("./client/Bot"),
@@ -20,7 +22,9 @@ module.exports = {
     VoiceChannel: require("./structures/VoiceChannel"),
 
     errors: {
-        { ConnectionError, InvalidEventError, ConstructionError }: require("./errors/DiscordEventError"),
+        ConnectionError: ConnectionError,
+        InvalidEventError: InvalidEventError,
+        ConstructionError: ConstructionError,
         CooldownError: require("./errors/CooldownError")
     }
 };
