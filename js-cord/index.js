@@ -1,4 +1,4 @@
-{ ConnectionError, InvalidEventError, ConstructionError } = require("./errors/DiscordEventError");
+const { ConnectionError, InvalidEventError, ConstructionError } = require("./errors/DiscordEventError");
 
 module.exports = {
     Client: require("./client/Client"),
