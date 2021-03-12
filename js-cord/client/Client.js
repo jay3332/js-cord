@@ -6,10 +6,7 @@ const User = require("../structures/User");
 
 class Client {
     constructor() {
-        const http = new Requester();
-        this.user = new ClientUser(this, http);
-        
-        this.http = http;
+        this.http = new Requester();
         this.token = null;
         this.loggedIn = false;
         this.isBotApplication = null;
@@ -54,6 +51,8 @@ class Client {
             "slashCommandDelete",
             "slashCommandUsed"
         ];
+
+        this.user = null;
     }
 
     getUser(userId) {
@@ -80,6 +79,7 @@ class Client {
         this.loggedIn = true;
         this.isBotApplication = token.startsWith("mfa") ? false : bot;
         this.http.putToken(token, bot);
+        this.user = new ClientUser(this);
         this.emit("ready", []);
     }
 
