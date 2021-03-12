@@ -2,6 +2,15 @@ class Util {
 	constructor() {
 		throw new Error(`You cannot create an instance of ${this.constructor.name}.`);
 	};
+
+    static parseAssetSize(size) {
+        if (
+            !size || typeof size !== 'number' ||
+            isNaN(size) || size < 2 || size > 4096
+        ) return false;
+        return Math.log2(size) % 1 === 0;
+    }
+
     static parseSnowflake(snowflake) {
         const epoch = 1420070400000;
         let binary = '';

@@ -1,6 +1,5 @@
-const Util = require('../util/Util');
-const Messageable = require('../structures/Messageable');
-const DMChannel = require('../structures/DMChannel');
+const {parseSnowflake, parseAssetSize} = require('../util/Util');
+const Channel = require('../structures/Channel');
 
 class User {
     constructor(client, user_id) {
@@ -11,6 +10,7 @@ class User {
 
         this.id = data['id'];
         this.name = data['username'];
+        this.mention = `<@!${user_id}>`;
         this.discriminator = data['discriminator'];
         this.avatarHash = data['avatar'];
         this.avatarAnimated = this.avatarHash.startsWith("a_");
@@ -27,16 +27,38 @@ class User {
     toString() {
         return this.tag;
     }
-    avatarUrlAs(format) {
-        format = format.toLowerCase().trim(".");
-        if (!['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(format)) throw new Error("Invalid format.");
-        if (format === "jpeg") format = 'jpg';
-        return `https://cdn.discordapp.com/avatars/${this.id}/${this.avatarHash}.${format}`;
+    avatarUrlAs(options = {}) {
+        let url = `https://cdn.discordapp.com/avatars/${this.id}/${this.avatarHash}`
+        let validFormats = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+
+        if (
+            options.format &&
+            typeof options.format === 'string' &&
+            validFormats.includes(options.format.toLowerCase())
+        ) {
+            let format = options.format;
+            if (!this.avatarAnimated && options.format.toLowerCase() === 'gif')
+                format = (options.fallback &&
+                validFormats.includes(options.fallback.toLowerCase()))
+                    ? options.fallback.toLowerCase()
+                    : 'webp'
+            url += `.${format}`
+        }
+        else url += '.webp'
+
+        if (
+            options.size &&
+            parseAssetSize(options.size)
+        ) url += `?size=${options.size}`
+
+        return url;
     }
+
     openDM() {
         const channelData = this.client.http.openUserDM();
-        this.dmChannel = new DMChannel(this.client, channelData['id'], this);
+        this.dmChannel = new Channel(this.client, channelData['id'], this);
     }
+    
     send(...args) {
         if (!this.dmChannel) {
             this.openDM();

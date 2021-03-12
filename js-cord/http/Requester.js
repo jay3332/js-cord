@@ -1,5 +1,5 @@
 const Route = require("../http/Route");
-const http = require("sync-request");
+const https = require("https");
 
 class Requester {
     /**
@@ -21,8 +21,16 @@ class Requester {
             'Authorization': this.botToken ? `Bot ${this.token}` : this.token
         }
         if (body) body['Content-Type'] = contentType;
-        const params = (!body) ? {headers: headers} : {headers: headers, body: JSON.stringify(body)};
-        return JSON.parse(http(method, route.url, params).getBody('utf8'));
+        const params = body 
+            ? {headers, body: JSON.stringify(body)}
+            : {headers};
+
+        return https.request({
+            method,
+            hostname: route.base,
+            path: route.path,
+            
+        });
     }
 
     putToken(token, bot=true) {
@@ -30,7 +38,7 @@ class Requester {
         this.botToken = bot;
     }
 
-    async login(token, bot=true) {
+    login(token, bot=true) {
         this.putToken(token, bot);
         if (!this.token) return;
         let data = this.request(new Route('GET', '/users/@me'));
@@ -72,6 +80,16 @@ class Requester {
     openUserDM(user_id) {
         const route = new Route('POST', '/users/@me/channels');
         return this.request(route, {"recipient_id": user_id});
+    }
+
+    getChannel(channel_id) {
+        const route = new Route('GET', `/channels/${channel_id}`);
+        return this.request(route);
+    }
+
+    getGuild(guild_id) {
+        const route = new Route('GET', `/guilds/${guild_id}`);
+        return this.request(route);
     }
 
 }

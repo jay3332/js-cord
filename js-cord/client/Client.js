@@ -2,9 +2,9 @@ const https = require('https');
 const { ConnectionError, InvalidEventError } = require('../errors/DiscordEventError');
 const Requester = require('../http/Requester');
 const ClientUser = require("../structures/ClientUser");
-const Messageable = require("../structures/Messageable");
+const Channel = require("../structures/Channel");
 const User = require("../structures/User");
-
+const Guild = require("../structures/Guild");
 class Client {
     constructor() {
         this.http = new Requester();
@@ -14,6 +14,7 @@ class Client {
         this.listeners = new Map();
         this.userCache = new Map();
         this.channelCache = new Map();
+        this.guildCache = new Map();
         this.allEvents = [
             "ready",
             "reconnect",
@@ -75,17 +76,32 @@ class Client {
     getChannel(channelId) {
         channelId = channelId.toString();
         if (this.channelCache.has(channelId)) return this.channelCache.get(channelId);
-        let channel = new Messageable(this, channelId);
+        let channel = new Channel(this, channelId);
         this.channelCache.set(channelId, channel);
         return channel;
     }
 
     fetchChannel(channelId) {
         channelId = channelId.toString();
-        let channel = new Messageable(this, channelId);
+        let channel = new Channel(this, channelId);
         this.channelCache.set(channelId, channel);
         return channel;
     } 
+
+    getGuild(guildId) {
+        guildId = guildId.toString();
+        if (this.guildCache.has(guildId)) return this.guildCache.get(guildId);
+        let guild = new Guild(this, guildId);
+        this.guildCache.set(guildId, guild);
+        return guild;
+    }
+
+    fetchGuild(guildId) {
+        guildId = guildId.toString();
+        let guild = new Guild(this, guildId);
+        this.guildCache.set(guildId, guild);
+        return guild;
+    }
 
 
     login(token, bot = true) {
@@ -130,4 +146,4 @@ class Client {
     }
 };
 
-module.exports = Client
+module.exports = Client;
