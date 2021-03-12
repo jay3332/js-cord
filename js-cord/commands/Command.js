@@ -1,6 +1,7 @@
+const { Check } = require('../commands/Check')
 
 class Command {
-    constructor(name, aliases, description, check = Check.none(), cooldown = Cooldown(1, 0), exec = ()=>{}) {
+    constructor(name, aliases, description, checks = [Check.none()], cooldown = Cooldown.none(), exec = ()=>{}) {
         this.name = name;
         this.aliases = aliases;
         this.description = description;
@@ -27,5 +28,13 @@ class Command {
          * <argument> [optional] [text...]
          */
         const parameters = this.execParams;
+        let arr = [];
+
+        for (parameter of parameters) {
+            if (parameter.startsWith("...")) parameter = parameter.trim(".")+'...';
+            arr.push(parameter.contains("=") ? `[${parameter}]`: `<${parameter}>`);
+        }
     }
 }
+
+module.exports = Command;

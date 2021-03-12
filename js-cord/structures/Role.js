@@ -1,4 +1,4 @@
-export class Role {
+class Role {
 	constructor(guild, state, data) {
         this.id = data.id;
         this.name = data.name;
@@ -6,3 +6,7 @@ export class Role {
         this._state = state;
 	}
 }
+
+module.exports = Role;
+
+// i think discord provides you with the info

@@ -1,4 +1,4 @@
-exports.Colors = {
+let Colors = {
 	DEFAULT: 0x000000,
 	WHITE: 0xffffff,
 	AQUA: 0x1abc9c,
@@ -30,3 +30,24 @@ exports.Colors = {
 	NOT_QUITE_BLACK: 0x23272a,
 	INVISIBLE: 0x36393f
 }
+
+function parseHex(hex) {
+	if (typeof color === 'string') {
+		if (color.toUpperCase() === 'RANDOM')
+			return Math.floor(Math.random() * (0xffffff + 1));
+		else if (color.toUpperCase() === 'DEFAULT')
+			return 0;
+		else if (Object.keys(Colors).includes(color.toUpperCase()))
+			return Colors[color.toUpperCase()];
+		else {
+			temp = parseInt(color.replace(/[\W_]/g, ''), 16);
+			return (temp > 0xffffff || isNaN(temp))
+				? 0 : temp;
+		}
+	} else if (typeof color === 'number')
+		return (color > 0xffffff || isNaN(temp))
+			? 0 : color;
+	else return 0;
+}
+
+module.exports = { Colors, parseHex }

@@ -1,0 +1,27 @@
+{
+  "name": "js-cord",
+  "version": "1.0.0",
+  "description": "js-cord is a wrapper around the Discord API, written and to be used in JavaScript.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jay3332/js-cord.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jay3332/js-cord/issues"
+  },
+  "homepage": "https://github.com/jay3332/js-cord#readme"
+}

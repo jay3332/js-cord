@@ -12,7 +12,7 @@ bot.listen("ready", () => {
 bot.command("embed", (ctx, title, description, footer) => {
 
     // create the embed
-    const embed = discord.Embed();
+    const embed = new discord.Embed();
     embed.setTitle(title);
     embed.setDescription(description);
     embed.setFooter(footer);

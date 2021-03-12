@@ -51,13 +51,15 @@ class Requester {
         route = Route('POST', `/channels/${channel_id}/messages`);
 
         payload = {};
-        if (!!content) payload['content'] = content;
+        if (content) payload['content'] = content;
         if (tts) payload['tts'] = true;
-        if (!!embed) payload['embed'] = embed;
-        if (!!nonce) payload['nonce'] = nonce;
-        if (!!allowed_mentions) payload['allowed_mentions'] = allowed_mentions;
-        if (!!message_reference) payload['message_reference'] = message_reference;
+        if (embed) payload['embed'] = embed;
+        if (nonce) payload['nonce'] = nonce;
+        if (allowed_mentions) payload['allowed_mentions'] = allowed_mentions;
+        if (message_reference) payload['message_reference'] = message_reference;
         return this.request(route, payload);
     }
 
 }
+
+module.exports = Requester;

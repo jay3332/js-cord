@@ -1,13 +1,13 @@
 # js-cord
 js-cord is a wrapper around the Discord API, written and to be used in Javascript.
 ## Why was this created?
-I've always liked Javascript's syntax better than Python's, but I tend to use Python more for developing Discord Bots because the API wrapper for Python (discord.py) has more features than the conventional discord.js. This wrapper fixes that, with built in command managers, cooldown managers, a built in argument parsing system, and much more.
+I've always liked JavaScript's syntax better than Python's, but I tend to use Python more for developing Discord Bots because the API wrapper for Python (discord.py) has more features than the conventional discord.js. This wrapper fixes that, with built in command managers, cooldown managers, a built in argument parsing system, and much more.
 ## Installation
 Installing js-cord is pretty easy with `npm`:
 ```
 npm install js-cord
 ```
-Or, if you want the lastest version, clone this repository using git:
+Or, if you want the latest version, clone this repository using git:
 ```
 npm install git+https://github.com/jay3332/js-cord
 ```
@@ -52,7 +52,7 @@ bot.listen("ready", () => {
 bot.command("embed", (ctx, title, description, footer) => {
 
     // create the embed
-    const embed = discord.Embed();
+    const embed = new discord.Embed();
     embed.setTitle(title);
     embed.setDescription(description);
     embed.setFooter(footer);

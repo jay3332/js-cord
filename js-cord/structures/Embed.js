@@ -1,17 +1,26 @@
-const { Colors } = require('../util/Useful');
+const { parseHex } = require('../util/Useful');
 
-export class Embed {
+class Embed {
     constructor(obj = {}) {
 		this.type = 'rich';
-        this.title = null;
-		this.url = null;
-        this.description = null;
-		this.fields = [];
-		this.author = {};
-		this.image = {};
-		this.footer = {};
-		this.timestamp = null;
-		this.color = null;
+        
+		if (!obj) {
+			this.title = null;
+			this.author = {};
+			this.footer = {};
+			this.url = null;
+			
+			this.description = null;
+			this.fields = [];
+			
+			this.image = {};
+			this.thumbnail = {};
+			
+			this.timestamp = null;
+			this.color = null;
+		} else {
+			this = obj;
+		}
     }
     setTitle(title) {
         this.title = title;
@@ -22,22 +31,33 @@ export class Embed {
 	setUrl(url) {
 		this.url = url;
 	}
-	setColor(color) {
-		if (typeof color === string) {
-			if (color.toUpperCase() === 'RANDOM')
-				color = Math.floor(Math.random() * (0xffffff + 1));
-			else if (color.toUpperCase() === 'DEFAULT')
-				color = 0
-			
-		}
-		else throw new TypeError('Embed color must be a valid hex color or integer.');
+	setAuthor(name, icon_url, url) {
+		this.author.name = name;
+		this.author.icon_url = icon_url;
+		this.author.url = url;
 	}
-	setTimestamp(timestamp = Date.now()) {
+	setFooter(text, icon_url) {
+		this.footer.text = text;
+		this.footer.icon_url = icon_url;
+	}
+	setImage(url) {
+		this.image.url = url;
+	}
+	setThumbnail(url) {
+		this.thumbnail.url = url;
+	}
+	setColor(color) {
+		this.color = parseHex(color);
+	}
+	setTimestamp(timestamp) {
 		try {
-			this.timestamp = new Date(timestamp)
+			this.timestamp = new Date(timestamp || Date.now())
 		} catch {
 			throw new TypeError('Timestamp must be a valid date, unix timestamp, or string.')
-		} 
+		}
+	}
+	addField(name, value, inline = false) {
+		this.fields.push({name: name, value: value, inline: inline});
 	}
 
 	get color() {
@@ -45,6 +65,8 @@ export class Embed {
 			? `#${this.color.toString(16).padStart(6, '0')}` : null;
 	}
 }
+
+module.exports = Embed;
 
 /**
  * Example Embed

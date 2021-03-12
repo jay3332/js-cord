@@ -7,4 +7,10 @@ class Cooldown {
         this.cooldown = cooldown;
         this.type = type;
     }
+
+    static none() {
+        return this(1, 0);
+    }
 }
+
+module.exports = Cooldown;

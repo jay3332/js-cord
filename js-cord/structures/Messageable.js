@@ -3,6 +3,8 @@
  * These will extend this class.
  */
 
-export class Messagable {
+class Messagable {
     
 }
+
+module.exports = Messagable;

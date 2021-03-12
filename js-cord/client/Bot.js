@@ -5,7 +5,10 @@
 
 const Client = require("./Client");
 const { ConstructionError } = require("../errors/DiscordEventError");
-
+const { Check } = require('../commands/Check'),
+	{ Command } = require('../commands/Command'),
+	{ CommandContext } = require('../commands/CommandContext'),
+	{ Cooldown } = require('../commands/Cooldown')
 
 class Bot extends Client {
     constructor(obj) {
@@ -80,5 +83,22 @@ class Bot extends Client {
                 }
             }
         }
+        
+        let checks = [];
+        let cooldown = Cooldown.none();
+        if (settings.hasOwnProperty('check')) checks = [settings.check];
+        if (settings.hasOwnProperty('checks')) checks = settings.checks;
+        if (settings.hasOwnProperty('cooldown')) cooldown = settings.cooldown;
+
+        this.commands.push(Command(name, aliases, "", checks, cooldown, exec));
+    }
+    getCommand(name) {
+        if (this.commandsCaseInsensitive) name = name.toLowerCase();
+        for (command of this.commands) {
+            nameAndAliases = [command.name, ...command.aliases];
+            if (nameAndAliases.contains(name)) return command;
+        }
     }
 }
+
+module.exports = Bot

@@ -1,32 +1,6 @@
 const https = require('https'); 
 const { ConnectionError, InvalidEventError } = require('../errors/DiscordEventError');
-
-const url = 'https://discord.com/api/v8';
-
-class Connection {
-	/* Manages HTTP requests with Discord. */
-	constructor(token) {
-		this.token = token;
-		this.information = https.request({
-			hostname: url,
-			path: "/oauth2/applications/@me",
-			method: "GET"
-		}, response => {
-			if (response.statusCode !== 200)
-				throw new ConnectionError(`Connection failed with status code ${response.statusCode}`);
-		});
-	}
-
-};
-
-class Messageable {
-    send(obj) {
-        if (!obj instanceof Object) {
-            obj = {content: obj}
-        }
-        
-    }
-}
+const Requester = require('../http/Requester');
 
 class Client {
 	constructor() {
@@ -57,14 +31,14 @@ class Client {
 		this.token = token;
 		this.loggedIn = true;
         this.isBotApplication = token.startsWith("mfa") ? false : bot;
-		this.http = new Connection(this.token);
+		this.http.putToken(token, bot);
 		this.emit("ready", []);
 	}
 
 	logout() {
 		if (!this.loggedIn)
 			throw new ConnectionError("You weren't logged in.");
-		this.http = null;
+        this.http.logout();
 		this.token = null;
 		this.loggedIn = false;
 		this.isBotApplication = false
@@ -89,3 +63,5 @@ class Client {
 		else return false;
 	}
 };
+
+module.exports = Client

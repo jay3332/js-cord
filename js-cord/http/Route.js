@@ -5,7 +5,7 @@ function encodeQueryData(data) {
    return ret.join('&');
 };
 
-export class Route {
+class Route {
     /* params will be a Map */
     constructor (method, path) {
         this.base = "https://discord.com/api/v8";
@@ -14,7 +14,9 @@ export class Route {
         this.url = this.base + this.path;
     }
 
-    get static base() {
+    get base() {
         return "https://discord.com/api/v8";
     }
 };
+
+module.exports = Route;

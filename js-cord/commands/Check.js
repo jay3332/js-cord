@@ -31,3 +31,5 @@ class Check {
         return; // because things haven't been figured out yet
     }
 }
+
+module.exports = Check;
