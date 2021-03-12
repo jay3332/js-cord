@@ -20,6 +20,7 @@ class Requester {
             'X-Ratelimit-Precision': 'millisecond',
             'Authorization': this.botToken ? `Bot ${this.token}` : this.token
         }
+        if (body) body['Content-Type'] = contentType;
         const params = (!body) ? {headers: headers} : {headers: headers, body: JSON.stringify(body)};
         return JSON.parse(http(method, route.url, params).getBody('utf8'));
     }
