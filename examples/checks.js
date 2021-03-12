@@ -9,7 +9,7 @@ bot.listen("ready", () => {
 })
 
 // An owner-only command with a check
-bot.command({ name: "owner-only", check: discord.Check(ctx => {
+bot.command({ name: "owner-only", check: new discord.Check(ctx => {
     // check if owner id's match
     const isOwner = (bot.owner_id == ctx.author.id);
     // send an error message if the check fails

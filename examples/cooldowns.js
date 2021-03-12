@@ -17,7 +17,7 @@ bot.listen("commandError", (ctx, error) => {
 });
 
 // Cooldown is user specific, it can be used 1 time per 5 seconds.
-bot.command({name: "ping", cooldown: discord.Cooldown(1, 5)}, ctx => {
+bot.command({name: "ping", cooldown: new discord.Cooldown(1, 5)}, ctx => {
     ctx.send("Pong!");
 });
 
