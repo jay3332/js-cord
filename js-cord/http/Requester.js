@@ -65,7 +65,7 @@ class Requester {
     openUserDM(user_id) {
         const route = new Route('POST', '/users/@me/channels');
         return this.request(route, {"recipient_id": user_id});
-    } // you can't returtn in a one line => cus it auto returns for you ok
+    }
 
 }
 

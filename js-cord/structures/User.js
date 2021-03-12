@@ -1,9 +1,10 @@
 const Util = require('../util/Util');
 const Messageable = require('../structures/Messageable');
+const DMChannel = require('../structures/DMChannel');
 
-class User extends Messageable {
+class User {
     constructor(client, user_id) {
-        this.dmChannelID = null;
+        this.dmChannel = null;
         this.client = client;
         this.input_id = user_id;
         const data = client.http.getUserInformation(user_id);
@@ -34,15 +35,14 @@ class User extends Messageable {
         return `https://cdn.discordapp.com/avatars/${this.id}/${this.avatarHash}.${format}`;
     }
     openDM() {
-        const channelData = client.http.openUserDM();
-        super(client, channelData['id']);
-        this.dmChannelID = channelData['id'];
+        const channelData = this.client.http.openUserDM();
+        this.dmChannel = new DMChannel(this.client, channelData['id'], this);
     }
     send(...args) {
-        if (!this.dmChannelID) {
+        if (!this.dmChannel) {
             this.openDM();
         }
-        super.send(this.dmChannelID, ...args)
+        this.dmChannel.send(...args);
     }
 }
 
