@@ -7,7 +7,7 @@ const User = require("../structures/User");
 class Client {
     constructor() {
         const http = new Requester();
-        this.user = new ClientUser(http);
+        this.user = new ClientUser(this, http);
         
         this.http = http;
         this.token = null;
