@@ -40,7 +40,7 @@ class Requester {
     }
 
     sendMessage(destination_id, content=null, embed=null, tts=false, nonce=null, allowed_mentions=null, message_reference=null) {
-        const route = new Route('POST', `/channels/${channel_id}/messages`);
+        const route = new Route('POST', `/channels/${destination_id}/messages`);
 
         let payload = {};
         if (content) payload['content'] = content;

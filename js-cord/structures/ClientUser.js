@@ -3,7 +3,6 @@ const User = require("../structures/User");
 class ClientUser extends User {
     constructor(client) {
         const data = client.http.getClientUser();
-        console.log(data);
         super(client, data['id']);
         this.mfa = data['mfa_enabled'];
         this.email = data['email'];

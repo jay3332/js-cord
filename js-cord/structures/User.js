@@ -8,7 +8,6 @@ class User {
         this.client = client;
         this.input_id = user_id;
         const data = client.http.getUserInformation(user_id);
-        console.log(data);
 
         this.id = data['id'];
         this.name = data['username'];
