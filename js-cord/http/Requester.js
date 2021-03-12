@@ -29,6 +29,7 @@ class Requester {
                 this.response = response
             });
         }
+        console.log(this.response);
         return this.response;
     }
 
