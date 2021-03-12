@@ -2,7 +2,8 @@ const User = require("../structures/User");
 
 class ClientUser extends User {
     constructor(client) {
-        const data = client.http.getClientUser();
+        const data = null;
+        client.http.getClientUser().then(res => data=res);
         super(client, data['id']);
         this.email = data['email'];
         this.verified = data['verified'];

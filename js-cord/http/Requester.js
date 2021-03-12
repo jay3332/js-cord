@@ -23,12 +23,7 @@ class Requester {
         const params = (!json) ? {method: this.method, headers: headers} : 
         {method: this.method, headers: headers, body: JSON.stringify(json)};
             
-        let res = null;
-        http(route.url, params).then(response => {
-            response = response.json();
-            res = response;
-        });
-        return res;
+        return http(route.url, params).then(res => res.json());
     }
 
     putToken(token, bot=true) {
