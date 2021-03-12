@@ -21,10 +21,10 @@ class AllowedMentions {
             everyone: true
         });
     }
-    static fromList(arr) {
-        let users = (arr.includes("users"));
-        let roles = (arr.includes("roles"));
-        let everyone = (arr.includes("everyone"));
+    static fromArray(arr) {
+        let users = arr.includes("users");
+        let roles = arr.includes("roles");
+        let everyone = arr.includes("everyone");
         return AllowedMentions({
             users: users,
             roles: roles,

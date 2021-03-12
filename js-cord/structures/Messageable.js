@@ -11,6 +11,7 @@ class Messageable {
         this.type = "channel";
         this.channel_id = channel_id
     }
+    
     send(content, options={}) {
         
         if (typeof content == "object") {

@@ -20,7 +20,7 @@ class Requester {
             'Authorization': this.botToken ? `Bot ${this.token}` : this.token
         }
         const params = (!body) ? {headers: headers} : {headers: headers, body: JSON.stringify(body)};
-        return http(method, route.url, params);
+        return JSON.parse(http(method, route.url, params).getBody('utf8'));
     }
 
     putToken(token, bot=true) {

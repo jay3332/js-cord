@@ -8,5 +8,3 @@ class Role {
 }
 
 module.exports = Role;
-
-// i think discord provides you with the info
