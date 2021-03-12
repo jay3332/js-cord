@@ -18,10 +18,12 @@ class Messagable {
             options = content;
         }
         if (!content) content = '';
+
+        let embed = null;
         if (options.hasOwnProperty("embed")) {
             if (options.embed instanceof Embed) {
-                const embed = options.embed.asJSON;
-            } else const embed = null; 
+                embed = options.embed.asJSON;
+            }  
         }
 
         this.client.http.sendMessage(this.channel_id, content, embed);
