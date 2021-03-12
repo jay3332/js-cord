@@ -19,6 +19,10 @@ class Embed {
 			this.timestamp = null;
 			this.color = null;
 		} else {
+            for (const key of Object.keys(obj)) {
+                const valid = ['title', 'author', 'footer', 'url', 'description', 'fields', 'image', 'thumbnail', 'timestamp', 'color'];
+                if (!valid.includes(key)) delete obj[key];
+            }
 			for (const prop of Object.keys(obj)) {
                 this[prop] = obj[prop];
             }

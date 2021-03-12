@@ -1,6 +1,6 @@
 class Reaction {
     constructor(message, data) {
-        this.emoji =     
+        this.emoji = null
     }
 }
 
