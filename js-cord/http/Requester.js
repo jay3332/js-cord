@@ -12,9 +12,10 @@ class Requester {
         this.userAgent = 'DiscordBot (js-cord 1.0)';
     }
 
-    request(route, body=null) {
+    request(route, body=null, contentType="application/json") {
         const method = route.method;
         let headers = {
+            'Content-Type': contentType,
             'User-Agent': this.user_agent,
             'X-Ratelimit-Precision': 'millisecond',
             'Authorization': this.botToken ? `Bot ${this.token}` : this.token
