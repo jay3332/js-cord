@@ -1,7 +1,7 @@
 // Import the library
 const discord = require("js-cord");
 // Declare your bot
-const bot = discord.Bot({ prefix: "!" });
+const bot = new discord.Bot({ prefix: "!" });
 
 // Notify us in the console when the bot is ready
 bot.listen("ready", () => {

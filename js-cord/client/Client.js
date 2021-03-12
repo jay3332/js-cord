@@ -4,7 +4,7 @@ const Requester = require('../http/Requester');
 
 class Client {
 	constructor() {
-		this.http = null;
+        this.http = Requester();
 		this.token = null;
 		this.loggedIn = false;
 		this.isBotApplication = null;
