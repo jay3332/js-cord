@@ -1,5 +1,5 @@
 const Route = require("../http/Route");
-const http = require("node-fetch");
+const http = require("sync-request");
 
 class Requester {
     /**
@@ -12,18 +12,15 @@ class Requester {
         this.userAgent = 'DiscordBot (js-cord 1.0)';
     }
 
-    request(route, json = null) {
-        this.method = route.method;
+    request(route, body=null) {
+        const method = route.method;
         let headers = {
             'User-Agent': this.user_agent,
             'X-Ratelimit-Precision': 'millisecond',
             'Authorization': this.botToken ? `Bot ${this.token}` : this.token
         }
-
-        const params = (!json) ? {method: this.method, headers: headers} : 
-        {method: this.method, headers: headers, body: JSON.stringify(json)};
-        
-        return http(route.url, params).then(res => res.json());
+        const params = (!body) ? {headers: headers} : {headers: headers, body: JSON.stringify(body)};
+        return http(method, route.url, params);
     }
 
     putToken(token, bot=true) {

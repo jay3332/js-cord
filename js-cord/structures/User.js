@@ -3,13 +3,10 @@ const Messageable = require('../structures/Messageable');
 
 class User extends Messageable {
     constructor(client, user_id) {
-        let channelData = null;
-        client.http.openUserDM(user_id).then(res => channelData = res);
-        super(client, channelData['id']);
+        this.dmChannelID = null;
         this.client = client;
         this.input_id = user_id;
-        let data = null;
-        client.http.getUserInformation(user_id).then(res => data = res);
+        const data = client.http.getUserInformation(user_id);
         console.log(data);
 
         this.id = data['id'];
@@ -35,6 +32,17 @@ class User extends Messageable {
         if (!['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(format)) throw new Error("Invalid format.");
         if (format === "jpeg") format = 'jpg';
         return `https://cdn.discordapp.com/avatars/${this.id}/${this.avatarHash}.${format}`;
+    }
+    openDM() {
+        const channelData = client.http.openUserDM();
+        super(client, channelData['id']);
+        this.dmChannelID = channelData['id'];
+    }
+    send(...args) {
+        if (!this.dmChannelID) {
+            this.openDM();
+        }
+        super.send(this.dmChannelID, ...args)
     }
 }
 
