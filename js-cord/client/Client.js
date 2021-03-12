@@ -1,26 +1,72 @@
 const https = require('https'); 
 const { ConnectionError, InvalidEventError } = require('../errors/DiscordEventError');
 const Requester = require('../http/Requester');
+const ClientUser = require("../structures/ClientUser");
+const User = require("../structures/User");
 
 class Client {
     constructor() {
         this.http = new Requester();
+        this.user = new ClientUser(this.http);
         this.token = null;
         this.loggedIn = false;
         this.isBotApplication = null;
         this.listeners = new Map();
+        this.userCache = new Map();
         this.allEvents = [
             "ready",
+            "reconnect",
             "message",
             "messageDelete",
             "messageEdit",
             "messageBulkDelete",
-            "guildMemberAdd",
-            "guildMemberRemove",
+            "memberJoin",
+            "memberEdit",
+            "memberRemove",
             "memberBan",
-            "guildCreate",
-            "guildDelete"
+            "memberUnban",
+            "guildJoin",
+            "guildEdit",
+            "guildRemove",
+            "channelCreate",
+            "channelEdit",
+            "channelDelete",
+            "channelPinsUpdate",
+            "roleCreate",
+            "roleDelete",
+            "roleEdit",
+            "inviteCreate",
+            "inviteDelete",
+            "reactionAdd",
+            "reactionRemove",
+            "reactionClear",
+            "reactionDelete",
+            "userStatusChange",
+            "typing",
+            "userEdit",
+            "voiceStateEdit",
+            "voiceServerEdit",
+            "webhookEdit",
+            "slashCommandCreate",
+            "slashCommandEdit",
+            "slashCommandDelete",
+            "slashCommandUsed"
         ];
+    }
+
+    getUser(userId) {
+        userId = userId.toString();
+        if (this.userCache.has(userId)) return this.userCache.get(userId);
+        let user = new User(userId);
+        this.userCache.set(userId, user);
+        return user;
+    }
+
+    fetchUser(userId) {
+        userId = userId.toString();
+        let user = new User(userId);
+        this.userCache.set(userId, user);
+        return user;
     }
 
     login(token, bot = true) {

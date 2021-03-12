@@ -1,7 +1,24 @@
-export class Util {
+class Util {
 	constructor() {
 		throw new Error(`You cannot create an instance of ${this.constructor.name}.`);
 	};
+    static parseSnowflake(snowflake) {
+        const epoch = 1420070400000;
+        let binary = '';
+        let high = parseInt(snowflake.slice(0, -10));
+        let low = parseInt(snowflake.slice(-10));
+        while (high > 0 || low > 0) {
+            binary = String(low&1) + binary;
+            low = Math.floor(low / 2);
+            if (high > 0) {
+                low += 5000000000 * (high % 2);
+                high = Math.floor(high / 2);
+            }
+        }
+        binary = binary.toString(2).padStart(64, '0');
+        const unix = parseInt(binary.substring(0, 42), 2)+epoch;
+        return new Date(unix);
+    }
 
 	static escapeMarkdown(text, {
 		codeBlock = true, inlineCode = true, bold = true, italic = true, underline = true, strikethrough = true, spoiler = true,
@@ -39,3 +56,5 @@ export class Util {
 		return text.replace(/\|\|/g, '\\|\\|')
 	}
 }
+
+module.exports = Util;

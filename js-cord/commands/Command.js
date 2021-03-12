@@ -34,6 +34,7 @@ class Command {
             if (parameter.startsWith("...")) parameter = parameter.trim(".")+'...';
             arr.push(parameter.contains("=") ? `[${parameter}]`: `<${parameter}>`);
         }
+        return arr.join(' ');
     }
 }
 

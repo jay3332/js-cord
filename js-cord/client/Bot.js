@@ -46,6 +46,9 @@ class Bot extends Client {
             if (isNaN(context)) return;
             context.invoke();
         });
+        this.listeners.set("commandError", (ctx, error) => {
+            throw error;
+        });
     }
     command(settings, exec) {
         const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
@@ -97,6 +100,24 @@ class Bot extends Client {
             if (nameAndAliases.contains(name)) return command;
         } return null;
     }
+    getPrefix(message) {
+        content = message.content;
+        if (this.prefixCaseInsensitive) content = content.toLowerCase();
+        if (typeof this.prefix == "function") {
+            const prefix = this.prefix(this, message);
+        } else const prefix = this.prefix;
+        if (typeof prefix == "string") {
+            return content.startsWith(prefix) ? prefix : null;
+        } else if (this.prefix instanceof Array) {
+            for (prf of prefix) {
+                if (content.startsWith(prf)) {
+                    return prf;
+                }
+            }
+            return null;
+        } 
+        return null;
+    }
 }
 
-module.exports = Bot
+module.exports = Bot;

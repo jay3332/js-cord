@@ -9,11 +9,11 @@ class Requester {
     constructor() {
         this.token = null;
         this.botToken = true;
-        this.userAgent = 'js-cord Discord Bot';
+        this.userAgent = 'DiscordBot (js-cord 1.0)';
         this.response = null;
     }
 
-    request(route, json=null) {
+    request(route, json = null) {
         this.method = route.method;
         headers = {
             'User-Agent': this.user_agent,
@@ -29,6 +29,7 @@ class Requester {
                 this.response = response
             });
         }
+        return this.response;
     }
 
     putToken(token, bot=true) {
@@ -39,16 +40,16 @@ class Requester {
     login(token, bot=true) {
         this.putToken(token, bot);
         if (!this.token) return;
-        let data = this.request(Route('GET', '/users/@me'));
+        let data = this.request(new Route('GET', '/users/@me'));
         return data;
     }
 
     logout() {
-        return this.request(Route('POST', '/auth/logout'));
+        return this.request(new Route('POST', '/auth/logout'));
     }
 
-    sendMessage(destination_id, content=null, tts=false, embed=null, nonce=null, allowed_mentions=null, message_reference=null) {
-        route = Route('POST', `/channels/${channel_id}/messages`);
+    sendMessage(destination_id, content=null, embed=null, tts=false, nonce=null, allowed_mentions=null, message_reference=null) {
+        route = new Route('POST', `/channels/${channel_id}/messages`);
 
         payload = {};
         if (content) payload['content'] = content;
@@ -58,6 +59,16 @@ class Requester {
         if (allowed_mentions) payload['allowed_mentions'] = allowed_mentions;
         if (message_reference) payload['message_reference'] = message_reference;
         return this.request(route, payload);
+    }
+
+    getUserInformation(user_id) {
+        route = new Route('GET', `/users/${user_id}`);
+        return this.request(route);
+    }
+
+    getClientUser() {
+        route = new Route('GET', '/users/@me');
+        return this.request(route);
     }
 
 }

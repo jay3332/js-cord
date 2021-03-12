@@ -22,6 +22,9 @@ class Embed {
 			this = obj;
 		}
     }
+    get asJSON() {
+        return JSON.stringify(this);
+    }
     setTitle(title) {
         this.title = title;
     }
