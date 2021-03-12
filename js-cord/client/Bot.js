@@ -103,9 +103,10 @@ class Bot extends Client {
     getPrefix(message) {
         content = message.content;
         if (this.prefixCaseInsensitive) content = content.toLowerCase();
+        let prefix = this.prefix;
         if (typeof this.prefix == "function") {
-            const prefix = this.prefix(this, message);
-        } else const prefix = this.prefix;
+            prefix = this.prefix(this, message);
+        }
         if (typeof prefix == "string") {
             return content.startsWith(prefix) ? prefix : null;
         } else if (this.prefix instanceof Array) {
