@@ -25,11 +25,7 @@ class Bot extends Client {
         this.commands = [];
         this.commandCooldowns = new Map();
 
-        if (
-            obj instanceof String ||
-            obj instanceof Array  ||
-            obj instanceof Function
-        ) {
+        if (["string", "function", "array"].includes(typeof obj)) {
             this.prefix = obj;
         } else if (obj instanceof Object) {
             if (obj.hasOwnProperty("prefix")) this.prefix = obj.prefix;
