@@ -95,7 +95,7 @@ class Bot extends Client {
         for (command of this.commands) {
             nameAndAliases = [command.name, ...command.aliases];
             if (nameAndAliases.contains(name)) return command;
-        }
+        } return null;
     }
 }
 
