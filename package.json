@@ -2,7 +2,7 @@
   "name": "js-cord",
   "version": "1.0.0",
   "description": "js-cord is a wrapper around the Discord API, written and to be used in JavaScript.",
-  "main": "index.js",
+  "main": "js-cord/index.js",
   "directories": {
     "example": "examples"
   },
