@@ -19,7 +19,9 @@ class Embed {
 			this.timestamp = null;
 			this.color = null;
 		} else {
-			this = obj;
+			for (const prop of Object.keys(obj)) {
+                this[prop] = obj[prop];
+            }
 		}
     }
     get asJSON() {
