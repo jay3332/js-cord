@@ -7,7 +7,7 @@ class ClientUser extends User {
         this.email = data['email'];
         this.verified = data['verified'];
         this.locale = data['locale'];
-    }    
+    }
 }
 
 module.exports = ClientUser;

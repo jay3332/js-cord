@@ -3,6 +3,8 @@ const Messageable = require('../structures/Messageable');
 
 class User extends Messageable {
     constructor(client, user_id) {
+        const channelData = client.http.openUserDM(user_id);
+        super(channelData['id']);
         this.client = client;
         this.input_id = user_id;
         const data = client.http.getUserInformation(user_id);

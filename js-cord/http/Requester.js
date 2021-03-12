@@ -74,6 +74,11 @@ class Requester {
         return this.request(route);
     }
 
+    openUserDm(user_id) {
+        const route = new Route('POST', '/users/@me/channels');
+        return this.request(route, {"recipient_id": user_id});
+    }
+
 }
 
 module.exports = Requester;
