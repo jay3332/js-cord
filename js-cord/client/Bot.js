@@ -5,15 +5,16 @@
 
 const Client = require("./Client");
 const { ConstructionError } = require("../errors/DiscordEventError");
-const { Check } = require('../commands/Check'),
-	{ Command } = require('../commands/Command'),
-	{ CommandContext } = require('../commands/CommandContext'),
-	{ Cooldown } = require('../commands/Cooldown')
+const Check = require('../commands/Check'),
+	Command = require('../commands/Command'),
+	CommandContext = require('../commands/CommandContext'),
+	Cooldown = require('../commands/Cooldown');
 
 class Bot extends Client {
     constructor(obj) {
-        const superclass = super();
-        superclass.allEvents.push(
+        super();
+
+        super.allEvents.push(
             "command",
             "commandError",
             "commandComplete"
@@ -40,7 +41,7 @@ class Bot extends Client {
                 this.prefix = this.prefix.map(p => p.toLowerCase());
             }
         }
-        superclass.listeners.set("message", message => {
+        super.listeners.set("message", message => {
             const context = parseContext(message, this);
             if (isNaN(context)) return;
             context.invoke();

@@ -9,7 +9,7 @@ class Cooldown {
     }
 
     static none() {
-        return this(1, 0);
+        return new Cooldown(1, 0);
     }
 }
 
