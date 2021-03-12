@@ -5,12 +5,12 @@ const bot = new discord.Bot({ prefix: "!" });
 
 // Notify us in the console when the bot is ready
 bot.listen("ready", () => {
-	console.log(`Logged in as ${bot.user}`);
+    console.log(`Logged in as ${bot.user}`);
 })
 
 // Basic ping command
 bot.command("ping", ctx => {
-	ctx.reply("Pong!");
+    ctx.reply("Pong!");
 });
 
 // Log in to Discord.

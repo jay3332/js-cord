@@ -59,10 +59,10 @@ class Bot extends Client {
 
         if (!result.length) throw new Error("Command execution function requires a context parameter.")
 
-        if (settings instanceof String) {
+        if (typeof settings == "string") {
             settings = {name: settings}
-        } if (!settings instanceof Object) {
-            throw new Error("Command settings must be a name or object.")
+        } if (! (typeof settings == "object")) {
+            throw new Error("Command settings must be a string or object.")
         } if (!settings.hasOwnProperty('name')) {
             throw new Error("\"name\" is a required object parameter.")
         } 
