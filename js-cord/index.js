@@ -15,7 +15,7 @@ module.exports = {
     Guild: require("./structures/Guild"),
     Member: require("./structures/Member"),
     Message: require("./structures/Message"),
-    Messagable: require("./structures/Messagable"),
+    Messageable: require("./structures/Messageable"),
     Role: require("./structures/Role"),
     TextChannel: require("./structures/TextChannel"),
     User: require("./structures/User"),

@@ -5,7 +5,7 @@
 
 const Embed = require("../structures/Embed");
 
-class Messagable {
+class Messageable {
     constructor(client, channel_id) {
         this.client = client;
         this.type = "channel";
@@ -31,4 +31,4 @@ class Messagable {
     }
 }
 
-module.exports = Messagable;
+module.exports = Messageable;
