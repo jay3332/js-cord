@@ -9,6 +9,7 @@ class User extends Messageable {
         this.input_id = user_id;
         const data = client.http.getUserInformation(user_id);
         
+        console.log(data); // debug
         this.id = data['id'];
         this.name = data['username'];
         this.discriminator = data['discriminator'];
