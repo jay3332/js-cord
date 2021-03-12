@@ -30,7 +30,7 @@ class Requester {
         this.botToken = bot;
     }
 
-    login(token, bot=true) {
+    async login(token, bot=true) {
         this.putToken(token, bot);
         if (!this.token) return;
         let data = this.request(new Route('GET', '/users/@me'));
@@ -52,6 +52,11 @@ class Requester {
         if (allowed_mentions) payload['allowed_mentions'] = allowed_mentions;
         if (message_reference) payload['message_reference'] = message_reference;
         return this.request(route, payload);
+    }
+
+    getMessage(channel_id, message_id) {
+        const route = new Route('GET', `/channels/${channel_id}/messages/${message_id}`);
+        return this.request(route);
     }
 
     getUserInformation(user_id) {
