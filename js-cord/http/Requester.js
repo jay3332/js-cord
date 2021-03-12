@@ -22,14 +22,14 @@ class Requester {
         }
         if (!json) {
             http(route.url, {method: this.method, headers: headers}).then(response => {
-                response = response.json()
-                this.response = response
+                response = response.json();
+                this.response = response;
                 return response;
             });
         } else {
             http(route.url, {method: this.method, headers: headers, body: JSON.stringify(json)}).then(response => {
-                response = response.json()
-                this.response = response
+                response = response.json();
+                this.response = response;
                 return response;
             });
         }
