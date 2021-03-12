@@ -12,8 +12,7 @@ const { Check } = require('../commands/Check'),
 
 class Bot extends Client {
     constructor(obj) {
-        super();
-        super.allEvents.push(
+        super().allEvents.push(
             "command",
             "commandError",
             "commandComplete"
