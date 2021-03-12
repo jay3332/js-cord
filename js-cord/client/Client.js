@@ -6,8 +6,10 @@ const User = require("../structures/User");
 
 class Client {
     constructor() {
-        this.http = new Requester();
-        this.user = new ClientUser(this.http);
+        const http = new Requester();
+        this.user = new ClientUser(http);
+        
+        this.http = http;
         this.token = null;
         this.loggedIn = false;
         this.isBotApplication = null;
