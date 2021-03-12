@@ -2,14 +2,14 @@ const Util = require('../util/Util');
 const Messageable = require('../structures/Messageable');
 
 class User extends Messageable {
-    constructor(client, user_id) {
+    constructor(client, user_id) { // do whatever you think fixes it
         const channelData = client.http.openUserDM(user_id);
         super(client, channelData['id']);
         this.client = client;
         this.input_id = user_id;
         const data = client.http.getUserInformation(user_id);
         
-        console.log(data); // debug
+        data.then(console.log);
         this.id = data['id'];
         this.name = data['username'];
         this.discriminator = data['discriminator'];
