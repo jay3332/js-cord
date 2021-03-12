@@ -15,7 +15,7 @@ class Requester {
 
     request(route, json = null) {
         this.method = route.method;
-        headers = {
+        let headers = {
             'User-Agent': this.user_agent,
             'X-Ratelimit-Precision': 'millisecond',
             'Authorization': this.botToken ? `Bot ${this.token}` : this.token
@@ -49,9 +49,9 @@ class Requester {
     }
 
     sendMessage(destination_id, content=null, embed=null, tts=false, nonce=null, allowed_mentions=null, message_reference=null) {
-        route = new Route('POST', `/channels/${channel_id}/messages`);
+        const route = new Route('POST', `/channels/${channel_id}/messages`);
 
-        payload = {};
+        let payload = {};
         if (content) payload['content'] = content;
         if (tts) payload['tts'] = true;
         if (embed) payload['embed'] = embed;
@@ -62,12 +62,12 @@ class Requester {
     }
 
     getUserInformation(user_id) {
-        route = new Route('GET', `/users/${user_id}`);
+        const route = new Route('GET', `/users/${user_id}`);
         return this.request(route);
     }
 
     getClientUser() {
-        route = new Route('GET', '/users/@me');
+        const route = new Route('GET', '/users/@me');
         return this.request(route);
     }
 
