@@ -16,7 +16,7 @@ class CommandContext extends Messageable {
         this.reference = message.reference;
     }
     invoke() {
-        if (this.author.bot) return;
+        // if (this.author.bot) return;
         this.bot.emit("command", [this]);
         try {
             this.command.exec(this, ...args);

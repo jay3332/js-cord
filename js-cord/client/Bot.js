@@ -43,7 +43,8 @@ class Bot extends Client {
         }
         this.listeners.set("message", message => {
             const context = parseContext(message, this);
-            if (isNaN(context)) return;
+            if (!context) return;
+            if (context.author.bot) return;
             context.invoke();
         });
         this.listeners.set("commandError", (ctx, error) => {

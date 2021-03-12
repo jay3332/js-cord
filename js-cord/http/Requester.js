@@ -21,17 +21,17 @@ class Requester {
             'Authorization': this.botToken ? `Bot ${this.token}` : this.token
         }
         if (!json) {
-            return http(route.url, {method: this.method, headers: headers}).then(response => {
+            http(route.url, {method: this.method, headers: headers}).then(response => {
                 response = response.json();
                 this.response = response;
                 return response;
-            }).then(resp => resp);
+            });
         } else {
-            return http(route.url, {method: this.method, headers: headers, body: JSON.stringify(json)}).then(response => {
+            http(route.url, {method: this.method, headers: headers, body: JSON.stringify(json)}).then(response => {
                 response = response.json();
                 this.response = response;
                 return response;
-            }).then(resp => resp);
+            });
         }
     }
 
