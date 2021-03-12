@@ -25,13 +25,13 @@ class Requester {
                 response = response.json();
                 this.response = response;
                 return response;
-            });
+            }).then(resp => resp);
         } else {
             return http(route.url, {method: this.method, headers: headers, body: JSON.stringify(json)}).then(response => {
                 response = response.json();
                 this.response = response;
                 return response;
-            });
+            }).then(resp => resp);
         }
     }
 
@@ -76,7 +76,7 @@ class Requester {
 
     openUserDM(user_id) {
         const route = new Route('POST', '/users/@me/channels');
-        return this.request(route, {"recipient_id": user_id}).then(resp => resp);
+        return this.request(route, {"recipient_id": user_id});
     } // you can't returtn in a one line => cus it auto returns for you ok
 
 }
