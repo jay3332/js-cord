@@ -23,14 +23,14 @@ class Requester {
         if (!json) {
             http(route.url, {method: this.method, headers: headers}).then(response => {
                 this.response = response
+                return response;
             });
         } else {
             http(route.url, {method: this.method, headers: headers, body: JSON.stringify(json)}).then(response => {
                 this.response = response
+                return response;
             });
         }
-        console.log(this.response);
-        return this.response;
     }
 
     putToken(token, bot=true) {
