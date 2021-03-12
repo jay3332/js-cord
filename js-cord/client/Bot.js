@@ -14,7 +14,7 @@ class Bot extends Client {
     constructor(obj) {
         super();
 
-        super.allEvents.push(
+        this.allEvents.push(
             "command",
             "commandError",
             "commandComplete"
@@ -41,7 +41,7 @@ class Bot extends Client {
                 this.prefix = this.prefix.map(p => p.toLowerCase());
             }
         }
-        super.listeners.set("message", message => {
+        this.listeners.set("message", message => {
             const context = parseContext(message, this);
             if (isNaN(context)) return;
             context.invoke();
