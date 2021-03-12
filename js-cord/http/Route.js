@@ -14,7 +14,7 @@ class Route {
         this.url = this.base + this.path;
     }
 
-    get base() {
+    static get base() {
         return "https://discord.com/api/v8";
     }
 };
