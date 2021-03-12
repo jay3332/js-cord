@@ -10,7 +10,6 @@ class Requester {
         this.token = null;
         this.botToken = true;
         this.userAgent = 'DiscordBot (js-cord 1.0)';
-        this.response = null;
     }
 
     request(route, json = null) {
@@ -20,15 +19,16 @@ class Requester {
             'X-Ratelimit-Precision': 'millisecond',
             'Authorization': this.botToken ? `Bot ${this.token}` : this.token
         }
-        let params = null;
-        params = (!json) ? {method: this.method, headers: headers} : 
+
+        const params = (!json) ? {method: this.method, headers: headers} : 
         {method: this.method, headers: headers, body: JSON.stringify(json)};
             
-        return http(route.url, params).then(response => {
+        let res = null;
+        http(route.url, params).then(response => {
             response = response.json();
-            this.response = response;
-            return response;
+            res = response;
         });
+        return res;
     }
 
     putToken(token, bot=true) {
