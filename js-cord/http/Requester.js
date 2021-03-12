@@ -22,7 +22,7 @@ class Requester {
 
         const params = (!json) ? {method: this.method, headers: headers} : 
         {method: this.method, headers: headers, body: JSON.stringify(json)};
-            
+        
         return http(route.url, params).then(res => res.json());
     }
 
