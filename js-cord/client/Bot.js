@@ -90,7 +90,7 @@ class Bot extends Client {
         if (settings.hasOwnProperty('checks')) checks = settings.checks;
         if (settings.hasOwnProperty('cooldown')) cooldown = settings.cooldown;
 
-        this.commands.push(Command(name, aliases, "", checks, cooldown, exec));
+        this.commands.push(new Command(name, aliases, "", checks, cooldown, exec));
     }
     getCommand(name) {
         if (this.commandsCaseInsensitive) name = name.toLowerCase();
