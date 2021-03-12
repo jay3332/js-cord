@@ -13,8 +13,10 @@ bot.command("thumbs", ctx => {
     const message = ctx.reply("Thumbs up or thumbs down?");
     try {
         const response = bot.waitFor("reactionAdd", (reaction, user) => {
-            return (["👍", "👎"].includes(reaction.emoji.toString()) && user==ctx.author)
-        }, { timeout: 60000 /* Time in milliseconds */ });
+            return (
+                ["👍", "👎"].includes(reaction.emoji.toString()) && 
+                user==ctx.author && reaction.message==message   
+        )}, { timeout: 60000 /* Time in milliseconds */ });
     } catch (error) {
         if (error instanceof discord.WaitForTimeoutError) {
             return ctx.send("You didn't respond >:(");

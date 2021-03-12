@@ -29,7 +29,7 @@ class Bot extends Client {
 
         if (["string", "function", "array"].includes(typeof obj)) {
             this.prefix = obj;
-        } else if (obj instanceof Object) {
+        } else if (typeof obj == "object") {
             if (obj.hasOwnProperty("prefix")) this.prefix = obj.prefix;
             if (obj.hasOwnProperty("prefixCaseInsensitive")) this.prefixCaseInsensitive = obj.prefixCaseInsensitive;
             if (obj.hasOwnProperty("commandsCaseInsensitive")) this.commandsCaseInsensitive = obj.commandsCaseInsensitive;

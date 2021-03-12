@@ -20,19 +20,15 @@ class Requester {
             'X-Ratelimit-Precision': 'millisecond',
             'Authorization': this.botToken ? `Bot ${this.token}` : this.token
         }
-        if (!json) {
-            http(route.url, {method: this.method, headers: headers}).then(response => {
-                response = response.json();
-                this.response = response;
-                return response;
-            });
-        } else {
-            http(route.url, {method: this.method, headers: headers, body: JSON.stringify(json)}).then(response => {
-                response = response.json();
-                this.response = response;
-                return response;
-            });
-        }
+        let params = null;
+        params = (!json) ? {method: this.method, headers: headers} : 
+        {method: this.method, headers: headers, body: JSON.stringify(json)};
+            
+        return http(route.url, params).then(response => {
+            response = response.json();
+            this.response = response;
+            return response;
+        });
     }
 
     putToken(token, bot=true) {
