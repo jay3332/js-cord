@@ -5,6 +5,7 @@ class ClientUser extends User {
         const data = client.http.getClientUser();
         console.log(data);
         super(client, data['id']);
+        this.mfa = data['mfa_enabled'];
         this.email = data['email'];
         this.verified = data['verified'];
         this.locale = data['locale'];

@@ -7,7 +7,6 @@
     "example": "examples"
   },
   "dependencies": {
-    "node-fetch": "^2.6.1",
     "sync-request": "^6.1.0"
   },
   "devDependencies": {},

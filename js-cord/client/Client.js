@@ -2,6 +2,7 @@ const https = require('https');
 const { ConnectionError, InvalidEventError } = require('../errors/DiscordEventError');
 const Requester = require('../http/Requester');
 const ClientUser = require("../structures/ClientUser");
+const Messageable = require("../structures/Messageable");
 const User = require("../structures/User");
 
 class Client {
@@ -12,6 +13,7 @@ class Client {
         this.isBotApplication = null;
         this.listeners = new Map();
         this.userCache = new Map();
+        this.channelCache = new Map();
         this.allEvents = [
             "ready",
             "reconnect",
@@ -58,17 +60,33 @@ class Client {
     getUser(userId) {
         userId = userId.toString();
         if (this.userCache.has(userId)) return this.userCache.get(userId);
-        let user = new User(userId);
+        let user = new User(this, userId);
         this.userCache.set(userId, user);
         return user;
     }
 
     fetchUser(userId) {
         userId = userId.toString();
-        let user = new User(userId);
+        let user = new User(this, userId);
         this.userCache.set(userId, user);
         return user;
     }
+
+    getChannel(channelId) {
+        channelId = channelId.toString();
+        if (this.channelCache.has(channelId)) return this.channelCache.get(channelId);
+        let channel = new Messageable(this, channelId);
+        this.channelCache.set(channelId, channel);
+        return channel;
+    }
+
+    fetchChannel(channelId) {
+        channelId = channelId.toString();
+        let channel = new Messageable(this, channelId);
+        this.channelCache.set(channelId, channel);
+        return channel;
+    } 
+
 
     login(token, bot = true) {
         if (this.loggedIn)
