@@ -127,8 +127,6 @@ class Client {
     }
 
     listen(event, fn) {
-        if (!this.allEvents.includes(event))
-            throw new InvalidEventError(`${event} is not a valid event.`);
         this.listeners.set(event, fn);
     }
 
