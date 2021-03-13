@@ -1,5 +1,4 @@
 const Route = require("../http/Route");
-const http = require("sync-request");
 const needle = require("needle");
 
 class Requester {
