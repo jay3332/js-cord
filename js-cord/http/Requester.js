@@ -23,7 +23,7 @@ class Requester {
         }
         if (body) body['Content-Type'] = contentType;
 
-        response = needle.request(method, route.url, (body || {}), {json: true, headers: headers}, (
+        const response = needle.request(method, route.url, (body || {}), {json: true, headers: headers}, (
             err, { statusCode, body }
         ) => {
             if (err) throw err;
