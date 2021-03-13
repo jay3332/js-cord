@@ -1,6 +1,6 @@
-const Messageable = require("../structures/Messageable");
+const Channel = require("../structures/Channel");
 
-class CommandContext extends Messageable {
+class CommandContext extends Channel {
     constructor(message, bot, prefix, command, args) {
         super(bot, message.channel.id);
         this.prefix = prefix;
