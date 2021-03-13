@@ -17,7 +17,7 @@ class Requester {
         const method = route.method;
         let headers = {
             'Content-Type': contentType,
-            'User-Agent': this.user_agent,
+            'User-Agent': this.userAgent,
             'X-Ratelimit-Precision': 'millisecond',
             'Authorization': this.botToken ? `Bot ${this.token}` : this.token
         }
