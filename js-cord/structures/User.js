@@ -1,5 +1,4 @@
 const {parseSnowflake, parseAssetSize} = require('../util/Util');
-const Channel = require('../structures/Channel');
 
 class User {
     constructor(client, user_id) {
@@ -55,6 +54,7 @@ class User {
     }
 
     openDM() {
+        const Channel = require('../structures/Channel');
         const channelData = this.client.http.openUserDM();
         this.dmChannel = new Channel(this.client, channelData['id'], this);
     }

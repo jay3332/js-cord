@@ -6,7 +6,7 @@
 const Embed = require("../structures/Embed");
 const Message = require("../structures/Message");
 const User = require("../structures/User");
-const Util = require("../u")
+const Util = require("../util/Util");
 
 class Channel {
     constructor(client, channel_id) {
@@ -29,6 +29,7 @@ class Channel {
         this.category = new Category(client, data['parent_id']);
         this.lastPinTimestamp = Date.parse(data['last_pin_timestamp']);
         this.mention = `<#${channel_id}>`;
+        this.createdAt = Util.parseSnowflake(channel_id);
     }
     
     send(content, options = {}) {
