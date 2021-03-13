@@ -11,7 +11,7 @@ class Route {
         this.base = "discord.com/api/v8";
         this.path = path;
         this.method = method;
-        this.url = this.base + this.path;
+        this.url = "https://" + this.base + this.path;
     }
 };
 
