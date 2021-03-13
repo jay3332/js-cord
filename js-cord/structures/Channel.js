@@ -6,6 +6,7 @@
 const Embed = require("../structures/Embed");
 const Message = require("../structures/Message");
 const User = require("../structures/User");
+const Guild = require("../structures/Guild");
 const Util = require("../util/Util");
 
 class Channel {
