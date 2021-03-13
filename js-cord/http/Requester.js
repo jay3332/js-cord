@@ -13,7 +13,7 @@ class Requester {
         this.userAgent = 'DiscordBot (js-cord 1.0)';
     }
 
-    request(route, body=null, contentType="application/json") {
+    request(route, requestBody=null, contentType="application/json") {
         let method = route.method.toLowerCase();
         let headers = {
             'Content-Type': contentType,
@@ -21,9 +21,9 @@ class Requester {
             'X-Ratelimit-Precision': 'millisecond',
             'Authorization': this.botToken ? `Bot ${this.token}` : this.token
         }
-        if (body) body['Content-Type'] = contentType;
+        if (requestBody) requestBody['Content-Type'] = contentType;
 
-        const response = needle.request(method, route.url, (body || {}), {json: true, headers: headers}, (
+        const response = needle.request(method, route.url, (reqeuestBody || {}), {json: true, headers: headers}, (
             err, { statusCode, body }
         ) => {
             if (err) throw err;
