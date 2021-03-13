@@ -48,7 +48,7 @@ class Channel {
             }  
         }
 
-        const response = this.client.http.sendMessage(this.channel_id, content.toString(), embed);
+        const response = this.client.http.sendMessage(this.id, content.toString(), embed);
         console.log(response);
         return response;
     }
