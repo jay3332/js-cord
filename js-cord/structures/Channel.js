@@ -20,14 +20,14 @@ class Channel {
         this.name = data['name'];
         this.topic = data['topic'];
         this.nsfw = data['nsfw'];
-        if (!!data['message_id']) this.lastMessage = new Message(client, channel_id, data['message_id']);
+        // if (!!data['message_id']) this.lastMessage = new Message(client, channel_id, data['message_id']);
         this.bitrate = data['bitrate'];
         this.maxUsers = data['user_limit'];
         this.slowmode = data['rate_limit_per_user'];
         this.users = data['recipients'];
         this.iconHash = data['icon']; // wait a channel has an icon?
         this.owner = new User(client, data['owner_id']);
-        this.category = new Category(client, data['parent_id']);
+        // this.category = new Category(client, data['parent_id']);
         this.lastPinTimestamp = Date.parse(data['last_pin_timestamp']);
         this.mention = `<#${channel_id}>`;
         this.createdAt = Util.parseSnowflake(channel_id);
