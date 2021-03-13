@@ -27,8 +27,11 @@ class Message {
         "call", "groupChannelNameEdit", "groupChannelIconEdit",
         "pinned", "memberJoin", "boost", "boostLevel1", "boostLevel2", "boostLevel3",
         "channelFollowed", "discoveryDisqualified", "discoveryRequalified", "reply",
-        "slashCommand"][data['type']]
+        "slashCommand"][data['type']];
     }
+    static fromData(client, data) {
+        return Message(client, data['channel_id'], data['id']);
+    } 
 }
 
 module.exports = Message;

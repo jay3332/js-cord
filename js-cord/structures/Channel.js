@@ -11,7 +11,6 @@ const Util = require("../util/Util");
 
 class Channel {
     constructor(client, channel_id) {
-        console.log(channel_id);
         this.client = client;
         this.id = channel_id;
         const data = client.http.getChannel(channel_id);
@@ -49,8 +48,7 @@ class Channel {
         }
 
         const response = this.client.http.sendMessage(this.id, content.toString(), embed);
-        console.log(response);
-        return response;
+        return Message.fromData(this.client, response);
     }
 }
 

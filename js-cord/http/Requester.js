@@ -1,6 +1,6 @@
 const Route = require("../http/Route");
 const http = require("sync-request");
-const https = require("https");
+const needle = require("needle");
 
 class Requester {
     /**
@@ -14,7 +14,7 @@ class Requester {
     }
 
     request(route, body=null, contentType="application/json") {
-        const method = route.method;
+        let method = route.method.toLowerCase();
         let headers = {
             'Content-Type': contentType,
             'User-Agent': this.userAgent,
@@ -22,9 +22,19 @@ class Requester {
             'Authorization': this.botToken ? `Bot ${this.token}` : this.token
         }
         if (body) body['Content-Type'] = contentType;
-        const params = (!body) ? {headers: headers} : {headers: headers, body: JSON.stringify(body)};
-        return JSON.parse(http(method, route.url, params).getBody('utf8'));
-        /*const params = body 
+
+        response = needle.request(method, route.url, (body || {}), {json:true, headers: headers}, params, (
+            err, { statusCode, body }
+        ) => {
+            if (err) throw err;
+            if (statusCode === 200)
+                return body;
+        });
+        return response;
+
+        // return JSON.parse(http(method, route.url, params).getBody('utf8'));
+        
+        /* const params = body 
             ? {headers, body: JSON.stringify(body)}
             : {headers};
 
