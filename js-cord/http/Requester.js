@@ -27,9 +27,9 @@ class Requester {
             err, { statusCode, body }
         ) => {
             if (err) throw err;
-            if (statusCode === 200)
-                return body;
+            else return body;
         });
+        console.log(response);
         return response;
 
         // return JSON.parse(http(method, route.url, params).getBody('utf8'));
