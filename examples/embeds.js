@@ -26,5 +26,5 @@ bot.command("embed", (ctx, title, description, footer) => {
 bot.login("token"); 
 /**
  * Your token is found on the Bot tab of your bot's application page.
- * https://discord.com/applications
+ * https://discord.com/developers/applications
 */
