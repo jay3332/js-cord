@@ -94,6 +94,12 @@ bot.login("token");
  * https://discord.com/applications
 */
 ```
+## Slash Commands
+I personally dislike slash commands due to their harsh limitations and lack of customization. I've decided to add support for them however, to guarantee complete coverage of Discord's API.
+#### Here's an example of a slash command:
+```js
+// currently, we haven't decided this yet
+```
 ## Ending it off
 Currently, we don't have a support server - consider reading our [docs](https://google.com/) for reference.
 
