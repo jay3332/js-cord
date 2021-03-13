@@ -11,6 +11,7 @@ const Util = require("../util/Util");
 
 class Channel {
     constructor(client, channel_id) {
+        console.log(channel_id);
         this.client = client;
         this.id = channel_id;
         const data = client.http.getChannel(channel_id);
