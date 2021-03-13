@@ -52,7 +52,7 @@ class Requester {
         return this.request(new Route('POST', '/auth/logout'));
     }
 
-    sendMessage(destination_id, content=null, embed=null, tts=false, nonce=null, allowed_mentions=null, message_reference=null) {
+    sendMessage(destination_id, content="", embed=null, tts=false, nonce=null, allowed_mentions=null, message_reference=null) {
         const route = new Route('POST', `/channels/${destination_id}/messages`);
 
         let payload = {};

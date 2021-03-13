@@ -20,7 +20,7 @@ class Channel {
         this.name = data['name'];
         this.topic = data['topic'];
         this.nsfw = data['nsfw'];
-        this.lastMessage = new Message(client, channel_id, data['message_id']);
+        if (!!data['message_id']]) this.lastMessage = new Message(client, channel_id, data['message_id']);
         this.bitrate = data['bitrate'];
         this.maxUsers = data['user_limit'];
         this.slowmode = data['rate_limit_per_user'];
@@ -47,7 +47,7 @@ class Channel {
             }  
         }
 
-        const response = this.client.http.sendMessage(this.channel_id, content, embed);
+        const response = this.client.http.sendMessage(this.channel_id, content.toString(), embed);
         console.log(response);
         return response;
     }
