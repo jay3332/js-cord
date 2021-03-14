@@ -5,7 +5,7 @@ class User {
         this.dmChannel = null;
         this.client = client;
         this.input_id = user_id;
-        const data = (!data) ? client.http.getUserInformation(user_id): data;
+        data = (!data) ? client.http.getUserInformation(user_id): data;
         this.parseData(data);
     }
     parseData(data) {

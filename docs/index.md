@@ -90,8 +90,9 @@ A lot more examples can be found **[here](https://github.com/jay3332/js-cord/tre
 Represents a client connection to Discord. If your application requires the use of commands, consider using [`Bot`](/#Bot), which extends this class.
 #### Constructor parameters
 [`Object`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) `options` (optional) - The options for the client connection:
->>> [`AllowedMentions`](/#AllowedMentions) `allowedMentions` (optional) - Sets the allowed mentions for the client. Defaults to [`AllowedMentions.default()`](/#AllowedMentions.default) 
->>> [`Intents`](/#Intents) `intents` (optional) - The intents that you want for the connection. Defaults to [`Intents.default()`](/#Intents.default)
+`allowedMentions` ([`AllowedMentions`](/#AllowedMentions), optional) - Sets the allowed mentions for the client. Defaults to [`AllowedMentions.default()`](/#AllowedMentions.default) 
+
+`intents` ([`Intents`](/#Intents), optional) - The intents that you want for the connection. Defaults to [`Intents.default()`](/#Intents.default)
 #### Properties
 #### Methods
 ###### `listen(event, exec)`

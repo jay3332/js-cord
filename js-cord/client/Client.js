@@ -7,7 +7,6 @@ const User = require("../structures/User");
 const Guild = require("../structures/Guild");
 class Client {
     constructor() {
-        this.http = new Requester();
         this.token = null;
         this.loggedIn = false;
         this.isBotApplication = null;
@@ -18,6 +17,7 @@ class Client {
         this.allEvents = [
             "ready",
             "reconnect",
+            "resumed",
             "message",
             "messageDelete",
             "messageEdit",
@@ -56,6 +56,8 @@ class Client {
         ];
 
         this.user = null;
+        this.ws = null;
+        this.http = new Requester(this);
     }
 
     getUser(userId) {
@@ -113,8 +115,9 @@ class Client {
         this.loggedIn = true;
         this.isBotApplication = token.startsWith("mfa") ? false : bot;
         this.http.putToken(token, bot);
-        this.user = new ClientUser(this);
-        this.emit("ready", []);
+        this.http.establishGateway();
+        //this.user = new ClientUser(this);
+        //this.emit("ready", []);
     }
 
     logout() {
@@ -130,7 +133,7 @@ class Client {
         this.listeners.set(event, fn);
     }
 
-    emit(event, parameters) {
+    emit(event, parameters=[]) {
         if (this.listeners.has(event)) {
             try {
                 this.listeners.get(event)(...parameters);

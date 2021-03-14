@@ -1,12 +1,15 @@
 const Route = require("../http/Route");
 const needle = require("needle");
+const zlib = require("zlib.js");
+const handleEvent = require("../http/EventHandler")
 
 class Requester {
     /**
      * Main class that sends requests to the Discord API.
      */
 
-    constructor(shard=false) {
+    constructor(client) {
+        this.client =  client;
         this.token = null;
         this.botToken = true;
         this.userAgent = 'DiscordBot (js-cord 1.0)';
@@ -54,7 +57,30 @@ class Requester {
         route = new Route('GET', '/gateway/bot');
         const response = this.request(route);
         const url = response['url'] + "?v=8&encoding=json";
-        
+        this.client.ws = new WebSocket(url);
+        this.setupWebsocket();
+    }
+
+    setupWebsocket () {
+        this.client.ws.onmessage = event => {
+            let data = null;
+            try {
+                data = JSON.parse(event.data);
+            } catch (e) {
+                data = JSON.parse(new zlib.RawInflate(data).decompress());
+            }
+            this.parseWebsocketData(data);
+        };
+    }
+
+    parseWebsocketData(data) {
+        const payloadData = data['d'];
+        const op = parseInt(data['op']);
+        if (!data) return;
+        if (op === 0) {
+            // it's an event
+            handleEvent(this.client, data['t'], payloadData);
+        }
     }
 
     login(token, bot=true) {
