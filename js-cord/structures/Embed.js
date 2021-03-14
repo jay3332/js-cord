@@ -65,7 +65,7 @@ class Embed {
 	}
     setColor(color) {
         // alias of setColour
-        this.setColor(color);
+        this.setColour(color);
     }
 	setTimestamp(timestamp) {
 		try {
