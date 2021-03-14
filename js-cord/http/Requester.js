@@ -54,7 +54,7 @@ class Requester {
     }
 
     establishGateway() {
-        route = new Route('GET', '/gateway/bot');
+        let route = new Route('GET', '/gateway/bot');
         const response = this.request(route);
         const url = response['url'] + "?v=8&encoding=json";
         this.client.ws = new WebSocket(url);
