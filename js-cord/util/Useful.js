@@ -32,21 +32,21 @@ let Colors = {
 }
 
 function parseHex(hex) {
-	if (typeof color === 'string') {
-		if (color.toUpperCase() === 'RANDOM')
+	if (typeof hex === 'string') {
+		if (hex.toUpperCase() === 'RANDOM')
 			return Math.floor(Math.random() * (0xffffff + 1));
-		else if (color.toUpperCase() === 'DEFAULT')
+		else if (hex.toUpperCase() === 'DEFAULT')
 			return 0;
-		else if (Object.keys(Colors).includes(color.toUpperCase()))
-			return Colors[color.toUpperCase()];
+		else if (Object.keys(Colors).includes(hex.toUpperCase()))
+			return Colors[hex.toUpperCase()];
 		else {
-			temp = parseInt(color.replace(/[\W_]/g, ''), 16);
+			temp = parseInt(hex.replace(/[\W_]/g, ''), 16);
 			return (temp > 0xffffff || isNaN(temp))
 				? 0 : temp;
 		}
-	} else if (typeof color === 'number')
-		return (color > 0xffffff || isNaN(temp))
-			? 0 : color;
+	} else if (typeof hex === 'number')
+		return (hex > 0xffffff || isNaN(temp))
+			? 0 : hex;
 	else return 0;
 }
 

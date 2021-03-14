@@ -6,14 +6,19 @@ const Guild = require("../structures/Guild");
 
 class Message {
     // /channels/{channel.id}/messages/{message.id}
-    constructor(client, channel_id, message_id) {
+    constructor(client, channel_id, message_id, data=null) {
         this.client = client;
         this.id = message_id;
-        const data = client.http.getMessage(channel_id, message_id);
+        const data = (!data) ? client.http.getMessage(channel_id, message_id) : data;
+        this.parseData(data);
+    }
+    parseData(data) {
+        const client = this.client;
+        const message_id = this.id;
         this.channel = Channel(client, data['channel_id']);
         if (!!data['guild_id']) this.guild = Guild(client, data['guild_id']);
-        if (!data['member']) this.author = User(client, data['author']['id']);
-        else this.author = Member(client, data['member']['id'], data['guild_id']);
+        if (!data['member']) this.author = User.fromData(client, data['author']);
+        else this.author = Member.fromData(client, data['member']);
         this.content = data['content'];
         this.createdAt = Date.parse(data['timestamp']);
         this.editedAt = Date.parse(data['edited_timestamp']);
@@ -30,7 +35,7 @@ class Message {
         "slashCommand"][data['type']];
     }
     static fromData(client, data) {
-        return Message(client, data['channel_id'], data['id']);
+        return Message(client, data['channel_id'], data['id'], data);
     } 
 }
 

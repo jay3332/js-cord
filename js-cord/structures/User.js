@@ -1,12 +1,16 @@
 const {parseSnowflake, parseAssetSize} = require('../util/Util');
 
 class User {
-    constructor(client, user_id) {
+    constructor(client, user_id, data=null) {
         this.dmChannel = null;
         this.client = client;
         this.input_id = user_id;
-        const data = client.http.getUserInformation(user_id);
-
+        const data = (!data) ? client.http.getUserInformation(user_id): data;
+        this.parseData(data);
+    }
+    parseData(data) {
+        const client = this.client;
+        const user_id = this.input_id;
         this.id = data['id'];
         this.name = data['username'];
         this.mention = `<@!${user_id}>`;
@@ -21,7 +25,10 @@ class User {
         this.createdAt = parseSnowflake(this.id);
         this.flagValue = data['flags'];
         this.premiumType = data['premium_type'];
-        this.publicFlagValue = data['public_flags'];
+        this.publicFlagValue = data['public_flags'];        
+    } 
+    static fromData(client, data) {
+        return new User(client, data['id'], data);
     }
     toString() {
         return this.tag;

@@ -6,13 +6,13 @@ class Requester {
      * Main class that sends requests to the Discord API.
      */
 
-    constructor() {
+    constructor(shard=false) {
         this.token = null;
         this.botToken = true;
         this.userAgent = 'DiscordBot (js-cord 1.0)';
     }
 
-    request(route, reqbody=null, contentType="application/json") {
+    request(route, reqbody = null, contentType="application/json") {
         let method = route.method.toLowerCase();
         let headers = {
             'Content-Type': contentType,
@@ -23,7 +23,7 @@ class Requester {
         if (reqbody) reqbody['Content-Type'] = contentType;
 
         const response = needle.request(method, route.url, (reqbody || {}), {json: true, headers: headers}, (
-            err, { statusCode, body }
+            err, { body }
         ) => {
             if (err) throw err;
             else return body;
@@ -48,6 +48,13 @@ class Requester {
     putToken(token, bot=true) {
         this.token = token;
         this.botToken = bot;
+    }
+
+    establishGateway() {
+        route = new Route('GET', '/gateway/bot');
+        const response = this.request(route);
+        const url = response['url'] + "?v=8&encoding=json";
+        
     }
 
     login(token, bot=true) {
@@ -76,6 +83,16 @@ class Requester {
 
     getMessage(channel_id, message_id) {
         const route = new Route('GET', `/channels/${channel_id}/messages/${message_id}`);
+        return this.request(route);
+    }
+
+    getHistory(channel_id) {
+        const route = new Route('GET', `/channels/${channel_id}/messages`);
+        return this.request(route);
+    }
+
+    triggerTyping(channel_id) {
+        const route = new Route('POST', `/channels/${channel_id}/typing`);
         return this.request(route);
     }
 
