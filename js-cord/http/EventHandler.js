@@ -1,4 +1,4 @@
-const ClientUser = require("../strucutres/ClientUser");
+const ClientUser = require("../structures/ClientUser");
 const Message = require("../structures/Message");
 
 module.exports = function handleEvent(client, event, data) {
