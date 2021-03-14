@@ -14,12 +14,17 @@ module.exports = {
     ClientUser: require("./structures/ClientUser"),
     Embed: require("./structures/Embed"),
     Guild: require("./structures/Guild"),
+    Intents: require("./structures/Intents"),
     Member: require("./structures/Member"),
     Message: require("./structures/Message"),
+    Messageable: require("./structures/Messageable"),
     Permissions: require("./structures/Permissions"),
     Reaction: require("./structures/Reaction"),
     Role: require("./structures/Role"),
     User: require("./structures/User"),
+
+    BaseConverter: require("./converters/BaseConverter"),
+    UserConverter: require("./converters/User"),
 
     errors: {
         ConnectionError: ConnectionError,

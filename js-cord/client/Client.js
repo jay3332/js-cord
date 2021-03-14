@@ -55,8 +55,6 @@ class Client {
             "slashCommandUsed"
         ];
 
-        this.user = null;
-        this.ws = null;
         this.http = new Requester(this);
     }
 

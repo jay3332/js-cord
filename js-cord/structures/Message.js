@@ -4,7 +4,7 @@ const Member = require("../structures/Member");
 const User = require("../structures/User");
 const Guild = require("../structures/Guild");
 
-class Message {
+module.exports = class Message {
     // /channels/{channel.id}/messages/{message.id}
     constructor(client, channel_id, message_id, data=null) {
         this.client = client;
@@ -38,5 +38,3 @@ class Message {
         "slashCommand"][data['type']];
     }
 }
-
-module.exports = Message;
