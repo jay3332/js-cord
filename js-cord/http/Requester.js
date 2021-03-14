@@ -83,6 +83,19 @@ class Requester {
         if (op === 0) {
             // it's an event
             handleEvent(this.client, data['t'], payloadData);
+        } else if (op == 10) {
+            this.client.ws.send(JSON.stringify({
+                op: 2,
+                d: {
+                    token: this.token,
+                    intents: 513,
+                    properties: {
+                        os: "linux",
+                        '$brower': "js-cord",
+                        '$device': "js-cord"
+                    }
+                }
+            }));
         }
     }
 
