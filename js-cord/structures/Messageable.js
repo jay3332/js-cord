@@ -1,11 +1,11 @@
 const Embed = require("../structures/Embed");
-const Message = require("../structures/Message");
 
 module.exports = class Messageable {
     constructor(client, id) {
         this.id = id;
         this.client = client;
         this.http = client.http;
+        this.cls = null;
     }
     send(content, options={}) {
         if (typeof content == "object") {
@@ -30,12 +30,13 @@ module.exports = class Messageable {
             allOptions.push("tts");
         }
 
+        if (!this.cls) { this.cls = require("../structures/Message"); }
         const response = this.http.sendMessage(this.id, content.toString(), embed, tts);
-        console.log(Message);
-        return Message.fromData(this.client, response);
+        return this.cls.fromData(this.client, response);
     }
     fetchMessage(id) {
-        return Message.fromData(this.client, this.http.getMessage(this.id, id));
+        if (!this.cls) { this.cls = require("../structures/Message"); }
+        return this.cls.fromData(this.client, this.http.getMessage(this.id, id));
     }
     history(limit=100, options={}) {
         if (typeof limit === "object") {
@@ -45,6 +46,7 @@ module.exports = class Messageable {
         // if (options.hasOwnProperty("around")) {
          
         // }
+        if (!this.cls) { this.cls = require("../structures/Message"); }
         const response = this.http.getHistory(this.id);
     }
     triggerTyping() {
