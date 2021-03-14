@@ -31,6 +31,7 @@ module.exports = class Messageable {
         }
 
         const response = this.http.sendMessage(this.id, content.toString(), embed, tts);
+        console.log(Message);
         return Message.fromData(this.client, response);
     }
     fetchMessage(id) {

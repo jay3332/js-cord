@@ -12,6 +12,9 @@ class Message {
         const payloadData = (!data) ? client.http.getMessage(channel_id, message_id) : data;
         this.parseData(payloadData);
     }
+    static fromData(client, data) {
+        return new Message(client, data['channel_id'], data['id'], data);
+    } 
     parseData(data) {
         const client = this.client;
         const message_id = this.id;
@@ -34,9 +37,6 @@ class Message {
         "channelFollowed", "discoveryDisqualified", "discoveryRequalified", "reply",
         "slashCommand"][data['type']];
     }
-    static fromData(client, data) {
-        return new Message(client, data['channel_id'], data['id'], data);
-    } 
 }
 
 module.exports = Message;
