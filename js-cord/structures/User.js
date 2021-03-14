@@ -26,7 +26,8 @@ class User {
 
         this.bot = data['bot'];
         this.tag = `${this.name}#${this.discriminator}`;
-        this.createdAt = parseSnowflake(this.id);
+        try { this.createdAt = parseSnowflake(this.id); } 
+        catch (err) this.createdAt = null;
         this.flagValue = data['flags'];
         this.premiumType = data['premium_type'];
         this.publicFlagValue = data['public_flags'];        
