@@ -14,6 +14,7 @@ class Util {
     static parseSnowflake(snowflake) {
         const epoch = 1420070400000;
         let binary = '';
+        snowflake = snowflake.toString()
         let high = parseInt(snowflake.slice(0, -10));
         let low = parseInt(snowflake.slice(-10));
         while (high > 0 || low > 0) {
