@@ -5,7 +5,7 @@ module.exports = function handleEvent(client, event, data) {
     event = event.toUpperCase().replace(" ", "_");
     if (event === "READY") {
         client.emit("ready");
-        client.user = new ClientUser(client, data['user']);
+        client.user = new ClientUser(client);
     } else if (event === "RESUMED") {
         client.emit("resumed");
     } else if (event === "RECONNECT") {
