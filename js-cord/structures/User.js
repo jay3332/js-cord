@@ -16,7 +16,11 @@ class User {
         this.mention = `<@!${user_id}>`;
         this.discriminator = data['discriminator'];
         this.avatarHash = data['avatar'];
-        this.avatarAnimated = this.avatarHash.startsWith("a_");
+        try { 
+            this.avatarAnimated = this.avatarHash.startsWith("a_");
+        } catch(err) {
+            this.avatarAnimated = false;
+        }
         const defaultFormat = this.avatarAnimated ? "gif" : "png";
         this.avatarUrl = `https://cdn.discordapp.com/avatars/${this.id}/${this.avatarHash}.${defaultFormat}`;
 
