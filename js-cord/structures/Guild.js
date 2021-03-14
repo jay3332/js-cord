@@ -8,7 +8,9 @@ module.exports = class Guild {
         const data = client.http.getGuild(guild_id);
         this.name = data['name'];
         this.iconHash = data['icon'];
-        this.iconAnimated = this.iconHash.startsWith("a_");
+        try { this.iconAnimated = this.iconHash.startsWith("a_") } catch (e) {
+            this.iconAnimated = false;
+        };
         const defaultFormat = this.iconAnimated ? "gif" : "png";
         this.iconUrl = `https://cdn.discordapp.com/avatars/${this.id}/${this.iconHash}.${defaultFormat}`;
         this.isOwner = data['owner'];
