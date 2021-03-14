@@ -41,15 +41,15 @@ class Bot extends Client {
                 this.prefix = this.prefix.map(p => p.toLowerCase());
             }
         }
-        this.listeners.set("message", message => {
+        this.listeners["message"] = message => {
             const context = parseContext(message, this);
             if (!context) return;
             if (context.author.bot) return;
             context.invoke();
-        });
-        this.listeners.set("commandError", (ctx, error) => {
+        };
+        this.listeners["commandError"] = (ctx, error) => {
             throw error;
-        });
+        }
     }
     command(settings, exec) {
         const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
