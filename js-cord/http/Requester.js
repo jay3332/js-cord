@@ -65,11 +65,13 @@ class Requester {
 
     setupWebsocket () {
         this.client.ws.on('message', data => {
+            console.log(data);
+            if (typeof data !== "object") {
             try {
                 data = JSON.parse(data);
             } catch (e) {
                 data = JSON.parse(new zlib.RawInflate(data).decompress());
-            }
+            }}
             this.parseWebsocketData(data);
         });
     }
