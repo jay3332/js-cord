@@ -1,9 +1,20 @@
 const ClientUser = require("../structures/ClientUser");
 const Message = require("../structures/Message");
 
+const whitelist = [
+    "READY", "RESUMED", 
+    "GUILD_CREATE", "GUILD_DELETE",
+    "GUILD_MEMBER_ADD", "GUILD_MEMBER_REMOVE",
+    "GUILD_MEMBERS_CHUNK"
+];
+
 module.exports = function handleEvent(client, event, data) {
     event = event.toUpperCase().replace(" ", "_");
+    if (!client.loggedIn && !whitelist.includes(event))
+        // we don't wanna start emitting events with no data
+        return;
     if (event === "READY") {
+        client.loggedIn = true;
         client.user = new ClientUser(client, data['user']);
         client.emit("ready");
     } else if (event === "RESUMED") {
@@ -11,17 +22,6 @@ module.exports = function handleEvent(client, event, data) {
     } else if (event === "RECONNECT") {
         client.emit("reconnect") 
     } 
-
-    // implement on_ready_whitelist
-    /**
-     *   WSEvents.READY,
-  WSEvents.RESUMED,
-  WSEvents.GUILD_CREATE,
-  WSEvents.GUILD_DELETE,
-  WSEvents.GUILD_MEMBERS_CHUNK,
-  WSEvents.GUILD_MEMBER_ADD,
-  WSEvents.GUILD_MEMBER_REMOVE,
-     */
 
     // channels
     else if (event === "CHANNEL_CREATE") {
