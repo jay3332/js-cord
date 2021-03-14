@@ -32,7 +32,7 @@ class Requester {
             if (err) throw err;
             else return body;
         });
-        console.log(response);
+        //console.log(response);
         return response;
 
         // return JSON.parse(http(method, route.url, params).getBody('utf8'));
@@ -65,7 +65,7 @@ class Requester {
 
     setupWebsocket () {
         this.client.ws.on('message', data => {
-            console.log(data);
+            //console.log(data);
             if (typeof data !== "object") {
             try {
                 data = JSON.parse(data);
