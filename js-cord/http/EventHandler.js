@@ -30,16 +30,16 @@ module.exports = function handleEvent(client, event, data) {
 
     // messages
     else if (event === "MESSAGE_CREATE") {
-        client.emit("message", Message.fromData(client, data));
+        client.emit("message", [Message.fromData(client, data)]);
         // somehow, we add this message to the cache
     } // we need to make a message cache, or else 
     // MESSAGE_EDIT/MESSAGE_DELETE won't be able to take payloads
     else if (event === "MESSAGE_UPDATE") {
-        client.emit("messageEdit", null /*some way to get the old message*/, Message.fromData(client, data));
+        client.emit("messageEdit", [null /*some way to get the old message*/, Message.fromData(client, data)]);
     } else if (event === "MESSAGE_DELETE") {
-        client.emit("messageDelete", null /*again, some way to get the old message*/)
+        client.emit("messageDelete", [null] /*again, some way to get the old message*/)
     } else if (event === "MESSAGE_DELETE_BULK") {
-        client.emit("messageBulkDelete", null /*what i said above, but iterate through id's*/)
+        client.emit("messageBulkDelete", [null] /*what i said above, but iterate through id's*/)
     }
 
     // debugging, comment out rather than delete
