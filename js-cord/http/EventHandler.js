@@ -4,8 +4,8 @@ const Message = require("../structures/Message");
 module.exports = function handleEvent(client, event, data) {
     event = event.toUpperCase().replace(" ", "_");
     if (event === "READY") {
-        client.emit("ready");
         client.user = new ClientUser(client, data['user']);
+        client.emit("ready");
     } else if (event === "RESUMED") {
         client.emit("resumed");
     } else if (event === "RECONNECT") {
@@ -41,4 +41,7 @@ module.exports = function handleEvent(client, event, data) {
     } else if (event === "MESSAGE_DELETE_BULK") {
         client.emit("messageBulkDelete", null /*what i said above, but iterate through id's*/)
     }
+
+    // debugging, comment out rather than delete
+    console.log(event);
 }
