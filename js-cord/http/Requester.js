@@ -57,7 +57,8 @@ class Requester {
     establishGateway() {
         let route = new Route('GET', '/gateway/bot');
         const response = this.request(route);
-        const url = response['url'] + "?v=8&encoding=json";
+        const extension = "?v=8&encoding=json";
+        const url = (!!response['url']) ? (response['url'] + extensions) : "wss://gateway.discord.gg/?"+extension;
         this.client.ws = new ws(url);
         this.setupWebsocket();
     }
