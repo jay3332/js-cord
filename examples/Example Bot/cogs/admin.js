@@ -1,6 +1,6 @@
 const discord = require("js-cord");
 
-class Admin {
+class Admin extends discord.Cog {
     constructor(bot) {
         super(bot);
         this.bot = bot;

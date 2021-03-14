@@ -10,7 +10,7 @@ class Client {
         this.token = null;
         this.loggedIn = false;
         this.isBotApplication = null;
-        this.listeners = new Map();
+        this.listeners = {};
         this.userCache = new Map();
         this.channelCache = new Map();
         this.guildCache = new Map();
@@ -127,13 +127,17 @@ class Client {
     }
 
     listen(event, fn) {
-        this.listeners.set(event, fn);
+        this.listeners[event] = fn;
     }
 
-    emit(event, parameters=[]) {
-        if (this.listeners.has(event)) {
+    emit(event, parameters=null) {
+        if (this.listeners.hasOwnProperty(event)) {
             try {
-                this.listeners.get(event)(...parameters);
+                if (!parameters) {
+                    this.listeners[event]();
+                } else { 
+                    this.listeners[event](...parameters);
+                }
                 return true;
             } catch (e) {
                 console.error(e);
