@@ -16,7 +16,7 @@ class Message {
         const client = this.client;
         const message_id = this.id;
         this.channel = new Channel(client, data['channel_id']);
-        if (!!data['guild_id']) this.guild = Guild(client, data['guild_id']);
+        if (!!data['guild_id']) this.guild = new Guild(client, data['guild_id']);
         if (!data['member']) this.author = User.fromData(client, data['author']);
         else this.author = Member.fromData(client, data['member']);
         this.content = data['content'];
