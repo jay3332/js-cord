@@ -9,8 +9,8 @@ class Message {
     constructor(client, channel_id, message_id, data=null) {
         this.client = client;
         this.id = message_id;
-        const data = (!data) ? client.http.getMessage(channel_id, message_id) : data;
-        this.parseData(data);
+        const payloadData = (!data) ? client.http.getMessage(channel_id, message_id) : data;
+        this.parseData(payloadData);
     }
     parseData(data) {
         const client = this.client;

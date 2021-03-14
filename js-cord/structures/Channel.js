@@ -11,11 +11,11 @@ const Guild = require("../structures/Guild");
 const Util = require("../util/Util");
 
 class Channel extends Messageable {
-    constructor(client, channel_id, data=null) {
+    constructor(client, channel_id, maybeData=null) {
         super(cilent, channel_id);
         this.client = client;
         this.id = channel_id;
-        const data = (!data) ? client.http.getChannel(channel_id) : data;
+        const data = (!maybeData) ? client.http.getChannel(channel_id) : maybeData;
         this.parseData(data);
     }
     parseData(data) {
