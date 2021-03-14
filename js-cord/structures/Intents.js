@@ -3,7 +3,7 @@ const Constants = require("../util/Constants");
 
 const bitLengthOf = n => n.toString(2).match(/1/g).length;
 
-module.exports = class Intents {
+module.exports = class Intents extends Flags {
     constructor(options) {
         super(constants.INTENT_FLAG_VALUES);
         for (option of Object.keys(constants.INTENT_FLAG_VALUES)) {
