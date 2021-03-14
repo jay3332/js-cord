@@ -2,6 +2,7 @@ const Route = require("../http/Route");
 const needle = require("needle");
 const zlib = require("zlibjs");
 const handleEvent = require("../http/EventHandler")
+const ws = require("ws");
 
 class Requester {
     /**
@@ -57,20 +58,19 @@ class Requester {
         let route = new Route('GET', '/gateway/bot');
         const response = this.request(route);
         const url = response['url'] + "?v=8&encoding=json";
-        this.client.ws = new WebSocket(url);
+        this.client.ws = new ws(url);
         this.setupWebsocket();
     }
 
     setupWebsocket () {
-        this.client.ws.onmessage = event => {
-            let data = null;
+        this.client.ws.on('message', data => {
             try {
-                data = JSON.parse(event.data);
+                data = JSON.parse(data);
             } catch (e) {
                 data = JSON.parse(new zlib.RawInflate(data).decompress());
             }
             this.parseWebsocketData(data);
-        };
+        });
     }
 
     parseWebsocketData(data) {
