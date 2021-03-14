@@ -1,6 +1,6 @@
 const Route = require("../http/Route");
 const needle = require("needle");
-const zlib = require("zlib.js");
+const zlib = require("zlibjs");
 const handleEvent = require("../http/EventHandler")
 
 class Requester {
