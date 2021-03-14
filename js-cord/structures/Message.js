@@ -35,7 +35,7 @@ class Message {
         "slashCommand"][data['type']];
     }
     static fromData(client, data) {
-        return Message(client, data['channel_id'], data['id'], data);
+        return new Message(client, data['channel_id'], data['id'], data);
     } 
 }
 
