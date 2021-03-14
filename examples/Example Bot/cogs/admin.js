@@ -35,7 +35,7 @@ class Admin extends discord.Cog {
                     && (reaction.message == message);
                 }, { timeout: 60000 })
             } catch (err) {
-                if (err instanceof discord.WaitForTimeoutError) {
+                if (err instanceof discord.errors.WaitForTimeoutError) {
                     original.edit("Cancelled.");
                     return;
                 }

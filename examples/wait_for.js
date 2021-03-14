@@ -18,7 +18,7 @@ bot.command("thumbs", ctx => {
                 user==ctx.author && reaction.message==message   
         )}, { timeout: 60000 /* Time in milliseconds */ });
     } catch (error) {
-        if (error instanceof discord.WaitForTimeoutError) {
+        if (error instanceof discord.errors.WaitForTimeoutError) {
             return ctx.send("You didn't respond >:(");
         } else throw error;
     } const reaction = response[0];
@@ -31,4 +31,4 @@ bot.login("token");
 /**
  * Your token is found on the Bot tab of your bot's application page.
  * https://discord.com/developers/applications
-*/
+*/f

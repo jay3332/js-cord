@@ -1,10 +1,14 @@
-const { ConnectionError, InvalidEventError, ConstructionError } = require("./errors/DiscordEventError");
+const { 
+    ConnectionError, InvalidEventError, ConstructionError,
+    GuildOnlyError,  CheckError,        PermissionError 
+} = require("./errors/DiscordEventError");
 
 module.exports = {
     Client: require("./client/Client"),
     Bot: require("./client/Bot"),
 
     Check: require("./commands/Check"),
+    Cog: require("./commmands/Cog"),
     Command: require("./commands/Command"),
     CommandContext: require("./commands/CommandContext"),
     Cooldown: require("./commands/Cooldown"),
@@ -30,6 +34,10 @@ module.exports = {
         ConnectionError: ConnectionError,
         InvalidEventError: InvalidEventError,
         ConstructionError: ConstructionError,
-        CooldownError: require("./errors/CooldownError")
+        GuildOnlyError: GuildOnlyError,
+        PermissionError: PermissionError,
+        CheckError: CheckError,
+        CooldownError: require("./errors/CooldownError"),
+        ConversionError: require("./errors/ConversionError")
     }
 };

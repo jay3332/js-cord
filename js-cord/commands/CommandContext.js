@@ -1,4 +1,4 @@
-const Channel = require("../structures/Channel");
+const Messageable = require("../structures/Messageable");
 
 class CommandContext extends Channel {
     constructor(message, bot, prefix, command, args) {
@@ -14,9 +14,14 @@ class CommandContext extends Channel {
         this.args = args;
         this.me = message.guild.me;
         this.reference = message.reference;
+        this.content = message.content;
     }
     invoke() {
         // if (this.author.bot) return;
+        
+        // guild-only check
+        if (this.command.guildOnly) 
+            throw new ;
         this.bot.emit("command", [this]);
         try {
             this.command.exec(this, ...args);

@@ -4,9 +4,6 @@
  */
 
 module.exports = class BaseConverter {
-    constructor(...args) {
-        this.convert(...args);
-    }
     convert(...args) {
         return null;
     }

@@ -12,7 +12,13 @@ const Check = require('../commands/Check'),
 
 class Bot extends Client {
     constructor(obj) {
-        super();
+        let buffer = {};
+        for (const prop of ["allowedMentions", "intents"]) {
+            if (obj.hasOwnProperty(prop)) {
+                buffer[prop] = obj[prop];
+            }
+        }
+        super(buffer);
 
         this.allEvents.push(
             "command",
@@ -23,9 +29,11 @@ class Bot extends Client {
         this.prefix = "";
         this.prefixCaseInsensitive = false;
         this.commandsCaseInsensitive = false;
+        this.guildOnly = false;
 
         this.commands = [];
-        this.commandCooldowns = new Map();
+        this.commandCooldowns = {};
+        this.cogs = [];
 
         if (["string", "function", "array"].includes(typeof obj)) {
             this.prefix = obj;
@@ -33,6 +41,7 @@ class Bot extends Client {
             if (obj.hasOwnProperty("prefix")) this.prefix = obj.prefix;
             if (obj.hasOwnProperty("prefixCaseInsensitive")) this.prefixCaseInsensitive = obj.prefixCaseInsensitive;
             if (obj.hasOwnProperty("commandsCaseInsensitive")) this.commandsCaseInsensitive = obj.commandsCaseInsensitive;
+            if (obj.hasOwnProperty("guildOnly")) this.guildOnly = obj.guildOnly;
         } else throw new ConstructionError("Bot constructor takes in a string, function, or object, nothing else.");
         if (this.prefixCaseInsensitive) {
             if (!(this.prefix instanceof Array || this.prefix instanceof Function)) {
@@ -42,16 +51,13 @@ class Bot extends Client {
             }
         }
         this.listeners["message"] = message => {
-            const context = parseContext(message, this);
-            if (!context) return;
-            if (context.author.bot) return;
-            context.invoke();
+            this.processCommands(message);
         };
         this.listeners["commandError"] = (ctx, error) => {
             throw error;
         }
     }
-    command(settings, exec) {
+    command(options, exec) {
         const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
         const ARGUMENT_NAMES = /([^\s,]+)/g;
 
@@ -61,18 +67,18 @@ class Bot extends Client {
 
         if (!result.length) throw new Error("Command execution function requires a context parameter.")
 
-        if (typeof settings == "string") {
-            settings = {name: settings}
-        } if (! (typeof settings == "object")) {
+        if (typeof options === "string") {
+            options = {name: options}
+        } if (typeof options !== "object") {
             throw new Error("Command settings must be a string or object.")
-        } if (!settings.hasOwnProperty('name')) {
+        } if (!options.hasOwnProperty('name')) {
             throw new Error("\"name\" is a required object parameter.")
         } 
 
-        const name = settings.name;
+        const name = options.name;
         let aliases = [];
-        if (settings.hasOwnProperty('aliases')) aliases = settings.aliases;
-        if (settings.hasOwnProperty('alias'))   aliases = [settings.alias];
+        if (options.hasOwnProperty('aliases')) aliases = options.aliases;
+        if (options.hasOwnProperty('alias'))   aliases = [options.alias];
         if (!aliases instanceof Array) {
             throw new Error("Aliases must be an Array.")
         }
@@ -88,11 +94,25 @@ class Bot extends Client {
         
         let checks = [];
         let cooldown = Cooldown.none();
-        if (settings.hasOwnProperty('check')) checks = [settings.check];
-        if (settings.hasOwnProperty('checks')) checks = settings.checks;
-        if (settings.hasOwnProperty('cooldown')) cooldown = settings.cooldown;
+        let guildOnly = this.guildOnly;
+        let permissions = null;
+        let cog = null;
 
-        this.commands.push(new Command(name, aliases, "", checks, cooldown, exec));
+        if (options.hasOwnProperty('check')) checks = [options.check];
+        if (options.hasOwnProperty('checks')) checks = options.checks;
+        if (options.hasOwnProperty('cooldown')) cooldown = options.cooldown;
+        if (options.hasOwnProperty('guildOnly')) guildOnly = options.guildOnly;
+        if (options.hasOwnProperty('permissions')) guildOnly = options.permissions;
+        if (options.hasOwnProperty('cog')) cog = options.cog;
+
+        // delete default options
+        for (let option of Object.keys(options)) {
+            if (["name", "alias", "aliases", "check", "checks", "cooldown", "guildOnly", "permissions", "cog"].includes(option)) {
+                delete options[option];
+            } 
+        }
+
+        this.commands.push(new Command(name, aliases, checks, cooldown, guildOnly, permissions, exec, options, cog));
     }
     getCommand(name) {
         if (this.commandsCaseInsensitive) name = name.toLowerCase();
@@ -119,6 +139,12 @@ class Bot extends Client {
             return null;
         } 
         return null;
+    }
+    processCommands(message) {
+        const context = CommandContext.parseContext(message, this);
+        if (!context) return;
+        if (context.author.bot) return;
+        context.invoke();
     }
 }
 

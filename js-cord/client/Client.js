@@ -1,58 +1,43 @@
 const https = require('https'); 
 const { ConnectionError, InvalidEventError } = require('../errors/DiscordEventError');
+const AllowedMentions = require("../structures/AllowedMentions");
+const Intents = require("../structures/Intents");
 const Requester = require('../http/Requester');
 const ClientUser = require("../structures/ClientUser");
 const Channel = require("../structures/Channel");
 const User = require("../structures/User");
 const Guild = require("../structures/Guild");
+
 class Client {
-    constructor() {
+    constructor(options={}) {
+        this.allowedMentions = (options.hasOwnProperty("allowedMentions")) ? options.allowedMentions : AllowedMentions.default();
+        this.intents = (options.hasOwnProperty("intents")) ? options.intents : Intents.default();
+
         this.token = null;
         this.loggedIn = false;
         this.isBotApplication = null;
+
         this.listeners = {};
+        this.individualListeners = {}; // events, but they append
+
         this.userCache = new Map();
         this.channelCache = new Map();
         this.guildCache = new Map();
+
         this.allEvents = [
-            "ready",
-            "reconnect",
-            "resumed",
-            "message",
-            "messageDelete",
-            "messageEdit",
-            "messageBulkDelete",
-            "memberJoin",
-            "memberEdit",
-            "memberRemove",
-            "memberBan",
-            "memberUnban",
-            "guildJoin",
-            "guildEdit",
-            "guildRemove",
-            "channelCreate",
-            "channelEdit",
-            "channelDelete",
-            "channelPinsUpdate",
-            "roleCreate",
-            "roleDelete",
-            "roleEdit",
-            "inviteCreate",
-            "inviteDelete",
-            "reactionAdd",
-            "reactionRemove",
-            "reactionClear",
-            "reactionDelete",
-            "userStatusChange",
-            "typing",
-            "userEdit",
-            "voiceStateEdit",
-            "voiceServerEdit",
-            "webhookEdit",
-            "slashCommandCreate",
-            "slashCommandEdit",
-            "slashCommandDelete",
-            "slashCommandUsed"
+            "ready", "reconnect", "resumed",
+            "message", "messageDelete", "messageEdit",
+            "messageBulkDelete", "memberJoin", "memberEdit",
+            "memberRemove", "memberBan", "memberUnban",
+            "guildJoin", "guildEdit", "guildRemove",
+            "channelCreate", "channelEdit", "channelDelete",
+            "channelPinsUpdate", "roleCreate", "roleDelete",
+            "roleEdit", "inviteCreate", "inviteDelete",
+            "reactionAdd", "reactionRemove", "reactionClear",
+            "reactionDelete", "userStatusChange", "typing",
+            "userEdit", "voiceStateEdit", "voiceServerEdit",
+            "webhookEdit", "slashCommandCreate", "slashCommandEdit",
+            "slashCommandDelete", "slashCommandUsed"
         ];
 
         this.http = new Requester(this);
@@ -113,8 +98,6 @@ class Client {
         this.isBotApplication = token.startsWith("mfa") ? false : bot;
         this.http.putToken(token, bot);
         this.http.establishGateway();
-        //this.user = new ClientUser(this);
-        //this.emit("ready", []);
     }
 
     logout() {
@@ -130,21 +113,47 @@ class Client {
         this.listeners[event] = fn;
     }
 
-    emit(event, parameters=null) {
-        if (this.listeners.hasOwnProperty(event)) {
-            try {
-                if (!parameters) {
-                    this.listeners[event]();
-                } else { 
-                    this.listeners[event](...parameters);
-                }
-                return true;
-            } catch (e) {
-                console.error(e);
-                return false;
-            }
+    addListener(event, fn) {
+        if (!this.individualListeners[event]) {
+            this.individualListeners[event] = [];
         }
-        else return false;
+        this.individualListeners[event].push(fn);
+    }
+
+    removeListener(event, fn) {
+        if (!this.individualListeners[event]) {
+            throw new InvalidEventError("Event not found.");
+        } this.individualListeners[event] = this.individualListeners[event].filter(e => e!=fn);
+        if (this.individualListeners[event].length) delete this.individualListeners[event];
+    }
+
+    clearListeners(event, fn) {
+        this.individualListeners = {};
+    }
+
+    emit(event, parameters=[]) {
+        try {
+            if (this.individualListeners[event].length > 0) {
+                for (const individualListener of this.individualListeners[event]) {
+                    individualListener(...parameters);
+                }
+            }
+
+            if (this.constructor.name === "Bot") {
+                const allCogsWithListeners = this.cogs.filter(cog => Object.keys(cog.listeners).length>0);
+                for (const cog of allCogsWithListeners) {
+                    if (cog.listeners.hasOwnProperty(event))
+                        cog.listeners[event](...parameters);
+                }
+            }
+
+            if (this.listeners.hasOwnProperty(event))
+                this.listeners[event](...parameters);
+            return true;
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
     }
 };
 

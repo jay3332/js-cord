@@ -5,6 +5,6 @@ class CooldownError extends Error {
         this.defaultCooldown = defaultCooldown;
     }
     get secondsLeft() {
-        return Math.ceil(this.timeLeft/1000)
+        return Math.ceil(this.timeLeft / 1000)
     }
 }

@@ -1,17 +1,28 @@
 const { Check } = require('../commands/Check')
 
 class Command {
-    constructor(name, aliases, description, checks = [Check.none()], cooldown = Cooldown.none(), exec = ()=>{}) {
+    constructor(name, aliases, checks = [Check.none()], guildOnly=false, permissions=null, cooldown = Cooldown.none(), exec = ()=>{}, options={}, cog=null) {
         this.name = name;
         this.aliases = aliases;
-        this.description = description;
-        this.defaultCooldown = cooldown;
+        this.checks = checks;
+        this.cooldown = null;
+        this.guildOnly = guildOnly;
+        this.permissions = permissions;
         this.exec = exec; 
+        this.cog = cog;
+
+        for (const option of Object.keys(options)) {
+            if (!this.hasOwnProperty(option)) {
+                this[option] = options[option];
+            }
+        }
+
+        this.setCooldown(cooldown);
     }
     setCooldown(newCooldown) {
         if (!newCooldown instanceof Cooldown)
-            throw Error('Your cooldown must be a discord.Cooldown object.')
-        this.defaultCooldown = newCooldown;
+            throw Error('Your cooldown must be a discord.Cooldown object.');
+        this.cooldown = newCooldown;
     }
     get execParams() {
         const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/gm;
