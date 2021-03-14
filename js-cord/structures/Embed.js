@@ -17,10 +17,11 @@ class Embed {
 			this.thumbnail = {};
 			
 			this.timestamp = null;
-			this.color = null;
+            this._colour = null;
 		} else {
             for (const key of Object.keys(obj)) {
-                const valid = ['title', 'author', 'footer', 'url', 'description', 'fields', 'image', 'thumbnail', 'timestamp', 'color'];
+                key = key.replace("_", "");
+                const valid = ['title', 'author', 'footer', 'url', 'description', 'fields', 'image', 'thumbnail', 'timestamp', 'colour'];
                 if (!valid.includes(key)) delete obj[key];
             };
 			
@@ -30,7 +31,10 @@ class Embed {
 		}
     }
     get asJSON() {
-        return JSON.stringify(this);
+        let buffer = this;
+        buffer['colour'] = buffer['_colour'];
+        delete buffer['_colour'];
+        return JSON.stringify(buffer);
     }
     setTitle(title) {
         this.title = title;
@@ -56,9 +60,13 @@ class Embed {
 	setThumbnail(url) {
 		this.thumbnail.url = url;
 	}
-	setColor(color) {
-		this.color = parseHex(color);
+	setColour(color) {
+		this._colour = parseHex(color);
 	}
+    setColor(color) {
+        // alias of setColour
+        this.setColor(color);
+    }
 	setTimestamp(timestamp) {
 		try {
 			this.timestamp = new Date(timestamp || Date.now())
@@ -70,10 +78,14 @@ class Embed {
 		this.fields.push({name: name, value: value, inline: inline});
 	}
 
-	get color() {
-		return this.color 
-			? `#${this.color.toString(16).padStart(6, '0')}` : null;
+	get colour() {
+		return this._colour 
+			? `#${this._colour.toString(16).padStart(6, '0')}` : null;
 	}
+
+    get color() {
+        return this.colour;
+    }
 }
 
 module.exports = Embed;
