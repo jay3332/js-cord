@@ -84,7 +84,7 @@ class Bot extends Client {
         }
         const nameAndAliases = [name, ...aliases];
         const allCommandNames = this.commands.map(command => [command.name, ...command.aliases]);
-        for (cmd of allCommandNames) {
+        for (let cmd of allCommandNames) {
             for (a of nameAndAliases) {
                 if (cmd.includes(a)) {
                     throw new Error(`Command name/aliases ${a} already used.`)
