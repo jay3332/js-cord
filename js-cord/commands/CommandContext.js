@@ -13,8 +13,8 @@ class CommandContext extends Messageable {
         this.guild = message.guild;
         this.reply = message.reply;
         this.args = args;
-        this.me = message.guild.me;
-        this.reference = message.reference;
+        // this.me = message.guild.me;
+        // this.reference = message.reference;
         this.content = message.content;
     }
     invoke() {
