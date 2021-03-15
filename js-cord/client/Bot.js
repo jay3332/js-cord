@@ -116,13 +116,13 @@ class Bot extends Client {
     }
     getCommand(name) {
         if (this.commandsCaseInsensitive) name = name.toLowerCase();
-        for (command of this.commands) {
+        for (let command of this.commands) {
             nameAndAliases = [command.name, ...command.aliases];
             if (nameAndAliases.contains(name)) return command;
         } return null;
     }
     getPrefix(message) {
-        content = message.content;
+        let content = message.content;
         if (this.prefixCaseInsensitive) content = content.toLowerCase();
         let prefix = this.prefix;
         if (typeof this.prefix == "function") {
