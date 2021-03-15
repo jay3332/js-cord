@@ -67,6 +67,7 @@ class CommandContext extends Messageable {
         const args = noPrefix.split(/[\s\n]+/);
         let _ = args.length;
 
+        console.log(prefix, noPrefix, args);
         let buffer = null;
         let command = null;
         let maybeCommand = null;
