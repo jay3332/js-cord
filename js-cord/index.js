@@ -8,7 +8,7 @@ module.exports = {
     Bot: require("./client/Bot"),
 
     Check: require("./commands/Check"),
-    Cog: require("./commmands/Cog"),
+    Cog: require("./commands/Cog"),
     Command: require("./commands/Command"),
     CommandContext: require("./commands/CommandContext"),
     Cooldown: require("./commands/Cooldown"),
