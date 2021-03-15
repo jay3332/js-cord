@@ -95,7 +95,7 @@ class CommandContext extends Messageable {
             for (let char of _) {
                 if (!signature[signaturePointer]) break;
                 if (signature[signaturePointer].includes("...")) {
-                    parsedArgs.push(_.slice(pointer));
+                    parsedArgs.push(_.slice(pointer).trim());
                     break;
                 }
                 if (!isParsingQuote) {
@@ -110,13 +110,13 @@ class CommandContext extends Messageable {
                             temp += char;
                         } else {
                             // we need to increment the counter, since it's a space
-                            parsedArgs.push(temp); temp="";
+                            parsedArgs.push(temp.trim()); temp="";
                             signaturePointer++;
                         }
                     }
                 } else {
                     if (char === "\"" && _[pointer-1] !== "\\") {
-                        isParsingQuote = false; parsedArgs.push(temp); temp="";
+                        isParsingQuote = false; parsedArgs.push(temp.trim()); temp="";
                         signaturePointer++;
                     } else {
                         temp += char;
@@ -125,7 +125,7 @@ class CommandContext extends Messageable {
                 pointer++;
             }
         } 
-        console.log(parsedArgs);
+        //console.log(parsedArgs);
         return new cls(message, bot, prefix, command, parsedArgs);
 
         /*command = this.bot.getCommand(command);
