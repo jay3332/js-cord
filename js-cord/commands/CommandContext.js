@@ -10,7 +10,7 @@ class CommandContext extends Messageable {
         this.message = message;
         this.author = message.author;
         this.channel = message.channel;
-        this.guild = message.guild;
+        // this.guild = message.guild;
         this.reply = message.reply;
         this.args = args;
         // this.me = message.guild.me;
@@ -23,11 +23,11 @@ class CommandContext extends Messageable {
         this.bot.emit("command", [this]);
         try {
             // check guild-only
-            if (this.command.guildOnly && !!this.guild) 
-                throw new GuildOnlyError("This command is marked guild-only and cannot be used in DMs.");
+            //if (this.command.guildOnly && !!this.guild) 
+            //    throw new GuildOnlyError("This command is marked guild-only and cannot be used in DMs.");
             // check permissions + checks (will come later)
 
-            this.command.exec(this, ...args);
+            this.command.exec(this, ...this.args);
         } catch (error) {
             this.bot.emit("commandError", [this, error]);
         }
