@@ -110,13 +110,13 @@ class CommandContext extends Messageable {
                             temp += char;
                         } else {
                             // we need to increment the counter, since it's a space
-                            parsedArgs.push(temp.trim()); temp="";
+                            parsedArgs.push(temp); temp="";
                             signaturePointer++;
                         }
                     }
                 } else {
                     if (char === "\"" && _[pointer-1] !== "\\") {
-                        isParsingQuote = false; parsedArgs.push(temp.trim()); temp="";
+                        isParsingQuote = false; parsedArgs.push(temp); temp="";
                         signaturePointer++;
                     } else {
                         temp += char;
