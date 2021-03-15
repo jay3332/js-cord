@@ -72,7 +72,7 @@ class CommandContext extends Messageable {
         let maybeCommand = null;
         for (let i = args.length; i>0; i--) {
             buffer = args.slice(0, i-1).join(' ');
-            maybeCommand = this.bot.getCommand(buffer);
+            maybeCommand = bot.getCommand(buffer);
             if (!!maybeCommand) {
                 command = maybeCommand;
                 break;  
