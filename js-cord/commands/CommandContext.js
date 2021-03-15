@@ -92,7 +92,7 @@ class CommandContext extends Messageable {
 
         _ = noPrefix.replace(buffer, "").trim();
         if (!!signature.length) {
-            for (char of _) {
+            for (let char of _) {
                 if (!signature[signaturePointer]) break;
                 if (signature[signaturePointer].contains("...")) {
                     parsedArgs.push(_.slice(pointer));
