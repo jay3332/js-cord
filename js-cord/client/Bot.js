@@ -118,7 +118,7 @@ class Bot extends Client {
         if (this.commandsCaseInsensitive) name = name.toLowerCase();
         for (let command of this.commands) {
             let nameAndAliases = [command.name, ...command.aliases];
-            if (nameAndAliases.contains(name)) return command;
+            if (nameAndAliases.includes(name)) return command;
         } return null;
     }
     getPrefix(message) {
