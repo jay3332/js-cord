@@ -78,6 +78,7 @@ class CommandContext extends Messageable {
                 break;  
         }}
 
+        console.log(command);
         if (!command) return NaN;
         let pointer = 0;
         let parsedArgs = [];
@@ -122,6 +123,7 @@ class CommandContext extends Messageable {
                 pointer++;
             }
         } 
+        console.log(parsedArgs);
         return new cls(message, bot, prefix, command, parsedArgs);
 
         /*command = this.bot.getCommand(command);
