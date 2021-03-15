@@ -25,7 +25,7 @@ class Command {
         this.cooldown = newCooldown;
     }
     get execParams() {
-        const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/gm;
+        //const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/gm;
         const ARGUMENT_NAMES = /([^\s,]+)/g;
 
         let fnStr = this.exec.toString().replace(STRIP_COMMENTS, '');

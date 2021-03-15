@@ -12,9 +12,12 @@ module.exports = class Cog {
         if (!this.guildOnly) this.guildOnly = this.client.guildOnly;
     }
     command(options, exec) {
-        if (typeof options !== "object") {
+        if (typeof options !== "object") 
             options = { name: options };
-        } options["cog"] = this;
+        options["cog"] = this;
+        if (!options.guildOnly) options["guildOnly"] = this.guildOnly;
+        if (!options.permissions) options["permissions"] = this.permissions;
+        if (!options.check) options["check"] = this.check;
         this.client.command(options, exec);
     }
     listen(event, exec) {
