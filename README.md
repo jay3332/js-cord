@@ -1,3 +1,4 @@
+![js-cord](https://i.ibb.co/80WHs6W/js-cord-banner-transparent.png)
 # js-cord
 js-cord is a wrapper around the Discord API, written and to be used in Javascript.
 ## Why was this created?
@@ -109,3 +110,8 @@ I personally dislike slash commands due to their harsh limitations and lack of c
 Currently, we don't have a support server - consider reading our [docs](https://jay3332.github.io/js-cord/) for reference.
 
 You can also take a look at the [examples folder](https://github.com/jay3332/js-cord/tree/master/examples) for examples using js-cord.
+## Credits
+Main developer: [jay3332](https://github.com/jay3332)
+Contributors: [Cats3153](https://github.com/Cats3153)
+
+This project was inspired by [discord.py](https://github.com/Rapptz/discord.py) and [discord.js](https://github.com/discordjs/discord.js).

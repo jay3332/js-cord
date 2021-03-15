@@ -14,7 +14,7 @@ class Requester {
         this.token = null;
         this.botToken = true;
         this.userAgent = 'DiscordBot (js-cord 1.0)';
-    }
+    };
 
     request(route, reqbody = null, contentType="application/json") {
         let method = route.method.toLowerCase();
@@ -77,12 +77,12 @@ class Requester {
     }
 
     parseWebsocketData(data) {
-        const payloadData = data['d'];
-        const op = parseInt(data['op']);
+        const payloadData = data.d;
+        const op = parseInt(data.op);
         if (!data) return;
         if (op === 0) {
             // it's an event
-            handleEvent(this.client, data['t'], payloadData);
+            handleEvent(this.client, data.t, payloadData);
         } else if (op == 10) {
             this.client.ws.send(JSON.stringify({
                 op: 2,
@@ -91,11 +91,18 @@ class Requester {
                     intents: 513,
                     properties: {
                         os: "linux",
-                        '$brower': "js-cord",
+                        '$browser': "js-cord",
                         '$device': "js-cord"
                     }
                 }
             }));
+            setInterval(() => {
+                this.client.ws.send(JSON.stringify({
+                    op: 1,
+                    sequence: data.s
+                }));
+            }, data.heartbeat_interval);
+            
         }
     }
 
