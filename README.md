@@ -2,6 +2,11 @@
 js-cord is a wrapper around the Discord API, written and to be used in Javascript.
 ## Why was this created?
 I've always liked JavaScript's syntax better than Python's, but I tend to use Python more for developing Discord Bots because the API wrapper for Python (discord.py) has more features than the conventional discord.js. This wrapper fixes that, with built in command managers, cooldown managers, a built in argument parsing system, and much more.
+## Useful Links
++ [Repository](https://github.com/jay3332/js-cord)
++ [Documentation](https://jay3332.github.io/js-cord)
++ [Discord Server](https://discord.gg/)
++ [Trello](https://trello.com/b/unTW6EpW/js-cord)
 ## Installation
 Installing js-cord is pretty easy with `npm`:
 ```
@@ -22,7 +27,7 @@ const bot = new discord.Bot({ prefix: "!" });
 // Notify us in the console when the bot is ready
 bot.listen("ready", () => {
     console.log(`Logged in as ${bot.user}`);
-})
+});
 
 // Basic ping command
 bot.command("ping", ctx => {
@@ -33,7 +38,7 @@ bot.command("ping", ctx => {
 bot.login("token"); 
 /**
  * Your token is found on the Bot tab of your bot's application page.
- * https://discord.com/applications
+ * https://discord.com/developers/applications
 */
 ```
 #### Argument parsing and embeds in js-cord:
@@ -46,7 +51,7 @@ const bot = new discord.Bot({ prefix: "!" });
 // Notify us in the console when the bot is ready
 bot.listen("ready", () => {
     console.log(`Logged in as ${bot.user}`);
-})
+});
 
 // This command will take in 3 arguments.
 bot.command("embed", (ctx, title, description, footer) => {
@@ -59,14 +64,14 @@ bot.command("embed", (ctx, title, description, footer) => {
     embed.setColor("random");
 
     // send the embed by passing in an Object rather than a direct String.
-    ctx.send({embed: embed});
+    ctx.send({ embed: embed });
 });
 
 // Log in to Discord.
 bot.login("token"); 
 /**
  * Your token is found on the Bot tab of your bot's application page.
- * https://discord.com/applications
+ * https://discord.com/developers/applications
 */
 ```
 #### Consume-rest argument behavior in js-cord:
@@ -79,7 +84,7 @@ const bot = new discord.Bot({ prefix: "!" });
 // Notify us in the console when the bot is ready
 bot.listen("ready", () => {
     console.log(`Logged in as ${bot.user}`);
-})
+});
 
 // This command will take one argument, but it requires spaces.
 // This consume rest behavior fixes this.
@@ -91,7 +96,7 @@ bot.command("say", (ctx, ...text) => {
 bot.login("token"); 
 /**
  * Your token is found on the Bot tab of your bot's application page.
- * https://discord.com/applications
+ * https://discord.com/developers/applications
 */
 ```
 ## Slash Commands
@@ -101,6 +106,6 @@ I personally dislike slash commands due to their harsh limitations and lack of c
 // currently, we haven't decided this yet
 ```
 ## Ending it off
-Currently, we don't have a support server - consider reading our [docs](https://google.com/) for reference.
+Currently, we don't have a support server - consider reading our [docs](https://jay3332.github.io/js-cord/) for reference.
 
-You can also take a look at the `examples` folder for examples using js-cord.
+You can also take a look at the [examples folder](https://github.com/jay3332/js-cord/tree/master/examples) for examples using js-cord.

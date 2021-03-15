@@ -9,9 +9,12 @@ const User = require("../structures/User");
 const Guild = require("../structures/Guild");
 
 class Client {
-    constructor(options={}) {
-        this.allowedMentions = (options.hasOwnProperty("allowedMentions")) ? options.allowedMentions : AllowedMentions.default();
-        this.intents = (options.hasOwnProperty("intents")) ? options.intents : Intents.default();
+    constructor({ allowedMentions=AllowedMentions.default(), intents: Intents.default() }={}) {
+        //this.allowedMentions = (options.hasOwnProperty("allowedMentions")) ? options.allowedMentions : AllowedMentions.default();
+        //this.intents = (options.hasOwnProperty("intents")) ? options.intents : Intents.default();
+
+        this.allowedMentions = allowedMentions;
+        this.intents = intents;
 
         this.token = null;
         this.loggedIn = false;
@@ -129,6 +132,26 @@ class Client {
 
     clearListeners(event, fn) {
         this.individualListeners = {};
+    }
+
+    waitFor(event, check=null, { timeout=0 }={}) {
+        let finished = false;
+        const fn = (...args) => {
+            if (!!check) {
+                if (!check(...args)) return;
+            } 
+            finished = true;
+            this.removeListener(event, fn);
+        }
+        this.addListener(event, fn);
+        const start = Date.now();
+        while ((() => {
+            if (finished) return false;
+            if (timeout>0) {if (Date.now()-start > timeout) 
+                                return false;}
+
+        })()) {}
+        if (!finished) throw new /*WaitForTimeout*/Error("Timeout reached");
     }
 
     emit(event, parameters=[]) {

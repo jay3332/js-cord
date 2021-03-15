@@ -11,14 +11,10 @@ const Check = require('../commands/Check'),
 	Cooldown = require('../commands/Cooldown');
 
 class Bot extends Client {
-    constructor(obj) {
-        let buffer = {};
-        for (const prop of ["allowedMentions", "intents"]) {
-            if (obj.hasOwnProperty(prop)) {
-                buffer[prop] = obj[prop];
-            }
-        }
-        super(buffer);
+    constructor({ prefix, prefixCaseInsensitive=false, commandsCaseInsensitive=false, guildOnly=false, 
+                  allowedMentions=undefined, intents=undefined }) {
+        
+        super({ allowedMentions: allowedMentions, intents: intents });
 
         this.allEvents.push(
             "command",
@@ -26,23 +22,18 @@ class Bot extends Client {
             "commandComplete"
         );
 
-        this.prefix = "";
-        this.prefixCaseInsensitive = false;
-        this.commandsCaseInsensitive = false;
-        this.guildOnly = false;
+        this.prefix = prefix;
+        this.prefixCaseInsensitive = prefixCaseInsensitive;
+        this.commandsCaseInsensitive = commandsCaseInsensitive;
+        this.guildOnly = guildOnly;
 
         this.commands = [];
         this.commandCooldowns = {};
         this.cogs = [];
 
-        if (["string", "function", "array"].includes(typeof obj)) {
-            this.prefix = obj;
-        } else if (typeof obj == "object") {
-            if (obj.hasOwnProperty("prefix")) this.prefix = obj.prefix;
-            if (obj.hasOwnProperty("prefixCaseInsensitive")) this.prefixCaseInsensitive = obj.prefixCaseInsensitive;
-            if (obj.hasOwnProperty("commandsCaseInsensitive")) this.commandsCaseInsensitive = obj.commandsCaseInsensitive;
-            if (obj.hasOwnProperty("guildOnly")) this.guildOnly = obj.guildOnly;
-        } else throw new ConstructionError("Bot constructor takes in a string, function, or object, nothing else.");
+        if (!["string", "function", "array"].includes(typeof prefix)) {
+            throw new ConstructionError("Prefix must be a String, Function, or Array.");
+        } 
         if (this.prefixCaseInsensitive) {
             if (!(this.prefix instanceof Array || this.prefix instanceof Function)) {
                 this.prefix = this.prefix.toLowerCase();
@@ -56,6 +47,14 @@ class Bot extends Client {
         this.listeners["commandError"] = (ctx, error) => {
             throw error;
         }
+    }
+    addCommand(options, exec) {
+        this.command(options, exec);
+    }
+    removeCommand(name) {
+        const commandToRemove = this.getCommand(name);
+        if (commandToRemove) throw new Error("Command not found.");
+        this.commands = this.commands.filter(command => command!=commandToRemove);
     }
     command(options, exec) {
         const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
@@ -128,6 +127,8 @@ class Bot extends Client {
         let prefix = this.prefix;
         if (typeof prefix == "function") {
             prefix = prefix(this, message);
+            if (this.prefixCaseInsensitive)
+                prefix = prefix.toLowerCase();
         }
         if (typeof prefix == "string") {
             return content.startsWith(prefix) ? prefix : null;
@@ -146,7 +147,7 @@ class Bot extends Client {
     }
     processCommands(message) {
         if (message.author.bot) return;
-        const context = CommandContext.parseContext(message, this);
+        const context = this.parseContext(message);
         if (!context) return;
         context.invoke();
     }

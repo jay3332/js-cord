@@ -14,6 +14,7 @@ class Util {
     static parseSnowflake(snowflake) {
         const epoch = 1420070400000;
         let binary = '';
+        if (!['number', 'string', 'date'].includes(typeof snowflake)) return;
         snowflake = snowflake.toString()
         let high = parseInt(snowflake.slice(0, -10));
         let low = parseInt(snowflake.slice(-10));

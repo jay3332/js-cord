@@ -2,10 +2,12 @@ const Messageable = require("../structures/Messageable");
 const { GuildOnlyError, CheckError, PermissionError } = require("../errors/DiscordEventError");
 
 class CommandContext extends Messageable {
-    constructor(message, bot, prefix, command, args) {
+    constructor(message, bot, prefix, command, args, invokedWith) {
         super(bot, message.channel.id);
         this.prefix = prefix;
         this.bot = bot;
+        this.invokedWith = invokedWith;
+        this.subcommand = null; // add when group commands are a thing
         this.command = command;
         this.message = message;
         this.author = message.author;
@@ -17,9 +19,13 @@ class CommandContext extends Messageable {
         // this.reference = message.reference;
         this.content = message.content;
     }
-    invoke() {
+    invoke(command=null) {
         // if (this.author.bot) return;
         
+        if (!!command) {
+            this.command = command;
+        }
+
         this.bot.emit("command", [this]);
         try {
             // check guild-only
@@ -71,11 +77,13 @@ class CommandContext extends Messageable {
         let buffer = null;
         let command = null;
         let maybeCommand = null;
+        let invokedWith = null;
         for (let i = args.length; i>0; i--) {
             buffer = args.slice(0, i).join(' ');
             maybeCommand = bot.getCommand(buffer);
             //console.log(buffer, maybeCommand);
             if (!!maybeCommand) {
+                invokedWith = buffer;
                 command = maybeCommand;
                 break;  
         }}
@@ -126,7 +134,7 @@ class CommandContext extends Messageable {
             }
         } 
         //console.log(parsedArgs);
-        return new cls(message, bot, prefix, command, parsedArgs);
+        return new cls(message, bot, prefix, command, parsedArgs, invokedWith);
 
         /*command = this.bot.getCommand(command);
         if (!command) return NaN;
