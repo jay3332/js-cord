@@ -1,7 +1,7 @@
 const Messageable = require("../structures/Messageable");
 const { GuildOnlyError, CheckError, PermissionError } = require("../errors/DiscordEventError");
 
-class CommandContext extends Channel {
+class CommandContext extends Messageable {
     constructor(message, bot, prefix, command, args) {
         super(bot, message.channel.id);
         this.prefix = prefix;
