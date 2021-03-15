@@ -115,7 +115,7 @@ class Bot extends Client {
         this.commands.push(new Command(name, aliases, checks, guildOnly, permissions, cooldown, exec, options, cog));
     }
     getCommand(name) {
-        console.log(this.commands);
+        //console.log(this.commands);
         if (this.commandsCaseInsensitive) name = name.toLowerCase();
         for (let command of this.commands) {
             if (command.name == name || command.aliases.includes(name)) 
