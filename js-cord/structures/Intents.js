@@ -8,7 +8,7 @@ module.exports = class Intents extends Flags {
         super(Constants.INTENT_FLAG_VALUES);
         for (const option of Object.keys(Constants.INTENT_FLAG_VALUES)) {
             if (Object.keys(options).includes(option)) {
-                Object.defineProperty(this, option, options[option]);
+                this[option] = options[option]
             };
         }
 
