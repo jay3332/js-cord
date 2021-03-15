@@ -140,10 +140,13 @@ class Bot extends Client {
         } 
         return null;
     }
+    parseContext(message) {
+        return CommandContext.parseContext(message, this);
+    }
     processCommands(message) {
+        if (message.author.bot) return;
         const context = CommandContext.parseContext(message, this);
         if (!context) return;
-        if (context.author.bot) return;
         context.invoke();
     }
 }
