@@ -107,11 +107,13 @@ I personally dislike slash commands due to their harsh limitations and lack of c
 // currently, we haven't decided this yet
 ```
 ## Ending it off
-Currently, we don't have a support server - consider reading our [docs](https://jay3332.github.io/js-cord/) for reference.
-
+Currently, we don't have a support server - consider reading our [docs](https://jay3332.github.io/js-cord/) for reference  
 You can also take a look at the [examples folder](https://github.com/jay3332/js-cord/tree/master/examples) for examples using js-cord.
 ## Credits
-Main developer: [jay3332](https://github.com/jay3332)
+#### Developers
+Main developer: [jay3332](https://github.com/jay3332)  
 Contributors: [Cats3153](https://github.com/Cats3153)
 
-This project was inspired by [discord.py](https://github.com/Rapptz/discord.py) and [discord.js](https://github.com/discordjs/discord.js).
+#### Inspired By
++ [discord.py](https://github.com/Rapptz/discord.py)  
++ [discord.js](https://github.com/discordjs/discord.js)
