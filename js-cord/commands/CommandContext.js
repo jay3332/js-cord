@@ -105,7 +105,7 @@ class CommandContext extends Messageable {
                                 isParsingQuote = true;
                     }}};
                     if (!isParsingQuote) {
-                        if (!char.match(/[\s\n]/).length) {
+                        if (!char.match(/[\s\n]/)) {
                             // it's a part of the argument, continue.
                             temp += char;
                         } else {
