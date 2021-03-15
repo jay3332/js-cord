@@ -115,22 +115,23 @@ class Bot extends Client {
         this.commands.push(new Command(name, aliases, checks, cooldown, guildOnly, permissions, exec, options, cog));
     }
     getCommand(name) {
+        console.log(this.commands);
         if (this.commandsCaseInsensitive) name = name.toLowerCase();
         for (let command of this.commands) {
-            let nameAndAliases = [command.name, ...command.aliases];
-            if (nameAndAliases.includes(name)) return command;
+            if (command.name == name || command.aliases.includes(name)) 
+                return command;
         } return null;
     }
     getPrefix(message) {
         let content = message.content;
         if (this.prefixCaseInsensitive) content = content.toLowerCase();
         let prefix = this.prefix;
-        if (typeof this.prefix == "function") {
-            prefix = this.prefix(this, message);
+        if (typeof prefix == "function") {
+            prefix = prefix(this, message);
         }
         if (typeof prefix == "string") {
             return content.startsWith(prefix) ? prefix : null;
-        } else if (this.prefix instanceof Array) {
+        } else if (prefix instanceof Array) {
             for (prf of prefix) {
                 if (content.startsWith(prf)) {
                     return prf;
