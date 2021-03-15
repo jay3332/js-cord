@@ -112,7 +112,7 @@ class Bot extends Client {
             } 
         }
 
-        this.commands.push(new Command(name, aliases, checks, cooldown, guildOnly, permissions, exec, options, cog));
+        this.commands.push(new Command(name, aliases, checks, guildOnly, permissions, cooldown, exec, options, cog));
     }
     getCommand(name) {
         console.log(this.commands);

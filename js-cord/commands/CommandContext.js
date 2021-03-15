@@ -67,20 +67,20 @@ class CommandContext extends Messageable {
         const args = noPrefix.split(/[\s\n]+/);
         let _ = args.length;
 
-        console.log(prefix, noPrefix, args);
+        //console.log(prefix, noPrefix, args);
         let buffer = null;
         let command = null;
         let maybeCommand = null;
         for (let i = args.length; i>0; i--) {
-            buffer = args.slice(0, i-1).join(' ');
+            buffer = args.slice(0, i).join(' ');
             maybeCommand = bot.getCommand(buffer);
-            console.log(buffer, maybeCommand);
+            //console.log(buffer, maybeCommand);
             if (!!maybeCommand) {
                 command = maybeCommand;
                 break;  
         }}
 
-        console.log(command);
+        //console.log(command);
         if (!command) return NaN;
         let pointer = 0;
         let parsedArgs = [];
