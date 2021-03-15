@@ -133,9 +133,11 @@ class Client {
 
     emit(event, parameters=[]) {
         try {
-            if (this.individualListeners[event].length > 0) {
-                for (const individualListener of this.individualListeners[event]) {
-                    individualListener(...parameters);
+            if (!!this.individualListeners[event]) {
+                if (this.individualListeners[event].length > 0) {
+                    for (const individualListener of this.individualListeners[event]) {
+                        individualListener(...parameters);
+                    }
                 }
             }
 
