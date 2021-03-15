@@ -10,7 +10,7 @@ class AllowedMentions {
         else this.replies = obj.replies;
     }
     static none() {
-        return AllowedMentions({
+        return new AllowedMentions({
             users: false,
             roles: false,
             everyone: false,
@@ -18,7 +18,7 @@ class AllowedMentions {
         });
     }
     static all() {
-        return AllowedMentions({
+        return new AllowedMentions({
             users: true,
             roles: true,
             everyone: true,
@@ -33,7 +33,7 @@ class AllowedMentions {
         let roles = arr.includes("roles");
         let everyone = arr.includes("everyone");
         let replies = arr.includes("replies");
-        return AllowedMentions({
+        return new AllowedMentions({
             users: users,
             roles: roles,
             everyone: everyone,

@@ -88,39 +88,40 @@ class CommandContext extends Messageable {
         let isParsingQuote = false;
 
         _ = noPrefix.replace(buffer, "").trim();
-        for (char of _) {
-            if (!signature[signaturePointer]) break;
-            if (signature[signaturePointer].contains("...")) {
-                parsedArgs.push(_.slice(pointer));
-                break;
-            }
-            if (!isParsingQuote) {
-                if (char === "\"") {
-                    if (!!_[pointer-1]) {
-                        if (_[pointer-1] !== "\\") {
-                            isParsingQuote = true;
-                }}};
+        if (!!signature.length) {
+            for (char of _) {
+                if (!signature[signaturePointer]) break;
+                if (signature[signaturePointer].contains("...")) {
+                    parsedArgs.push(_.slice(pointer));
+                    break;
+                }
                 if (!isParsingQuote) {
-                    if (!char.match(/[\s\n]/).length) {
-                        // it's a part of the argument, continue.
-                        temp += char;
-                    } else {
-                        // we need to increment the counter, since it's a space
-                        parsedArgs.push(temp); temp="";
+                    if (char === "\"") {
+                        if (!!_[pointer-1]) {
+                            if (_[pointer-1] !== "\\") {
+                                isParsingQuote = true;
+                    }}};
+                    if (!isParsingQuote) {
+                        if (!char.match(/[\s\n]/).length) {
+                            // it's a part of the argument, continue.
+                            temp += char;
+                        } else {
+                            // we need to increment the counter, since it's a space
+                            parsedArgs.push(temp); temp="";
+                            signaturePointer++;
+                        }
+                    }
+                } else {
+                    if (char === "\"" && _[pointer-1] !== "\\") {
+                        isParsingQuote = false; parsedArgs.push(temp); temp="";
                         signaturePointer++;
+                    } else {
+                        temp += char;
                     }
                 }
-            } else {
-                if (char === "\"" && _[pointer-1] !== "\\") {
-                    isParsingQuote = false; parsedArgs.push(temp); temp="";
-                    signaturePointer++;
-                } else {
-                    temp += char;
-                }
+                pointer++;
             }
-            pointer++;
-        }
-
+        } 
         return new cls(message, bot, prefix, command, parsedArgs);
 
         /*command = this.bot.getCommand(command);
