@@ -117,7 +117,7 @@ class Bot extends Client {
     getCommand(name) {
         if (this.commandsCaseInsensitive) name = name.toLowerCase();
         for (let command of this.commands) {
-            nameAndAliases = [command.name, ...command.aliases];
+            let nameAndAliases = [command.name, ...command.aliases];
             if (nameAndAliases.contains(name)) return command;
         } return null;
     }
