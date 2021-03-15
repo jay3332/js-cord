@@ -1,4 +1,5 @@
-const { Check } = require('../commands/Check')
+const Check = require('../commands/Check')
+const Cooldown = require("../commands/Cooldown");
 
 class Command {
     constructor(name, aliases, checks = [Check.none()], guildOnly=false, permissions=null, cooldown = Cooldown.none(), exec = ()=>{}, options={}, cog=null) {
