@@ -12,7 +12,7 @@ const Util = require("../util/Util")
 
 class Channel extends Messageable {
     constructor(client, data, deleted=false) {
-        super(cilent, data.id);
+        super(client, data.id);
         this.client = client;
         this.id = data.id;
         let _type = ['text', 'dm', 'voice', 'group', 'category', 'news', 'store'][data['type']];
