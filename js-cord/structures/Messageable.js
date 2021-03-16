@@ -8,6 +8,11 @@ module.exports = class Messageable {
         this.cls = null;
     }
     send(content, options={}) {
+        if (this.constructor.name.endsWith("Channel")) {
+            if (!this.textBased) throw new ReferenceError(
+                "Cannot send messages in this channel: Channel is not text-based.");
+        }
+
         if (typeof content == "object") {
             options = content;
             content = content.content;

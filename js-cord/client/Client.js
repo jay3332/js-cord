@@ -9,7 +9,7 @@ const User = require("../structures/User");
 const Guild = require("../structures/Guild");
 
 class Client {
-    constructor({ allowedMentions=AllowedMentions.default(), intents: Intents.default() }={}) {
+    constructor({ allowedMentions=AllowedMentions.default(), intents=Intents.default() }={}) {
         //this.allowedMentions = (options.hasOwnProperty("allowedMentions")) ? options.allowedMentions : AllowedMentions.default();
         //this.intents = (options.hasOwnProperty("intents")) ? options.intents : Intents.default();
 

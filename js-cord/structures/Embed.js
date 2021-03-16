@@ -34,7 +34,18 @@ class Embed {
         /*let buffer = this;
         buffer['colour'] = buffer['_colour'];
         delete buffer['_colour'];*/
-        return JSON.stringify(this);
+        let buffer = {}
+        for (let key of Object.keys(this).filter(k => [
+            "title", "description", "footer", "author", 
+            "url", "timestamp", "colour", "thumbnail",
+            "image", "thumbnail" 
+        ].contains(k))) {
+            buffer[key] = this[key];
+        }
+        buffer['type'] = "rich";
+        buffer['author'] = (!buffer.author) ? null : buffer.author;
+        buffer['footer'] = (!buffer.footer) ? null : buffer.footer;
+        return buffer;
     }
     setTitle(title) {
         this.title = title;

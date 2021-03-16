@@ -1,5 +1,6 @@
 const Messageable = require("../structures/Messageable");
 const { GuildOnlyError, CheckError, PermissionError } = require("../errors/DiscordEventError");
+const parseArgs =require("../commands/ArgumentParser");
 
 class CommandContext extends Messageable {
     constructor(message, bot, prefix, command, args, invokedWith) {
@@ -33,9 +34,10 @@ class CommandContext extends Messageable {
             //    throw new GuildOnlyError("This command is marked guild-only and cannot be used in DMs.");
             // check permissions + checks (will come later)
 
-            this.command.exec(this, ...this.args);
+            this.command.exec(this, this.args);
         } catch (error) {
-            this.bot.emit("commandError", [this, error]);
+            try { this.command.onError(this, error); }
+            catch (err) { this.bot.emit("commandError", [this, err]) }
         }
         this.bot.emit("commandComplete", [this]);
     }
@@ -90,50 +92,16 @@ class CommandContext extends Messageable {
 
         //console.log(command);
         if (!command) return NaN;
-        let pointer = 0;
-        let parsedArgs = [];
-        let temp = "";
-
-        let signaturePointer = 0;
-        let signature = command.execParams.slice(1);
-        let isParsingQuote = false;
-
         _ = noPrefix.replace(buffer, "").trim();
-        if (!!signature.length) {
-            for (let char of _) {
-                if (!signature[signaturePointer]) break;
-                if (signature[signaturePointer].includes("...")) {
-                    parsedArgs.push(_.slice(pointer).trim());
-                    break;
-                }
-                if (!isParsingQuote) {
-                    if (char === "\"") {
-                        if (!!_[pointer-1]) {
-                            if (_[pointer-1] !== "\\") {
-                                isParsingQuote = true;
-                    }}};
-                    if (!isParsingQuote) {
-                        if (!char.match(/[\s\n]/)) {
-                            // it's a part of the argument, continue.
-                            temp += char;
-                        } else {
-                            // we need to increment the counter, since it's a space
-                            parsedArgs.push(temp); temp="";
-                            signaturePointer++;
-                        }
-                    }
-                } else {
-                    if (char === "\"" && _[pointer-1] !== "\\") {
-                        isParsingQuote = false; parsedArgs.push(temp); temp="";
-                        signaturePointer++;
-                    } else {
-                        temp += char;
-                    }
-                }
-                pointer++;
-            }
-        } 
-        //console.log(parsedArgs);
+        const partialContext = new cls(message, bot, prefix, command, undefined, invokedWith);
+        
+        try {
+            const parsedArgs = parseArgs(partialContext, _);
+        } catch (error) {
+            try { command.onError(this, error); }
+            catch (err) { bot.emit("commandError", [this, err]) }
+        }
+        
         return new cls(message, bot, prefix, command, parsedArgs, invokedWith);
 
         /*command = this.bot.getCommand(command);

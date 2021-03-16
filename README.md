@@ -115,5 +115,6 @@ Main developer: [jay3332](https://github.com/jay3332)
 Contributors: [Cats3153](https://github.com/Cats3153)
 
 #### Inspired By
-+ [discord.py](https://github.com/Rapptz/discord.py)  
-+ [discord.js](https://github.com/discordjs/discord.js)
++ [discord.py](https://github.com/Rapptz/discord.py) - Idea for command handlers  
++ [discord.js](https://github.com/discordjs/discord.js) - Used as reference for websockets  
++ [discord.js Commando](https://github.com/discordjs/Commando/) - Idea for (advanced) argument parsing

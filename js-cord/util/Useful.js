@@ -37,7 +37,7 @@ function parseHex(hex) {
 			return Math.floor(Math.random() * (0xffffff + 1));
 		else if (hex.toUpperCase() === 'DEFAULT')
 			return 0;
-		else if (Object.keys(Colors).includes(hex.toUpperCase()))
+		else if (Object.keys(Colors).includes(hex.toUpperCase().replace(" ", "_")))
 			return Colors[hex.toUpperCase()];
 		else {
 			temp = parseInt(hex.replace(/[\W_]/g, ''), 16);

@@ -170,6 +170,16 @@ class Requester {
         return this.request(route);
     }
 
+    deleteChannel(channel_id) {
+        const route = new Route('DELETE', `/channels/${channel_id}`);
+        return this.request(route);
+    }
+
+    createInvite(channel_id, options) {
+        const route = new Route('POST', `/channels/${channel_id}/invites`);
+        return this.request(route, options);
+    }
+
 }
 
 module.exports = Requester;

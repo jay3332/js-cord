@@ -96,6 +96,7 @@ class Bot extends Client {
         let guildOnly = this.guildOnly;
         let permissions = null;
         let cog = null;
+        let args = null;
 
         if (options.hasOwnProperty('check')) checks = [options.check];
         if (options.hasOwnProperty('checks')) checks = options.checks;
@@ -103,15 +104,19 @@ class Bot extends Client {
         if (options.hasOwnProperty('guildOnly')) guildOnly = options.guildOnly;
         if (options.hasOwnProperty('permissions')) guildOnly = options.permissions;
         if (options.hasOwnProperty('cog')) cog = options.cog;
+        if (options.hasOwnProperty('args')) args = options.args;
+        if (options.hasOwnProperty('arguments')) args = options['arguments'];
 
         // delete default options
         for (let option of Object.keys(options)) {
-            if (["name", "alias", "aliases", "check", "checks", "cooldown", "guildOnly", "permissions", "cog"].includes(option)) {
+            if (["name", "alias", "aliases", "check", "checks", "cooldown", "guildOnly", "permissions", "cog", "args", "arguments"].includes(option)) {
                 delete options[option];
             } 
         }
 
-        this.commands.push(new Command(name, aliases, checks, guildOnly, permissions, cooldown, exec, options, cog));
+        const final = new Command(this, name, aliases, checks, guildOnly, permissions, cooldown, exec, options, cog, args);
+        this.commands.push(final);
+        return final;
     }
     getCommand(name) {
         //console.log(this.commands);
