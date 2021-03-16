@@ -1,7 +1,8 @@
 const Route = require("../http/Route");
 const needle = require("needle");
 const zlib = require("zlibjs");
-const handleEvent = require("../http/EventHandler")
+const handleEvent = require("../http/EventHandler");
+const http = require("node-fetch");
 const ws = require("ws");
 
 class Requester {
@@ -26,14 +27,18 @@ class Requester {
         }
         if (reqbody) reqbody['Content-Type'] = contentType;
 
-        const response = needle.request(method, route.url, (reqbody || {}), {json: true, headers: headers}, (
+        let body = JSON.stringify(reqbody || {})
+        return http(route.url, { method: method, headers: headers, body: body })
+            .then(res => res.json());
+
+        /* const response = needle.request(method, route.url, (reqbody || {}), {json: true, headers: headers}, (
             err, { body }
         ) => {
             if (err) throw err;
             else return body;
-        });
+        }); */
         //console.log(response);
-        return response;
+        // return response;
 
         // return JSON.parse(http(method, route.url, params).getBody('utf8'));
         

@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "needle": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "ws": "^7.4.4",
     "zlibjs": "git+https://github.com/imaya/zlib.js.git"
   },
