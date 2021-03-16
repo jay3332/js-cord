@@ -31,7 +31,6 @@ class Requester {
         return http(route.url, { method: method, headers: headers, body: body })
             .then(res => res.json());
 
-
         /* const response = needle.request(method, route.url, (reqbody || {}), {json: true, headers: headers}, (
             err, { body }
         ) => {
