@@ -95,13 +95,13 @@ class Requester {
                         '$device': "js-cord"
                     }
                 }
-            }));
+            }));/*
             setInterval(() => {
                 this.client.ws.send(JSON.stringify({
                     op: 1,
                     sequence: data.s
                 }));
-            }, data.heartbeat_interval);
+            }, data.heartbeat_interval);*/
             
         }
     }
