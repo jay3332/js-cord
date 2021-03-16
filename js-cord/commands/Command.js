@@ -61,7 +61,7 @@ const DEFAULT_TYPES = {
         let result = ctx.bot.getCommand(arg);
         if (!result) throw new TypeError(`Command ${arg} not found.`);
         return result;
-    };
+    },
 };
 
 function getUnionFunction(types) {
