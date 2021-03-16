@@ -99,7 +99,7 @@ class CommandContext extends Messageable {
             const parsedArgs = parseArgs(partialContext, _);
         } catch (error) {
             try { command.onError(partialContext, error); }
-            catch (err) { bot.emit("commandError", [this, err]) }
+            catch (err) { bot.emit("commandError", [partialContext, err]) }
         }
         
         return new cls(message, bot, prefix, command, parsedArgs, invokedWith);
