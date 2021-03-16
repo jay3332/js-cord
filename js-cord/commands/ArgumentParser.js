@@ -117,7 +117,7 @@ module.exports = function parseArgs(ctx, rawArgumentString) {
     let result;
     for (const [i, a] of commandArgs.entries()) { 
         result = a.type(args[i]);
-        if a.validate(result) 
+        if ( a.validate(result) )
             argBuffer[a.name] = result;
         else {
             throw new Error("Argument did not pass validation.")
