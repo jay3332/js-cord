@@ -1,5 +1,6 @@
 const Util = require("../util/Util");
 const Member = require("../structures/Member");
+const Roles = require("../structures/Role");
 const { GuildCache } = require('../client/Cache');
 const { parseSnowflake, parseAssetSize } = Util;
 

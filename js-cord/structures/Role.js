@@ -12,6 +12,7 @@ module.exports = class Role {
         this.mentionable = data.mentionable;
         this.guild = guild;
         this.premium = false;
+        this.default = this.id === guild.id;
 
         if (this.tags) {
             if (this.tags.bot_id)
@@ -23,11 +24,11 @@ module.exports = class Role {
         }
 	}
     get members() {
-        return this.guild.members.filter(member => member.roles.map(role => role.id).includes(this.id)));
+        return this.guild.members.filter(member => member.roles.map(role => role.id).includes(this.id));
     }
     get color() { return this.colour }
 
-    async delete() {
+    async delete(reason) {
         await this.client.http.deleteRole(this.guild.id, this.id);
         this.guild.cache.removeRole(this.id);
         return this;
