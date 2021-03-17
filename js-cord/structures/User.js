@@ -1,7 +1,38 @@
 const {parseSnowflake, parseAssetSize} = require('../util/Util');
 
 class User {
-    constructor(client, user_id, data=null) {
+    constructor(client, data) {
+        this.client = client;
+        this.id = data.id;
+        this.name = data.name;
+        this.discriminator = data.discriminator;
+        this.mention = `<@!${this.id}>`;
+        this.bot = data.bot;
+        this.avatar = data.avatar;
+    }
+    get tag() { return `${this.name}#${this.discriminator}` }
+    toString() { return this.tag }
+
+    get avatarAnimated() { return !this.avatar ? undefined : this.avatar.startsWith("a_") }
+    get defaultFormat() { return this.avatarAnimated ? "gif" : "png" }
+    get avatarUrl() { return this.avatarUrlAs({ format: this.defaultFormat }) } 
+    avatarUrlAs({ format, size }) {
+        if (!this.avatar) return undefined;
+
+        let url = `https://cdn.discordapp.com/avatars/${this.id}/${this.avatar}.`;
+        let validFormats = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+        
+        format = format               ? format.toLowerCase() : this.defaultFormat;
+        size   = parseAssetSize(size) ? `?size=${size}`      : "";
+        
+        let validFormats = ["png", "jpeg", "jpg", "webp"];
+        if (this.avatarAnimated) validFormats.push("gif");
+        if (!validFormats.includes(format)) format = this.defaultFormat; 
+        if (format === "jpeg") format = "jpg";
+
+        return url + format + size;
+    }
+}/*
         this.dmChannel = null;
         this.client = client;
         this.input_id = user_id;
@@ -79,4 +110,4 @@ class User {
     }
 }
 
-module.exports = User;
+module.exports = User;*/

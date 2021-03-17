@@ -7,6 +7,7 @@ const ClientUser = require("../structures/ClientUser");
 const Channel = require("../structures/Channel");
 const User = require("../structures/User");
 const Guild = require("../structures/Guild");
+const { ClientCache } = require("../structures/Cache");
 
 class Client {
     constructor({ allowedMentions=AllowedMentions.default(), intents=Intents.default() }={}) {
@@ -16,16 +17,13 @@ class Client {
         this.allowedMentions = allowedMentions;
         this.intents = intents;
 
+        this.cache = new ClientCache();
         this.token = null;
         this.loggedIn = false;
         this.isBotApplication = null;
 
         this.listeners = {};
         this.individualListeners = {}; // events, but they append
-
-        this.userCache = new Map();
-        this.channelCache = new Map();
-        this.guildCache = new Map();
 
         this.allEvents = [
             "ready", "reconnect", "resumed",
@@ -46,6 +44,45 @@ class Client {
         this.http = new Requester(this);
     }
 
+    get users() {
+        return this.cache.users;
+    }
+    get guilds() {
+        return this.cache.guilds;
+    }
+    get channels() {
+        return this.cache.channels;
+    }
+    get messages() {
+        return this.cache.messages;
+    }
+
+    getUser(id) {
+        id = id.toString();
+        let res = this.cache.getUser(id);
+        if (res) return res;
+        return undefined;
+    }
+    getChannel(id) {
+        id = id.toString();
+        let res = this.cache.getChannel(id);
+        if (res) return res;
+        return undefined;
+    }
+    getGuild(id) {
+        id = id.toString();
+        let res = this.cache.getGuild(id);
+        if (res) return res;
+        return undefined;
+    }
+    getMessage(channel_id, id) {
+        id = id.toString();
+        channel_id = channel_id.toString();
+        if (res) return res;
+        return undefined;
+    }
+
+    /*
     getUser(userId) {
         userId = userId.toString();
         if (this.userCache.has(userId)) return this.userCache.get(userId);
@@ -89,7 +126,7 @@ class Client {
         let guild = new Guild(this, guildId);
         this.guildCache.set(guildId, guild);
         return guild;
-    }
+    }*/
 
 
     login(token, bot = true) {

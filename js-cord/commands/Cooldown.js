@@ -11,6 +11,22 @@ class Cooldown {
     static none() {
         return new Cooldown(1, 0);
     }
+
+    static user(rate, cooldown) {
+        return new Cooldown(rate, cooldown, "user");
+    }
+
+    static channel(rate, cooldown) {
+        return new Cooldown(rate, cooldown, "channel")
+    }
+    
+    static guild(rate, cooldown) {
+        return new Cooldown(rate, cooldown, "guild");
+    }
+
+    static global(rate, cooldown) {
+        return new Cooldown(rate, cooldown, "global");
+    }
 }
 
 module.exports = Cooldown;

@@ -15,7 +15,7 @@ module.exports = function handleEvent(client, event, data) {
         return;
     if (event === "READY") {
         client.loggedIn = true;
-        client.user = new ClientUser(client, data['user']);
+        client.user = new ClientUser(client, data.user);
         client.emit("ready");
     } else if (event === "RESUMED") {
         client.emit("resumed");
@@ -30,18 +30,25 @@ module.exports = function handleEvent(client, event, data) {
 
     // messages
     else if (event === "MESSAGE_CREATE") {
-        client.emit("message", [Message.fromData(client, data)]);
-        // somehow, we add this message to the cache
-    } // we need to make a message cache, or else 
-    // MESSAGE_EDIT/MESSAGE_DELETE won't be able to take payloads
+        let msg = new Message(client, data);
+        client.cache.addMessage(msg);
+        client.emit("message", [ msg ]);
+    } 
     else if (event === "MESSAGE_UPDATE") {
-        client.emit("messageEdit", [null /*some way to get the old message*/, Message.fromData(client, data)]);
+        let newMsg = new Message(client, data);
+        client.cache.addMessage(newMsg);
+        let oldMsg = client.cache.getMessage(data.channel_id, data.id);
+        client.emit("messageEdit", [oldMsg, newMsg]);
     } else if (event === "MESSAGE_DELETE") {
-        client.emit("messageDelete", [null] /*again, some way to get the old message*/)
+        let deletedMsg = client.cache.getMessage(data.channel_id, data.id);
+        client.emit("messageDelete", [deletedMsg])
     } else if (event === "MESSAGE_DELETE_BULK") {
-        client.emit("messageBulkDelete", [null] /*what i said above, but iterate through id's*/)
+        let converted = data.ids
+            .map(id => client.cache.getMessage(data.channel_id, id))
+            .filter(maybeMessage => !!maybeMessage);
+        client.emit("messageBulkDelete", [converted]);
     }
 
     // debugging, comment out rather than delete
-    console.log(event);
+    // console.log(event);
 }

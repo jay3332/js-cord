@@ -4,7 +4,30 @@ const Member = require("../structures/Member");
 const User = require("../structures/User");
 const Guild = require("../structures/Guild");
 
+const TYPES = ["default", "groupUserAdd", "groupUserRemove",
+        "call", "groupChannelNameEdit", "groupChannelIconEdit",
+        "pinned", "memberJoin", "boost", "boostLevel1", "boostLevel2", "boostLevel3",
+        "channelFollowed", "discoveryDisqualified", "discoveryRequalified", "reply",
+        "slashCommand"]
+
 module.exports = class Message {
+
+    constructor(client, data) {
+        this.client = client;
+        this.type = TYPES[data.type];
+        this.content = data.content;
+        this.id = data.id;
+        this.tts = data.tts;
+
+        this.createdAt = Date.parse(data.timestamp);
+        this.editedAt = Date.parse(data.edited_timestamp);
+        this.mentionsEveryone = data.mention_everyone;
+        
+        this.pinned = data.pinned;
+    }
+}
+
+    /*
     // /channels/{channel.id}/messages/{message.id}
     constructor(client, channel_id, message_id, data=null) {
         this.client = client;
@@ -36,5 +59,5 @@ module.exports = class Message {
         "pinned", "memberJoin", "boost", "boostLevel1", "boostLevel2", "boostLevel3",
         "channelFollowed", "discoveryDisqualified", "discoveryRequalified", "reply",
         "slashCommand"][data['type']];
-    }
+    }*/
 }
