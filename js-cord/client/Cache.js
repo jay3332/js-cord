@@ -6,28 +6,44 @@ class ClientCache {
         this.messages = [];
     }
     addUser(item) {
-        let buffer = this.getUser(item.id);
-        if (buffer) this.users.splice(this.users.indexOf(buffer), 1);
+        this.removeUser(item.id);
         this.users.push(item);
         return item;
     }
     addChannel(item) {
-        let buffer = this.getChannel(item.id);
-        if (buffer) this.channels.splice(this.channels.indexOf(buffer), 1);
+        this.removeChannel(item.id);
         this.channels.push(item);
         return item;
     }
     addGuild(item) {
-        let buffer = this.getGuild(item.id);
-        if (buffer) this.guilds.splice(this.guilds.indexOf(buffer), 1);
+        this.removeGuild(item.id)
         this.guilds.push(item);
         return item;
     }
     addMessage(item) {
-        let buffer = this.getMessage(item.channel.id, item.id);
-        if (buffer) this.messages.splice(this.messages.indexOf(buffer), 1);
+        this.removeMessage(item.channel.id, item.id);
         this.messages.push(item);
         return item;
+    }
+    removeUser(id) {
+        let buffer = this.getUser(id);
+        if (buffer) this.users.splice(this.users.indexOf(buffer), 1);
+        return buffer;
+    }
+    removeChannel(id) {
+        let buffer = this.getChannel(id);
+        if (buffer) this.channels.splice(this.channels.indexOf(buffer), 1);
+        return buffer;
+    }
+    removeGuild(id) {
+        let buffer = this.getGuild(id);
+        if (buffer) this.guilds.splice(this.guilds.indexOf(buffer), 1);
+        return buffer;
+    }
+    removeMessage(channel_id, id) {
+        let buffer = this.getMessage(channel_id, id);
+        if (buffer) this.messages.splice(this.messages.indexOf(buffer), 1);
+        return buffer;
     }
     getUser(id) {
         let filtered = this.users.filter(item => item.id == id);
@@ -55,7 +71,7 @@ class ClientCache {
             this.channels = [];
             this.guilds = [];
             this.messages = [];
-        } else if (['users', 'channels', 'guilds', 'messages']).includes(thing) {
+        } else if (['users', 'channels', 'guilds', 'messages'].includes(thing)) {
             this[thing] = [];
         }
     }
