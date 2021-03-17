@@ -1,6 +1,6 @@
 const {parseSnowflake, parseAssetSize} = require('../util/Util');
 
-class User {
+module.exports = class User {
     constructor(client, data) {
         this.client = client;
         this.id = data.id;
@@ -9,6 +9,8 @@ class User {
         this.mention = `<@!${this.id}>`;
         this.bot = data.bot;
         this.avatar = data.avatar;
+
+        if (this.id) this.createdAt = parseSnowflake(this.id);
     }
     get tag() { return `${this.name}#${this.discriminator}` }
     toString() { return this.tag }
