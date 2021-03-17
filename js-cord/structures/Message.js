@@ -60,4 +60,3 @@ module.exports = class Message {
         "channelFollowed", "discoveryDisqualified", "discoveryRequalified", "reply",
         "slashCommand"][data['type']];
     }*/
-}
