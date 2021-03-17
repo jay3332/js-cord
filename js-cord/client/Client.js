@@ -1,4 +1,3 @@
-const https = require('https'); 
 const { ConnectionError, InvalidEventError } = require('../errors/DiscordEventError');
 const AllowedMentions = require("../structures/AllowedMentions");
 const Intents = require("../structures/Intents");
@@ -7,7 +6,7 @@ const ClientUser = require("../structures/ClientUser");
 const Channel = require("../structures/Channel");
 const User = require("../structures/User");
 const Guild = require("../structures/Guild");
-const { ClientCache } = require("../structures/Cache");
+const { ClientCache } = require("../client/Cache");
 
 /**
  * Represents a client connection to Discord.
