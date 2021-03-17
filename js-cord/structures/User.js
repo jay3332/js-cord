@@ -20,7 +20,6 @@ class User {
         if (!this.avatar) return undefined;
 
         let url = `https://cdn.discordapp.com/avatars/${this.id}/${this.avatar}.`;
-        let validFormats = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
         
         format = format               ? format.toLowerCase() : this.defaultFormat;
         size   = parseAssetSize(size) ? `?size=${size}`      : "";

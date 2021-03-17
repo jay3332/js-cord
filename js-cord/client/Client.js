@@ -9,6 +9,9 @@ const User = require("../structures/User");
 const Guild = require("../structures/Guild");
 const { ClientCache } = require("../structures/Cache");
 
+/**
+ * Represents a client connection to Discord.
+ */
 class Client {
     constructor({ allowedMentions=AllowedMentions.default(), intents=Intents.default() }={}) {
         //this.allowedMentions = (options.hasOwnProperty("allowedMentions")) ? options.allowedMentions : AllowedMentions.default();

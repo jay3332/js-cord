@@ -58,8 +58,7 @@ module.exports = class Guild {
         if (!this.icon) return undefined;
 
         let url = `https://cdn.discordapp.com/icons/${this.id}/${this.icon}.`;
-        let validFormats = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
-        
+
         format = format               ? format.toLowerCase() : this.defaultFormat;
         size   = parseAssetSize(size) ? `?size=${size}`      : "";
         
