@@ -32,18 +32,22 @@ class Client {
         this.allEvents = [
             "ready", "reconnect", "resumed",
             "message", "messageDelete", "messageEdit",
+            "rawMessageEdit", "rawMessageDelete", "rawMessageBulkDelete",
             "messageBulkDelete", "memberJoin", "memberEdit",
             "memberRemove", "memberBan", "memberUnban",
-            "guildJoin", "guildEdit", "guildRemove",
+            "guildJoin", "guildEdit", "guildRemove", "guildAvailable",
             "channelCreate", "channelEdit", "channelDelete",
             "channelPinsUpdate", "roleCreate", "roleDelete",
             "roleEdit", "inviteCreate", "inviteDelete",
             "reactionAdd", "reactionRemove", "reactionClear",
             "reactionDelete", "userStatusChange", "typing",
             "userEdit", "voiceStateEdit", "voiceServerEdit",
-            "webhookEdit", "slashCommandCreate", "slashCommandEdit",
-            "slashCommandDelete", "slashCommandUsed"
+            "webhookEdit",
         ];
+        if (this.isSlashClient) this.allEvents.push(
+            "slashCommandCreate", "slashCommandEdit",
+            "slashCommandDelete", "slashCommandUsed"
+        );
 
         this.http = new Requester(this);
     }

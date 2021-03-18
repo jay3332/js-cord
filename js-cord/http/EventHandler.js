@@ -26,9 +26,15 @@ module.exports = function handleEvent(client, event, data) {
 
     // guilds 
     else if (event === "GUILD_CREATE") {
+        const unavailable = data.unavailable || null;
+        if (unavailable) return;
+
         const guild = new Guild(client, data);
         client.cache.addGuild(guild);
-        client.emit("guildJoin", [ guild ]);
+        if (unavailable === false) 
+            client.emit("guildAvailable", [ guild ]);
+        else
+            client.emit("guildJoin", [ guild ]);
     }
 
     // channels
@@ -43,14 +49,19 @@ module.exports = function handleEvent(client, event, data) {
         client.emit("message", [ msg ]);
     } 
     else if (event === "MESSAGE_UPDATE") {
+        let rawEvent = data;
         let newMsg = new Message(client, data);
         client.cache.addMessage(newMsg);
         let oldMsg = client.cache.getMessage(data.channel_id, data.id);
+        if (oldMsg) rawEvent.cachedMessage = oldMsg;
+        client.emit("rawMessageEdit", [ rawEvent ]);
         client.emit("messageEdit", [oldMsg, newMsg]);
     } else if (event === "MESSAGE_DELETE") {
+        client.emit("rawMessageDelete", [ data ]);
         let deletedMsg = client.cache.getMessage(data.channel_id, data.id);
         client.emit("messageDelete", [deletedMsg])
     } else if (event === "MESSAGE_DELETE_BULK") {
+        client.emit("rawMessageBulkDelete", [ data ]);
         let converted = data.ids
             .map(id => client.cache.getMessage(data.channel_id, id))
             .filter(maybeMessage => !!maybeMessage);
