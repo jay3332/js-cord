@@ -8,7 +8,7 @@ module.exports = class GuildChannel extends Channel {
         this.id = data.id;
         this.name = data.name;
         this.guild = guild ||
-                     client.getGuild(data.guild_id) || 
+                     client.getGuild(data.id) || 
                      null;
         this.position = data.position;
         if (this.guild) {
