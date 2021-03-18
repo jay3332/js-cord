@@ -227,7 +227,11 @@ class Requester {
         return await this.request(route);
     }
 
-    async removeUserReaction(channel_id, )
+    async removeUserReaction(channel_id, message_id, user_id, emoji) {
+        let encoded = encodeURIComponent(emoji);
+        const route = new Route('DELETE',  `/channels/${channel_id}/messages/${message_id}/reactions/${encoded}/${user_id || '@me'}`);
+        return await this.request(route);
+    }
 
     async createEmoji(guild_id, payload) {
         const route = new Route('POST', `/guilds/${guild_id}/emojis`);

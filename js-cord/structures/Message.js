@@ -11,7 +11,6 @@ const TYPES = ["default", "groupUserAdd", "groupUserRemove",
         "slashCommand"]
 
 module.exports = class Message {
-
     constructor(client, data) {
         this.client = client;
         this.type = TYPES[data.type];
@@ -39,6 +38,18 @@ module.exports = class Message {
         }
         this.pinned = data.pinned;
         if (data.reactions) this.reactions = data.reactions.map(reaction => new Reaction(client, reaction, this));
+    }
+    async addReaction(emoji) {
+        if (typeof emoji === "string") {
+            if (emoji.match(/\<?a?:?[a-zA-Z0-9_]{2,32}:\d{17,}\>?/)) {
+                
+            }
+        } else {}
+    }
+    async addReactions(...emojis) {
+        for (emoji of emojis) {
+            await this.addReaction(emoji);
+        }
     }
 }
 

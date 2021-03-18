@@ -1,5 +1,6 @@
 const Role = require("../structures/Role");
 const User = require("../structures/User");
+const PartialEmoji = require("../structures/PartialEmoji");
 const { parseSnowflake, parseAssetSize } = require("../util/Util");
 
 module.exports = class Emoji {
@@ -17,6 +18,11 @@ module.exports = class Emoji {
         this.requiresColons = data.require_colons;
         this.createdAt = parseSnowflake(this.id);
         this.available = data.available;
+        this.partial = new PartialEmoji(this.client, {
+            name: this.name,
+            id: this.id,
+            animated: this.animated
+        });
         this.guild = guild;
     }
     get defaultFormat() {
@@ -39,6 +45,9 @@ module.exports = class Emoji {
     }
     get usable() {
         return this.useable;
+    }
+    get requestEmoji() {
+        return this.partial.requestEmoji;
     }
     urlAs({ format, size }) {
 

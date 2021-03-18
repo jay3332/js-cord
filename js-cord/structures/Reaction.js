@@ -18,6 +18,11 @@ class Reaction {
         let result = await this.client.http.getReactionUsers(this.channel.id, this.message.id, emoji);
         return result.map(user => new User(this.client, user));
     }
+    async remove(user) {
+        let emoji = this.emoji.requestEmoji;
+        await this.client.http.removeUserReaction(this.channel.id, this.message.id, user||null, emoji);
+        return this;
+    }
 }
 
 module.exports = Reaction;
