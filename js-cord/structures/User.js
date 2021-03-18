@@ -4,7 +4,7 @@ module.exports = class User {
     constructor(client, data) {
         this.client = client;
         this.id = data.id;
-        this.name = data.name;
+        this.name = data.username;
         this.discriminator = data.discriminator;
         this.mention = `<@!${this.id}>`;
         this.bot = data.bot;
