@@ -19,9 +19,16 @@ module.exports = class Message {
         this.tts = data.tts;
         this.channel = this.client.getChannel(data.channel_id);
         this.guild = data.guild_id ? client.getGuild(data.guild_id) : undefined;
+        this.pinned = data.pinned;
+
+        if (data.author.id) this.author = this.guild.cache.getMember(data.author.id);
+        if (!this.author) this.author = this.client.getUser(data.author.id);
+        if (!this.author) { let u = new User(client, data.author); this.client.cache.addUser(u); this.author = u }
+
         this.createdAt = Date.parse(data.timestamp);
         this.editedAt = Date.parse(data.edited_timestamp);
         this.mentionsEveryone = data.mention_everyone;
+
         if (data.mentions)
             this.mentions = data.mentions.map(user => {
                 let finalUser = new User(client, user);
@@ -37,7 +44,6 @@ module.exports = class Message {
         if (data.mention_channels) {
             this.channelMentions = data.mention_channels.map(channelMention => this.client.cache.getChannel(channelMention.id));
         }
-        this.pinned = data.pinned;
         if (data.reactions) this.reactions = data.reactions.map(reaction => new Reaction(client, reaction, this));
     }
     async addReaction(emoji) {
