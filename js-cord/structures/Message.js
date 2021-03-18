@@ -17,6 +17,7 @@ module.exports = class Message {
         this.content = data.content;
         this.id = data.id;
         this.tts = data.tts;
+        this.channel = this.client.getChannel(data.channel_id);
         this.guild = data.guild_id ? client.getGuild(data.guild_id) : undefined;
         this.createdAt = Date.parse(data.timestamp);
         this.editedAt = Date.parse(data.edited_timestamp);
