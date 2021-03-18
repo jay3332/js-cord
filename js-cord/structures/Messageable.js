@@ -7,7 +7,7 @@ module.exports = class Messageable {
         this.http = client.http;
         this.cls = null;
     }
-    send(content, options={}) {
+    async send(content, options={}) {
         if (this.constructor.name.endsWith("Channel")) {
             if (!this.textBased) throw new ReferenceError(
                 "Cannot send messages in this channel: Channel is not text-based.");
@@ -36,10 +36,10 @@ module.exports = class Messageable {
         }
 
         if (!this.cls) { this.cls = require("../structures/Message"); }
-        const response = this.http.sendMessage(this.id, content.toString(), embed, tts);
+        const response = await this.http.sendMessage(this.id, content.toString(), embed, tts);
         return new this.cls(this.client, response);
     }
-    fetchMessage(id) {
+    async fetchMessage(id) {
         if (!this.cls) { this.cls = require("../structures/Message"); }
         return new this.cls(this.client, this.http.getMessage(this.id, id));
     }
@@ -54,7 +54,7 @@ module.exports = class Messageable {
         if (!this.cls) { this.cls = require("../structures/Message"); }
         const response = this.http.getHistory(this.id);
     }
-    triggerTyping() {
+    async triggerTyping() {
         this.http.triggerTyping(this.id);
     }
 }

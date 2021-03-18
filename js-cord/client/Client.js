@@ -166,7 +166,7 @@ class Client {
     }*/
 
 
-    login(token, bot = true) {
+    async login(token, bot = true) {
         if (this.loggedIn)
             throw new ConnectionError("You're already logged in.");
         if (!token.match(/([^\W_]{24}\.[^\W_]{6}\.[\w\-]{27}|mfa\.[\w\-]{84})/))
@@ -174,13 +174,13 @@ class Client {
         this.token = token;    
         this.isBotApplication = token.startsWith("mfa.") ? false : bot;
         this.http.putToken(token, bot);
-        this.http.establishGateway();
+        await this.http.establishGateway();
     }
 
-    logout() {
+    async logout() {
         if (!this.loggedIn)
             throw new ConnectionError("You weren't logged in.");
-        this.http.logout();
+        await this.http.logout();
         this.token = null;
         this.loggedIn = false;
         this.isBotApplication = false
@@ -228,12 +228,12 @@ class Client {
         if (!finished) throw new /*WaitForTimeout*/Error("Timeout reached");
     }
 
-    emit(event, parameters=[]) {
+    async emit(event, parameters=[]) {
         try {
             if (!!this.individualListeners[event]) {
                 if (this.individualListeners[event].length > 0) {
                     for (const individualListener of this.individualListeners[event]) {
-                        individualListener(...parameters);
+                        await individualListener(...parameters);
                     }
                 }
             }
@@ -242,12 +242,12 @@ class Client {
                 const allCogsWithListeners = this.cogs.filter(cog => Object.keys(cog.listeners).length>0);
                 for (const cog of allCogsWithListeners) {
                     if (cog.listeners.hasOwnProperty(event))
-                        cog.listeners[event](...parameters);
+                        await cog.listeners[event](...parameters);
                 }
             }
 
             if (this.listeners.hasOwnProperty(event))
-                this.listeners[event](...parameters);
+                await this.listeners[event](...parameters);
             return true;
         } catch (e) {
             console.error(e);

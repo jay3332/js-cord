@@ -14,7 +14,7 @@ const whitelist = [
     "GUILD_MEMBERS_CHUNK"
 ];
 
-module.exports = function handleEvent(client, event, data) {
+module.exports = async function handleEvent(client, event, data) {
     event = event.toUpperCase().replace(" ", "_");
     if (!client.loggedIn && !whitelist.includes(event))
         // we don't wanna start emitting events with no data
@@ -22,11 +22,11 @@ module.exports = function handleEvent(client, event, data) {
     if (event === "READY") {
         client.loggedIn = true;
         client.user = new ClientUser(client, data.user);
-        client.emit("ready");
+        await client.emit("ready");
     } else if (event === "RESUMED") {
-        client.emit("resumed");
+        await client.emit("resumed");
     } else if (event === "RECONNECT") {
-        client.emit("reconnect") 
+        await client.emit("reconnect") 
     } 
 
     // guilds 
@@ -37,21 +37,21 @@ module.exports = function handleEvent(client, event, data) {
         const guild = new Guild(client, data);
         client.cache.addGuild(guild);
         if (unavailable === false) 
-            client.emit("guildAvailable", [ guild ]);
+            await client.emit("guildAvailable", [ guild ]);
         else
-            client.emit("guildJoin", [ guild ]);
+            await client.emit("guildJoin", [ guild ]);
     }
 
     // channels
     else if (event === "CHANNEL_CREATE") {
-        client.emit("channel")
+        await client.emit("channel")
     } // wip because channel support is currently partial
 
     // messages
     else if (event === "MESSAGE_CREATE") {
         let msg = new Message(client, data);
         client.cache.addMessage(msg);
-        client.emit("message", [ msg ]);
+        await client.emit("message", [ msg ]);
     } 
     else if (event === "MESSAGE_UPDATE") {
         let rawEvent = data;
@@ -59,18 +59,18 @@ module.exports = function handleEvent(client, event, data) {
         client.cache.addMessage(newMsg);
         let oldMsg = client.cache.getMessage(data.channel_id, data.id);
         if (oldMsg) rawEvent.cachedMessage = oldMsg;
-        client.emit("rawMessageEdit", [ rawEvent ]);
-        client.emit("messageEdit", [oldMsg, newMsg]);
+        await client.emit("rawMessageEdit", [ rawEvent ]);
+        await client.emit("messageEdit", [oldMsg, newMsg]);
     } else if (event === "MESSAGE_DELETE") {
-        client.emit("rawMessageDelete", [ data ]);
+        await client.emit("rawMessageDelete", [ data ]);
         let deletedMsg = client.cache.getMessage(data.channel_id, data.id);
-        client.emit("messageDelete", [deletedMsg])
+        await client.emit("messageDelete", [deletedMsg])
     } else if (event === "MESSAGE_DELETE_BULK") {
-        client.emit("rawMessageBulkDelete", [ data ]);
+        await client.emit("rawMessageBulkDelete", [ data ]);
         let converted = data.ids
             .map(id => client.cache.getMessage(data.channel_id, id))
             .filter(maybeMessage => !!maybeMessage);
-        client.emit("messageBulkDelete", [converted]);
+        await client.emit("messageBulkDelete", [converted]);
     }
 
     // debugging, comment out rather than delete

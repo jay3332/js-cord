@@ -62,7 +62,7 @@ class Requester {
         this.botToken = bot;
     }
 
-    establishGateway() {
+    async establishGateway() {
         let route = new Route('GET', '/gateway/bot');
         const response = this.request(route);
         const extension = "?v=8&encoding=json";
@@ -70,10 +70,10 @@ class Requester {
                     ? (response['url'] + extensions)
                     : "wss://gateway.discord.gg/?"+extension;
         this.client.ws = new ws(url);
-        this.setupWebsocket();
+        await this.setupWebsocket();
     }
 
-    setupWebsocket () {
+    async setupWebsocket () {
         this.client.ws.on('message', data => {
             //console.log(data);
             if (typeof data !== "object") {
@@ -82,17 +82,17 @@ class Requester {
             } catch (e) {
                 data = JSON.parse(new zlib.RawInflate(data).decompress());
             }}
-            this.parseWebsocketData(data);
+            await this.parseWebsocketData(data);
         });
     }
 
-    parseWebsocketData(data) {
+    async parseWebsocketData(data) {
         const payloadData = data.d;
         const op = parseInt(data.op);
         if (!data) return;
         if (op === 0) {
             // it's an event
-            handleEvent(this.client, data.t, payloadData);
+            await handleEvent(this.client, data.t, payloadData);
         } else if (op == 1) {
             // it's a heartbeat, we should send one back.
             // we should also start timing:
