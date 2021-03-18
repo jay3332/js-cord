@@ -26,7 +26,7 @@ module.exports = class Slash {
     onCommand(command, exec) {
         this.client.addListener("slashCommandUsed", ctx => {
             if (ctx.command.id === command.id) {
-                await Promise.resolve(exec(ctx));
+                Promise.resolve(exec(ctx));
             }
         });
     }

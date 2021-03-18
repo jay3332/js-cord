@@ -9,12 +9,13 @@ bot.listen("ready", () => {
 })
 
 // Advanced ping command
-bot.command("ping", ctx => {
+// Note that we need to make this asynchronous
+bot.command("ping", async (ctx) => {
     let websocket = bot.latency;
     let typing = Date.now();
-    let original = ctx.send("Loading...");
+    let original = await ctx.send("Loading...");
     typing = Math.round(Date.now() - typing);
-    original.edit(`Pong!\n**Websocket:** ${websocket} ms\n**Typing:** ${typing} ms`);
+    await original.edit(`Pong!\n**Websocket:** ${websocket} ms\n**Typing:** ${typing} ms`);
 });
 
 // Log in to Discord.
