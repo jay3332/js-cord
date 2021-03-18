@@ -74,7 +74,7 @@ class Requester {
     }
 
     async setupWebsocket () {
-        this.client.ws.on('message', data => {
+        this.client.ws.on('message', async (data) => {
             //console.log(data);
             if (typeof data !== "object") {
             try {
