@@ -37,11 +37,11 @@ module.exports = class Messageable {
 
         if (!this.cls) { this.cls = require("../structures/Message"); }
         const response = this.http.sendMessage(this.id, content.toString(), embed, tts);
-        return this.cls.fromData(this.client, response);
+        return new this.cls(this.client, response);
     }
     fetchMessage(id) {
         if (!this.cls) { this.cls = require("../structures/Message"); }
-        return this.cls.fromData(this.client, this.http.getMessage(this.id, id));
+        return new this.cls(this.client, this.http.getMessage(this.id, id));
     }
     history(limit=100, options={}) {
         if (typeof limit === "object") {
