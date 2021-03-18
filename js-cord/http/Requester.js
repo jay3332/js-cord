@@ -221,6 +221,14 @@ class Requester {
 
     // emojis
 
+    async getReactionUsers(channel_id, message_id, emoji) {
+        let encoded = encodeURIComponent(emoji);
+        const route = new Route('GET', `/channels/${channel_id}/messages/${message_id}/reactions/${encoded}`);
+        return await this.request(route);
+    }
+
+    async removeUserReaction(channel_id, )
+
     async createEmoji(guild_id, payload) {
         const route = new Route('POST', `/guilds/${guild_id}/emojis`);
         return await this.request(route, payload);

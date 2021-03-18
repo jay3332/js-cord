@@ -18,12 +18,27 @@ module.exports = class Message {
         this.content = data.content;
         this.id = data.id;
         this.tts = data.tts;
-
+        this.guild = data.guild_id ? client.getGuild(data.guild_id) : undefined;
         this.createdAt = Date.parse(data.timestamp);
         this.editedAt = Date.parse(data.edited_timestamp);
         this.mentionsEveryone = data.mention_everyone;
-        
+        if (data.mentions)
+            this.mentions = data.mentions.map(user => {
+                let finalUser = new User(client, user);
+                this.client.cache.addUser(finalUser);
+                return finalUser;
+            });
+        if (data.mention_roles && this.guild)
+            this.roleMentions = data.mention_roles.map(role_id => {
+                let role = this.guild.getRole(role_id);
+                this.guild.cache.addRole(role);
+                return role;
+            });
+        if (data.mention_channels) {
+            this.channelMentions = data.mention_channels.map(channelMention => this.client.cache.getChannel(channelMention.id));
+        }
         this.pinned = data.pinned;
+        if (data.reactions) this.reactions = data.reactions.map(reaction => new Reaction(client, reaction, this));
     }
 }
 
