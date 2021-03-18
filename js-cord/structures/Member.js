@@ -21,6 +21,9 @@ class Member extends User {
     get manageable() {
         return this.topRole.position<this.guild.me.topRole.position;
     }
+    get managable() {
+        return this.manageable;
+    }
     get kickable() {
         if (this.guild.isOwner) return true;
         return this.guild.me.permissions.kickMembers && this.manageable;
