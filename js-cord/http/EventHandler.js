@@ -1,3 +1,8 @@
+/**
+ * Handles events that are received by the websocket.
+ * Please forgive my spaghetti code
+ */
+
 const ClientUser = require("../structures/ClientUser");
 const Message = require("../structures/Message");
 const Guild = require("../structures/Guild");
