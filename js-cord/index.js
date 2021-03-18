@@ -19,7 +19,7 @@ module.exports = {
     ClientUser: require("./structures/ClientUser"),
     DMChannel: require("./structures/DMChannel"),
     Embed: require("./structures/Embed"),
-    Emoji: reuqire("./structures/Emoji"),
+    Emoji: require("./structures/Emoji"),
     Guild: require("./structures/Guild"),
     GuildChannel: require("./structures/GuildChannel"),
     Intents: require("./structures/Intents"),
