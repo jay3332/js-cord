@@ -9,7 +9,7 @@ class Member extends User {
         this.joinedAt = Date.parse(memberData.joined_at);
         this.boostingSince = memberData.premium_since ? Date.parse(memberData.premium_since) : undefined;
         this.pending = memberData.pending;
-        this.roles = memberData.roles.map(role => guild.cache.getRole(role.id)).sort((a, b) => {
+        this.roles = memberData.roles.map(role => guild.cache.getRole(role)).sort((a, b) => {
             return a.position > b.position ? 1 : (a.position < b.position ? -1 : 0)
         });
         this.permissions = null;
