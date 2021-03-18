@@ -1,8 +1,13 @@
 const Util = require("../util/Util");
 const Member = require("../structures/Member");
-const Roles = require("../structures/Role");
+const User = require("../structures/User");
+const Role = require("../structures/Role");
 const { GuildCache } = require('../client/Cache');
 const { parseSnowflake, parseAssetSize } = Util;
+const GuildChannel = require("../structures/GuildChannel");
+const TextChannel = require("../structures/TextChannel");
+const VoiceChannel = require("../structures/VoiceChannel");
+const Category = require("../structures/Category")
 
 module.exports = class Guild {
     constructor(client, data, cache) {
@@ -11,11 +16,51 @@ module.exports = class Guild {
         this.client = client;
         this.cache = cache || new GuildCache();
         this.icon = data.icon;
-
-        this.owner = this.getMember(data.owner_id);
-        this.isOwner = data.owner;
+        this.ownerId = data.owner_id;
 
         if (this.id) this.createdAt = parseSnowflake(this.id);
+        if (data.members) {
+            data.members.forEach(member => {
+                let memberStruct = new Member(
+                    this.client, 
+                    member, 
+                    member.user,
+                    this
+                );
+                let userStruct = new User(this.client, member.user);
+                this.cache.addMember(memberStruct);
+                this.client.cache.addUser(userStruct);
+            });
+        } 
+        if (data.roles) {
+            data.roles.forEach(role => {
+                this.cache.addRole(new Role(this.client, role, this));
+            });
+        }
+        if (data.channels) {
+            data.channels.forEach(channel => {
+                let c;
+                if (channel.type === 2) {
+                    c = new VoiceChannel(this.client, channel, this);
+                } else if (channel.type === 4) {
+                    c = new Category(this.client, channel, this);
+                } else if (channel.type < 6) {
+                    c = new TextChannel(this.client, channel, this);
+                } else {
+                    c = new GuildChannel(this.client, channel, this);
+                }
+                this.client.cache.addChannel(c);
+            });
+        }
+        if (data.emojis) {
+            
+        }
+    }
+    get owner() {
+        return this.getMember(this.ownerId);
+    }
+    get isOwner() {
+        return this.ownerId === this.client.user.id;
     }
     get channels() {
         return this.client.cache.channels.filter(channel => channel.guild.id===this.id);
@@ -25,6 +70,9 @@ module.exports = class Guild {
     }
     get voiceChannels() {
         return this.channels.filter(channel => !channel.textBased);
+    }
+    get categories() {
+        return this.channels.filter(channel => !!channel.channels);
     }
     get members() {
         return this.cache.members
@@ -50,6 +98,12 @@ module.exports = class Guild {
         if (res) return res;
         return undefined;
     }
+    asMember(user) {
+        return this.getMember(user.id);
+    }
+    get me() {
+        return this.asMember(this.client.user)
+    }
 
     get iconAnimated() { return this.icon ? this.icon.startsWith("a_") : false }
     get defaultFormat() { return this.iconAnimated ? "gif" : "png" }
@@ -70,22 +124,4 @@ module.exports = class Guild {
 
         return url + format + size;
     }
-
-    /*
-    constructor(client, guild_id) {
-        this.id = guild_id;
-        this.createdAt = Util.parseSnowflake(guild_id);
-        const data = client.http.getGuild(guild_id);
-        this.name = data['name'];
-        this.iconHash = data['icon'];
-        try { this.iconAnimated = this.iconHash.startsWith("a_") } catch (e) {
-            this.iconAnimated = false;
-        };
-        const defaultFormat = this.iconAnimated ? "gif" : "png";
-        this.iconUrl = `https://cdn.discordapp.com/avatars/${this.id}/${this.iconHash}.${defaultFormat}`;
-        this.isOwner = data['owner'];
-        this.owner = new Member(client, data['owner_id'], guild_id);
-        
-    }
-    */
 }

@@ -18,14 +18,24 @@ class Member extends User {
     get topRole() {
         return this.roles[-1];
     }
+    get manageable() {
+        return this.topRole.position<this.guild.me.topRole.position;
+    }
     get kickable() {
         if (this.guild.isOwner) return true;
-        return this.guild.me.permissions.kickMembers && this.topRole.position<this.guild.me.topRole.position;
+        return this.guild.me.permissions.kickMembers && this.manageable;
     }
     get bannable() {
         if (this.guild.isOwner) return true;
-        return this.guild.me.permissions.banMembers && this.topRole.position<this.guild.me.topRole.position;
+        return this.guild.me.permissions.banMembers && this.manageable;
     }
+    async kick(reason) {
+        return await this.guild.kick(user, reason);
+    }
+    async ban(reason) {
+        return await this.guild.ban(user, reason);
+    }
+    async edit() {}
 }
 
 module.exports = Member;

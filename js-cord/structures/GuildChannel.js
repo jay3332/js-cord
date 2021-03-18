@@ -2,12 +2,14 @@ const Channel = require("../structures/Channel");
 const Invite = require("../structures/Invite");
 
 module.exports = class GuildChannel extends Channel {
-    constructor(client, data) {
+    constructor(client, data, guild) {
         super(cilent, data);
         this.deleted = false;
         this.id = data.id;
         this.name = data.name;
-        this.guild = client.getGuild(data.guild_id) || null;
+        this.guild = guild ||
+                     client.getGuild(data.guild_id) || 
+                     null;
         this.position = data.position;
         if (this.guild) {
             this.category = guild.getChannel(data.parent_id) || null;

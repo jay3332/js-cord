@@ -7,18 +7,20 @@ const Channel = require("../structures/Channel");
 const User = require("../structures/User");
 const Guild = require("../structures/Guild");
 const { ClientCache } = require("../client/Cache");
+const Slash = require("../client/Slash");
 
 /**
  * Represents a client connection to Discord.
  */
 class Client {
-    constructor({ allowedMentions=AllowedMentions.default(), intents=Intents.default() }={}) {
+    constructor({ allowedMentions=AllowedMentions.default(), intents=Intents.default(), slash=false }={}) {
         //this.allowedMentions = (options.hasOwnProperty("allowedMentions")) ? options.allowedMentions : AllowedMentions.default();
         //this.intents = (options.hasOwnProperty("intents")) ? options.intents : Intents.default();
 
         this.allowedMentions = allowedMentions;
         this.intents = intents;
 
+        this.isSlashClient = slash;
         this.cache = new ClientCache();
         this.token = null;
         this.loggedIn = false;
@@ -44,6 +46,16 @@ class Client {
         ];
 
         this.http = new Requester(this);
+    }
+
+    get slash() {
+        if (!this.isSlashClient) throw new TypeError(
+            "A normal client cannot create or modify slash commands. "+
+            "You can create a Slash client by setting the 'slash' option to true. "+
+            "(example: const client = new discord.Client({ slash: true }))"
+        )
+        if (!this._slash) this._slash = new Slash(this);
+        return this._slash;
     }
 
     get users() {

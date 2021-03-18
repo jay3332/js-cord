@@ -46,22 +46,22 @@ class ClientCache {
         return buffer;
     }
     getUser(id) {
-        let filtered = this.users.filter(item => item.id == id);
+        let filtered = this.users.filter(item => item.id === id);
         if (filtered.length) return filtered[0];
         return undefined;
     }
     getChannel(id) {
-        let filtered = this.channels.filter(item => item.id == id);
+        let filtered = this.channels.filter(item => item.id === id);
         if (filtered.length) return filtered[0];
         return undefined;
     }
     getGuild(id) {
-        let filtered = this.guild.filter(item => item.id == id);
+        let filtered = this.guild.filter(item => item.id === id);
         if (filtered.length) return filtered[0];
         return undefined;
     }
     getMessage(channel_id, id) {
-        let filtered = this.messages.filter(item => item.id == id && item.channel.id == channel_id);
+        let filtered = this.messages.filter(item => item.id === id && item.channel.id === channel_id);
         if (filtered.length) return filtered[0];
         return undefined;
     }
@@ -82,6 +82,51 @@ class GuildCache {
         this.members = [];
         this.roles = [];
         this.emojis = [];
+    }
+    addMember(item) {
+        this.removeMember(item.id);
+        this.members.push(item);
+        return item;
+    }
+    addRole(item) {
+        this.removeRole(item.id);
+        this.roles.push(item);
+        return item;
+    }
+    addEmoji(item) {
+        this.removeEmoji(item.id);
+        this.emojis.push(item);
+        return item;
+    }
+    removeMember(id) {
+        let buffer = this.getMember(id);
+        if (buffer) this.members.splice(this.members.indexOf(buffer), 1);
+        return buffer;
+    }
+    removeRole(id) {
+        let buffer = this.getRole(id);
+        if (buffer) this.roles.splice(this.roles.indexOf(buffer), 1);
+        return buffer;
+    }
+    removeEmoji(id) {
+        let buffer = this.getEmoji(id);
+        if (buffer) this.emojis.splice(this.emojis.indexOf(buffer), 1);
+        return buffer;
+    }
+    getMember(id) {
+        let filtered = this.members.filter(item => item.id === id);
+        if (filtered.length) return filtered[0];
+        return undefined
+    }
+    getRole(id) {
+        let filtered = this.roles.filter(item => item.id === id);
+        if (filtered.length) return filtered[0];
+        return undefined
+    }
+    getEmoji(id) {
+        let filtered = this.emojis.filter(item => item.id === id);
+        if (filtered.length) return filtered[0];
+        return undefined
     }
 }
 

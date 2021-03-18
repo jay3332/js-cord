@@ -12,7 +12,7 @@ const Check = require('../commands/Check'),
 
 class Bot extends Client {
     constructor({ prefix, prefixCaseInsensitive=false, commandsCaseInsensitive=false, guildOnly=false, 
-                  allowedMentions=undefined, intents=undefined }) {
+                  allowedMentions, intents, slash }) {
         
         super({ allowedMentions: allowedMentions, intents: intents });
 

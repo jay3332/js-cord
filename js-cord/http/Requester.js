@@ -185,6 +185,8 @@ class Requester {
         return await this.request(route, options);
     }
 
+    // roles
+
     async getRole(guild_id, role_id) {
         const route = new Route('GET', `/guilds/${guild_id}/roles/${role_id}`);
         return await this.request(route);
@@ -197,6 +199,35 @@ class Requester {
 
     async deleteRole(guild_id, role_id) {
         const route = new Route('DELETE', `/guilds/${guild_id}/roles/${role_id}`);
+        return await this.request(route);
+    }
+
+    // emojis
+
+    async createEmoji(guild_id, payload) {
+        const route = new Route('POST', `/guilds/${guild_id}/emojis`);
+        return await this.request(route, payload);
+    }
+
+    async editEmoji(guild_id, emoji_id, payload) {
+        const route = new Route('PATCH', `/guilds/${guild_id}/emojis/${emoji_id}`);
+        return await this.request(route, payload);
+    }
+
+    async deleteEmoji(guild_id, emoji_id) {
+        const route = new Route('DELETE', `/guilds/${guild_id}/emojis/${emoji_id}`);
+        return await this.request(route);
+    }
+
+    // slash commands (kinda cringe)
+
+    async getGlobalSlashCommands(application_id) {
+        const route = new Route('GET', `/applications/${application_id || this.client.id}/commands`);
+        return await this.request(route);
+    }
+
+    async getGuildSlashCommands(application_id, guild_id) {
+        const route = new Route('GET', `/applications/${application_id || this.client.id}/guilds/${guild_id}/commands`);
         return await this.request(route);
     }
 
