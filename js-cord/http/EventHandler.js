@@ -45,13 +45,13 @@ module.exports = function handleEvent(client, event, data) {
     // messages
     else if (event === "MESSAGE_CREATE") {
         let msg = new Message(client, data);
-        client.cache.addMessage(msg);
+        client.cache.addMessage(msg.channel.id, msg);
         client.emit("message", [ msg ]);
     } 
     else if (event === "MESSAGE_UPDATE") {
         let rawEvent = data;
         let newMsg = new Message(client, data);
-        client.cache.addMessage(newMsg);
+        client.cache.addMessage(newMsg.channel.id, newMsg);
         let oldMsg = client.cache.getMessage(data.channel_id, data.id);
         if (oldMsg) rawEvent.cachedMessage = oldMsg;
         client.emit("rawMessageEdit", [ rawEvent ]);
