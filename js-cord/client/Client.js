@@ -52,6 +52,25 @@ class Client {
         this.http = new Requester(this);
     }
 
+    get latency() {
+        // Returns the average websocket latency for the past 5 heartbeats.
+        const readings = this.http.latencies.slice(-5);
+        const sum = readings.reduce((a, b) => a+b, 0);
+        return sum / readings.length;
+    }
+
+    get currentLatency() {
+        // Returns the most recent websocket latency reading.
+        return this.http.latencies[-1];
+    }
+
+    get averageLatency() {
+        // Returns the average websocket latency for the past 20 heartbeats.
+        const readings = this.http.latencies.slice(-20);
+        const sum = readings.reduce((a, b) => a+b, 0);
+        return sum / readings.length;
+    }
+
     get slash() {
         if (!this.isSlashClient) throw new TypeError(
             "A normal client cannot create or modify slash commands. "+

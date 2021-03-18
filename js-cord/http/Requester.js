@@ -8,6 +8,7 @@ const ws = require("ws");
 class Requester {
     /**
      * Main class that sends requests to the Discord API.
+     * This, is for some reason, also merged with websockets.
      */
 
     constructor(client) {
@@ -15,6 +16,8 @@ class Requester {
         this.token = null;
         this.botToken = true;
         this.userAgent = 'DiscordBot (js-cord 1.0)';
+        this.latencies = [];
+        this.lastPing = null;
     };
 
     async request(route, reqbody, contentType="application/json") {
@@ -88,6 +91,13 @@ class Requester {
         if (op === 0) {
             // it's an event
             handleEvent(this.client, data.t, payloadData);
+        } else if (op == 1) {
+            // it's a heartbeat, we should send one back.
+            // we should also start timing:
+            this.lastPing = parseFloat(process.hrtime().join("."));
+            this.client.ws.send(JSON.stringify({
+                op: 1, sequence: data.js
+            }));
         } else if (op == 10) {
             this.client.ws.send(JSON.stringify({
                 op: 2,
@@ -100,14 +110,13 @@ class Requester {
                         '$device': "js-cord"
                     }
                 }
-            }));/*
-            setInterval(() => {
-                this.client.ws.send(JSON.stringify({
-                    op: 1,
-                    sequence: data.s
-                }));
-            }, data.heartbeat_interval);*/
-            
+            }));
+        } else if (op == 11) {
+            // nice, we got a heartbeat ack, this means things went well.
+            if (this.lastPing) {
+                let current = parseFloat(process.hrtime().join("."));
+                this.latencies.push(current - this.lastPing);
+            }
         }
     }
 
