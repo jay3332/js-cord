@@ -72,7 +72,7 @@ module.exports = class GuildChannel extends Channel {
     }
     clone(name, reason) {
         if (!name) name=this.name;
-        return this.guild.createChannel({ 
+        return this.guild.createChannel( 
             name, {
                 overwrites: this.overwrites,
                 topic: this.topic,
@@ -83,7 +83,7 @@ module.exports = class GuildChannel extends Channel {
                 slowmode: this.slowmode,
                 reason: reason,
             }
-        });
+        );
     }
 
 }
