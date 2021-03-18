@@ -101,6 +101,7 @@ class Requester {
                 op: 1, sequence: data.s
             }));
         } else if (op == 10) {
+            console.log("ok");
             this.client.ws.send(JSON.stringify({
                 op: 2,
                 d: {
