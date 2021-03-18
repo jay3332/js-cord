@@ -31,7 +31,7 @@ class Requester {
         if (reqbody) reqbody['Content-Type'] = contentType;
 
         let body = JSON.stringify(reqbody || {});
-        let result = await http(route.url, { method: method, headers: headers, body: reqbody ? body : undefined });
+        let result = await http(route.url, { method: method, headers: headers, body: !!reqbody ? body : undefined });
         return await result.json();
 
         /* const response = needle.request(method, route.url, (reqbody || {}), {json: true, headers: headers}, (
@@ -63,8 +63,12 @@ class Requester {
     }
 
     establishGateway() {
+        let route = new Route('GET', '/gateway/bot');
+        const response = this.request(route);
         const extension = "?v=8&encoding=json";
-        const url = "wss://gateway.discord.gg/?"+extension;
+        const url = !!response['url']
+                    ? (response['url'] + extensions)
+                    : "wss://gateway.discord.gg/?"+extension;
         this.client.ws = new ws(url);
         this.setupWebsocket();
     }
