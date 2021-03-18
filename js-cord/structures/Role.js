@@ -49,5 +49,3 @@ module.exports = class Role {
         return newRole;
     }
 }
-
-module.exports = Role;
