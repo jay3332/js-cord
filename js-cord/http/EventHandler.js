@@ -1,5 +1,6 @@
 const ClientUser = require("../structures/ClientUser");
 const Message = require("../structures/Message");
+const Guild = require("../structures/Guild");
 
 const whitelist = [
     "READY", "RESUMED", 
@@ -22,6 +23,13 @@ module.exports = function handleEvent(client, event, data) {
     } else if (event === "RECONNECT") {
         client.emit("reconnect") 
     } 
+
+    // guilds 
+    else if (event === "GUILD_CREATE") {
+        const guild = new Guild(client, data);
+        client.cache.addGuild(guild);
+        client.emit("guildJoin", [ guild ]);
+    }
 
     // channels
     else if (event === "CHANNEL_CREATE") {
