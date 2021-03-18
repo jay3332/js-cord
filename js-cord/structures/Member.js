@@ -11,7 +11,7 @@ class Member extends User {
         this.pending = memberData.pending;
         if (memberData.roles) this.roles = memberData.roles.map(role => guild.cache.getRole(role)).sort((a, b) => {
             return a.position > b.position ? 1 : (a.position < b.position ? -1 : 0)
-        });
+        }); else this.roles = []
         this.permissions = null;
         this.guild = guild;
     }
