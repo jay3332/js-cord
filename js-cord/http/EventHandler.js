@@ -18,6 +18,7 @@ module.exports = function handleEvent(client, event, data) {
         client.loggedIn = true;
         client.user = new ClientUser(client, data.user);
         client.emit("ready");
+        console.log(data);
     } else if (event === "RESUMED") {
         client.emit("resumed");
     } else if (event === "RECONNECT") {
