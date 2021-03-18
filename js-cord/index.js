@@ -47,7 +47,7 @@ module.exports = {
         CheckError: CheckError,
         CooldownError: require("./errors/CooldownError"),
         ConversionError: require("./errors/ConversionError")
-    }
+    },
 
     Useful: require("./util/Useful"),
     Util: require("./util/Util")
