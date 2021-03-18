@@ -56,7 +56,7 @@ class ClientCache {
         return undefined;
     }
     getGuild(id) {
-        let filtered = this.guild.filter(item => item.id === id);
+        let filtered = this.guilds.filter(item => item.id === id);
         if (filtered.length) return filtered[0];
         return undefined;
     }
