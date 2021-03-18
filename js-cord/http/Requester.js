@@ -114,10 +114,11 @@ class Requester {
                     }
                 }
             }));
+            /*
             this.lastPing = parseFloat(process.hrtime().join("."));
             this.client.ws.send(JSON.stringify({
                 op: 1, sequence: data.s
-            }));
+            })); */
         } else if (op == 11) {
             // nice, we got a heartbeat ack, this means things went well.
             if (this.lastPing) {
