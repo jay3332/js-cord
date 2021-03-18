@@ -35,8 +35,9 @@ module.exports = class Messageable {
             allOptions.push("tts");
         }
 
+        try { content = content.toString() } catch(_){}
         if (!this.cls) { this.cls = require("../structures/Message"); }
-        const response = await this.http.sendMessage(this.id, content.toString(), embed, tts);
+        const response = await this.http.sendMessage(this.id, content, embed, tts);
         return new this.cls(this.client, response);
     }
     async fetchMessage(id) {

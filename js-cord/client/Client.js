@@ -175,6 +175,7 @@ class Client {
         this.isBotApplication = token.startsWith("mfa.") ? false : bot;
         this.http.putToken(token, bot);
         await this.http.establishGateway();
+        return this;
     }
 
     async logout() {
@@ -183,11 +184,13 @@ class Client {
         await this.http.logout();
         this.token = null;
         this.loggedIn = false;
-        this.isBotApplication = false
+        this.isBotApplication = false;
+        return this;
     }
 
     listen(event, fn) {
         this.listeners[event] = fn;
+        return this;
     }
 
     addListener(event, fn) {
@@ -195,6 +198,7 @@ class Client {
             this.individualListeners[event] = [];
         }
         this.individualListeners[event].push(fn);
+        return this;
     }
 
     removeListener(event, fn) {
@@ -202,10 +206,12 @@ class Client {
             throw new InvalidEventError("Event not found.");
         } this.individualListeners[event] = this.individualListeners[event].filter(e => e!=fn);
         if (this.individualListeners[event].length) delete this.individualListeners[event];
+        return this;
     }
 
     clearListeners(event, fn) {
         this.individualListeners = {};
+        return this;
     }
 
     waitFor(event, check=null, { timeout=0 }={}) {
@@ -226,6 +232,7 @@ class Client {
 
         })()) {}
         if (!finished) throw new /*WaitForTimeout*/Error("Timeout reached");
+        return this;
     }
 
     async emit(event, parameters=[]) {

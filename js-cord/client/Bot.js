@@ -49,12 +49,13 @@ class Bot extends Client {
         }
     }
     addCommand(options, exec) {
-        this.command(options, exec);
+        return this.command(options, exec);
     }
     removeCommand(name) {
         const commandToRemove = this.getCommand(name);
         if (commandToRemove) throw new Error("Command not found.");
         this.commands = this.commands.filter(command => command!=commandToRemove);
+        return commandToRemove;
     }
     command(options, exec) {
         const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;

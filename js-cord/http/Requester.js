@@ -149,7 +149,8 @@ class Requester {
         if (nonce) payload['nonce'] = nonce;
         if (allowed_mentions) payload['allowed_mentions'] = allowed_mentions;
         if (message_reference) payload['message_reference'] = message_reference;
-        return await this.request(route, payload);
+        const res = await this.request(route, payload);
+        console.log(res); return res;
     }
 
     async getMessage(channel_id, message_id) {
