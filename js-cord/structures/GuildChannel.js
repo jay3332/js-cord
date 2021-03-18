@@ -3,7 +3,7 @@ const Invite = require("../structures/Invite");
 
 module.exports = class GuildChannel extends Channel {
     constructor(client, data, guild) {
-        super(cilent, data);
+        super(client, data);
         this.deleted = false;
         this.id = data.id;
         this.name = data.name;
