@@ -7,7 +7,7 @@ const Channel = require("../structures/Channel");
 const User = require("../structures/User");
 const Guild = require("../structures/Guild");
 const { ClientCache } = require("../client/Cache");
-const Slash = require("../client/Slash");
+const Slash = require("../slash/Slash");
 
 /**
  * Represents a client connection to Discord.
