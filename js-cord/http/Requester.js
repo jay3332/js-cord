@@ -32,7 +32,14 @@ class Requester {
 
         let body = JSON.stringify(reqbody || {});
         let result = await http(route.url, { method: method, headers: headers, body: !!reqbody ? body : undefined });
-        return await result.json();
+
+        let res = await result.json();
+        if (res.retry_after) {
+            await new Promise(r => setTimeout(r, res.retry_after*1000));
+            result = await http(route.url, { method: method, headers: headers, body: !!reqbody ? body : undefined });
+            res = result.json();
+        }
+        return res;
 
         /* const response = needle.request(method, route.url, (reqbody || {}), {json: true, headers: headers}, (
             err, { body }
@@ -149,8 +156,7 @@ class Requester {
         if (nonce) payload['nonce'] = nonce;
         if (allowed_mentions) payload['allowed_mentions'] = allowed_mentions;
         if (message_reference) payload['message_reference'] = message_reference;
-        const res = await this.request(route, payload);
-        console.log(res); return res;
+        return await this.request(route, payload);
     }
 
     async getMessage(channel_id, message_id) {
