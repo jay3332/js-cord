@@ -96,7 +96,7 @@ class Requester {
             // we should also start timing:
             this.lastPing = parseFloat(process.hrtime().join("."));
             this.client.ws.send(JSON.stringify({
-                op: 1, sequence: data.js
+                op: 1, sequence: data.s
             }));
         } else if (op == 10) {
             this.client.ws.send(JSON.stringify({
@@ -110,6 +110,10 @@ class Requester {
                         '$device': "js-cord"
                     }
                 }
+            }));
+            this.lastPing = parseFloat(process.hrtime().join("."));
+            this.client.ws.send(JSON.stringify({
+                op: 1, sequence: data.s
             }));
         } else if (op == 11) {
             // nice, we got a heartbeat ack, this means things went well.
