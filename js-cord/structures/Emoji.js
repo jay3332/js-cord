@@ -25,17 +25,20 @@ module.exports = class Emoji {
     get url() {
         return this.urlAs({ format: this.defaultFormat });
     }
-    get usable() {
+    get useable() {
         if (!this.available) return false;
         if (!this.roles.length) return true;
         let myRoles = this.guild.me.roles;
         myRoles = myRoles.map(r => r.id);
         for (role of this.roles) {
-            if (myRoles.includes(role.id))) {
+            if (myRoles.includes(role.id)) {
                 return true;
             }
         }
         return false;
+    }
+    get usable() {
+        return this.useable;
     }
     urlAs({ format, size }) {
 
