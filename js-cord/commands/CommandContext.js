@@ -41,7 +41,7 @@ class CommandContext extends Messageable {
         }
         await this.bot.emit("commandComplete", [this]);
     }
-    async static parseContext(message, bot, cls=CommandContext) {
+    static async parseContext(message, bot, cls=CommandContext) {
         /**
          * Parses a message into CommandContext.
          * A custom context class can be specified.
