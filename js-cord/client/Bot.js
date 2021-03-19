@@ -127,12 +127,12 @@ class Bot extends Client {
                 return command;
         } return null;
     }
-    getPrefix(message) {
+    async getPrefix(message) {
         let content = message.content;
         if (this.prefixCaseInsensitive) content = content.toLowerCase();
         let prefix = this.prefix;
         if (typeof prefix == "function") {
-            prefix = prefix(this, message);
+            prefix = await prefix(this, message);
             if (this.prefixCaseInsensitive)
                 prefix = prefix.toLowerCase();
         }
@@ -148,12 +148,12 @@ class Bot extends Client {
         } 
         return null;
     }
-    parseContext(message) {
-        return CommandContext.parseContext(message, this);
+    async parseContext(message) {
+        return await CommandContext.parseContext(message, this);
     }
     async processCommands(message) {
         if (message.author.bot) return;
-        const context = this.parseContext(message);
+        const context = await this.parseContext(message);
         if (!context) return;
         await context.invoke();
     }

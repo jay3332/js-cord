@@ -30,22 +30,24 @@ class Embed {
             };
 		}
     }
-    get asJSON() {
-        /*let buffer = this;
-        buffer['colour'] = buffer['_colour'];
-        delete buffer['_colour'];*/
-        let buffer = {}
-        for (let key of Object.keys(this).filter(k => [
-            "title", "description", "footer", "author", 
-            "url", "timestamp", "colour", "thumbnail",
-            "image", "thumbnail" 
-        ].includes(k))) {
-            buffer[key] = this[key];
+    get json() {
+        return {
+            type: 'rich',
+            title: this.title,
+            description: this.description,
+            color: this.colour,
+            url: this.url,
+            timestamp: this.timestamp 
+                       ? new Date(this.timestamp)
+                       : null,
+            fields: this.fields,
+            thumbnail: this.thumbnail,
+            image: this.image,
+            author: this.author!=={} || null,
+            footer: this.footer!=={} || null,
+            fields: this.fields,
+
         }
-        buffer['type'] = "rich";
-        buffer['author'] = (!buffer.author) ? null : buffer.author;
-        buffer['footer'] = (!buffer.footer) ? null : buffer.footer;
-        return buffer;
     }
     setTitle(title) {
         this.title = title;
@@ -87,14 +89,12 @@ class Embed {
         this.setColour(color);
         return this;
     }
-	setTimestamp(timestamp) {
-		try {
-			this.timestamp = new Date(timestamp || Date.now())
-            return this;
-		} catch {
-			throw new TypeError('Timestamp must be a valid date, unix timestamp, or string.')
-		}
-	}
+	setTimestamp(timestamp = Date.now()) {
+        if (timestamp instanceof Date) 
+            timestamp = timestamp.getTime();
+        this.timestamp = timestamp;
+        return this;
+    }
 	addField(name, value, inline = false) {
 		this.fields.push({name: name, value: value, inline: inline});
         return this;

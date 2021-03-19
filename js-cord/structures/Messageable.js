@@ -26,7 +26,7 @@ module.exports = class Messageable {
         let tts = false;
         if (options.hasOwnProperty("embed") &&
             options.embed instanceof Embed) {
-            embed = options.embed.asJSON;
+            embed = options.embed.json;
             allOptions.push("embed"); 
         }
         if (options.hasOwnProperty("tts") &&

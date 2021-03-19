@@ -41,7 +41,7 @@ class CommandContext extends Messageable {
         }
         await this.bot.emit("commandComplete", [this]);
     }
-    static parseContext(message, bot, cls=CommandContext) {
+    async static parseContext(message, bot, cls=CommandContext) {
         /**
          * Parses a message into CommandContext.
          * A custom context class can be specified.
@@ -68,7 +68,7 @@ class CommandContext extends Messageable {
          * Example of parsed arguments: ['hi', 'this has spaces', 'consume all']
          */
 
-        const prefix = bot.getPrefix(message);
+        const prefix = await bot.getPrefix(message);
         if (!prefix) return NaN;
 
         const noPrefix = message.content.slice(prefix.length).trim();
@@ -98,8 +98,8 @@ class CommandContext extends Messageable {
         try {
             const parsedArgs = parseArgs(partialContext, _);
         } catch (error) {
-            try { command.onError(partialContext, error); }
-            catch (err) { bot.emit("commandError", [partialContext, err]) }
+            try { await command.onError(partialContext, error); }
+            catch (err) { await bot.emit("commandError", [partialContext, err]) }
         }
         
         return new cls(message, bot, prefix, command, parsedArgs, invokedWith);
