@@ -97,7 +97,7 @@ class Bot extends Client {
         let guildOnly = this.guildOnly;
         let permissions = null;
         let cog = null;
-        let args = null;
+        let args = [];
 
         if (options.hasOwnProperty('check')) checks = [options.check];
         if (options.hasOwnProperty('checks')) checks = options.checks;
@@ -151,11 +151,11 @@ class Bot extends Client {
     parseContext(message) {
         return CommandContext.parseContext(message, this);
     }
-    processCommands(message) {
+    async processCommands(message) {
         if (message.author.bot) return;
         const context = this.parseContext(message);
         if (!context) return;
-        context.invoke();
+        await context.invoke();
     }
 }
 

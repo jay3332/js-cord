@@ -20,26 +20,26 @@ class CommandContext extends Messageable {
         // this.reference = message.reference;
         this.content = message.content;
     }
-    invoke(command=null) {
+    async invoke(command=null) {
         // if (this.author.bot) return;
         
         if (!!command) {
             this.command = command;
         }
 
-        this.bot.emit("command", [this]);
+        await this.bot.emit("command", [this]);
         try {
             // check guild-only
             //if (this.command.guildOnly && !!this.guild) 
             //    throw new GuildOnlyError("This command is marked guild-only and cannot be used in DMs.");
             // check permissions + checks (will come later)
 
-            this.command.exec(this, this.args);
+            await this.command.exec(this, this.args);
         } catch (error) {
-            try { this.command.onError(this, error); }
-            catch (err) { this.bot.emit("commandError", [this, err]) }
+            try { await this.command.onError(this, error); }
+            catch (err) { await this.bot.emit("commandError", [this, err]) }
         }
-        this.bot.emit("commandComplete", [this]);
+        await this.bot.emit("commandComplete", [this]);
     }
     static parseContext(message, bot, cls=CommandContext) {
         /**
