@@ -46,7 +46,6 @@ class Embed {
             author: this.author!=={} || null,
             footer: this.footer!=={} || null,
             fields: this.fields,
-
         }
     }
     setTitle(title) {
@@ -96,9 +95,22 @@ class Embed {
         return this;
     }
 	addField(name, value, inline = false) {
-		this.fields.push({name: name, value: value, inline: inline});
+        let final = {name: name, value: value, inline: inline};
+        if (typeof name === "object") {
+            final = {
+                name: name.name,
+                value: name.value,
+                inline: name.inline
+            }
+        }
+        final.inline = (typeof final.inline === 'undefined') ? null : final.inline;
+		this.fields.push(final);
         return this;
 	}
+    addFields(...fields) {
+        fields.forEach(field => this.addField(field));
+        return this;
+    }
 
 	/*get colour() {
 		return this._colour 
