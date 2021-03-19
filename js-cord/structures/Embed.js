@@ -39,7 +39,7 @@ class Embed {
             "title", "description", "footer", "author", 
             "url", "timestamp", "colour", "thumbnail",
             "image", "thumbnail" 
-        ].contains(k))) {
+        ].includes(k))) {
             buffer[key] = this[key];
         }
         buffer['type'] = "rich";
