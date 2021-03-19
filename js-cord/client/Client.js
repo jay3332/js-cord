@@ -169,8 +169,8 @@ class Client {
     async login(token, bot = true) {
         if (this.loggedIn)
             throw new ConnectionError("You're already logged in.");
-        if (!token.match(/([^\W_]{24}\.[^\W_]{6}\.[\w\-]{27}|mfa\.[\w\-]{84})/))
-            throw new ConnectionError("Invalid token.");
+        /*if (!token.match(/([^\W_]{24}\.[^\W_]{6}\.[\w\-]{27}|mfa\.[\w\-]{84})/))
+            throw new ConnectionError("Invalid token.");*/
         this.token = token;    
         this.isBotApplication = token.startsWith("mfa.") ? false : bot;
         this.http.putToken(token, bot);
