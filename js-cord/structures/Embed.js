@@ -49,44 +49,55 @@ class Embed {
     }
     setTitle(title) {
         this.title = title;
+        return this;
     }
 	setDescription(description) {
 		this.description = description;
+        return this;
 	}
 	setUrl(url) {
 		this.url = url;
+        return this;
 	}
 	setAuthor(name, icon_url, url) {
 		this.author.name = name;
 		this.author.icon_url = icon_url;
 		this.author.url = url;
+        return this;
 	}
 	setFooter(text, icon_url) {
 		this.footer.text = text;
 		this.footer.icon_url = icon_url;
+        return this;
 	}
 	setImage(url) {
 		this.image.url = url;
+        return this;
 	}
 	setThumbnail(url) {
 		this.thumbnail.url = url;
+        return this;
 	}
 	setColour(color) {
 		this.colour = parseHex(color);
+        return this;
 	}
     setColor(color) {
         // alias of setColour
         this.setColour(color);
+        return this;
     }
 	setTimestamp(timestamp) {
 		try {
 			this.timestamp = new Date(timestamp || Date.now())
+            return this;
 		} catch {
 			throw new TypeError('Timestamp must be a valid date, unix timestamp, or string.')
 		}
 	}
 	addField(name, value, inline = false) {
 		this.fields.push({name: name, value: value, inline: inline});
+        return this;
 	}
 
 	/*get colour() {
