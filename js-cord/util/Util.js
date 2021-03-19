@@ -3,6 +3,12 @@ class Util {
 		throw new Error(`You cannot create an instance of ${this.constructor.name}.`);
 	};
 
+    static getGithubSource(object) {
+        const BASE = "https://github.com/jay3332/js-cord";
+        if (!object) return BASE;
+        
+    }
+
     static parseAssetSize(size) {
         if (
             !size || typeof size !== 'number' ||

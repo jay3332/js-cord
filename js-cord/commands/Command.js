@@ -192,6 +192,13 @@ class Command {
             return surround[0] + arg.name + ending + surround[1]
         });
     }
+    get fullName() {
+        if (!this.parent) return this.name;
+        return `${this.parent.fullName} ${this.name}`.trim();
+    }
+    get fullSignature() {
+        return `${this.fullName} ${this.signature}`.trim();
+    }
     error(fn) {
         this.onError = fn;
     }

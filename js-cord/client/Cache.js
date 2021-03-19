@@ -46,23 +46,23 @@ class ClientCache {
         return buffer;
     }
     getUser(id) {
-        let filtered = this.users.filter(item => item.id === id);
-        if (filtered.length) return filtered[0];
+        let filtered = this.users.find(item => item.id === id);
+        if (filtered) return filtered;
         return undefined;
     }
     getChannel(id) {
-        let filtered = this.channels.filter(item => item.id === id);
-        if (filtered.length) return filtered[0];
+        let filtered = this.channels.find(item => item.id === id);
+        if (filtered) return filtered;
         return undefined;
     }
     getGuild(id) {
-        let filtered = this.guilds.filter(item => item.id === id);
-        if (filtered.length) return filtered[0];
+        let filtered = this.guilds.find(item => item.id === id);
+        if (filtered) return filtered;
         return undefined;
     }
     getMessage(channel_id, id) {
-        let filtered = this.messages.filter(item => item.id === id && item.channel.id === channel_id);
-        if (filtered.length) return filtered[0];
+        let filtered = this.messages.find(item => item.id === id && item.channel.id === channel_id);
+        if (filtered) return filtered;
         return undefined;
     }
     clear(thing="all") {
@@ -114,18 +114,18 @@ class GuildCache {
         return buffer;
     }
     getMember(id) {
-        let filtered = this.members.filter(item => item.id === id);
-        if (filtered.length) return filtered[0];
+        let filtered = this.members.find(item => item.id === id);
+        if (filtered) return filtered;
         return undefined
     }
     getRole(id) {
-        let filtered = this.roles.filter(item => item.id === id);
-        if (filtered.length) return filtered[0];
+        let filtered = this.roles.find(item => item.id === id);
+        if (filtered) return filtered;
         return undefined
     }
     getEmoji(id) {
-        let filtered = this.emojis.filter(item => item.id === id);
-        if (filtered.length) return filtered[0];
+        let filtered = this.emojis.find(item => item.id === id);
+        if (filtered) return filtered;
         return undefined
     }
 }
