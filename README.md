@@ -6,7 +6,7 @@ I've always liked JavaScript's syntax better than Python's, but I tend to use Py
 ## Useful Links
 + [Repository](https://github.com/jay3332/js-cord)
 + [Documentation](https://jay3332.github.io/js-cord)
-+ [Discord Server](https://discord.gg/)
++ [Discord Server](https://discord.gg/R6pY3FWh3A)
 + [Trello](https://trello.com/b/unTW6EpW/js-cord)
 ## Installation
 Installing js-cord is pretty easy with `npm`:
@@ -36,7 +36,7 @@ bot.command("ping", ctx => {
 });
 
 // Log in to Discord.
-bot.login("token"); 
+bot.login("token");
 /**
  * Your token is found on the Bot tab of your bot's application page.
  * https://discord.com/developers/applications
@@ -69,7 +69,7 @@ bot.command("embed", (ctx, title, description, footer) => {
 });
 
 // Log in to Discord.
-bot.login("token"); 
+bot.login("token");
 /**
  * Your token is found on the Bot tab of your bot's application page.
  * https://discord.com/developers/applications
@@ -94,7 +94,7 @@ bot.command("say", (ctx, ...text) => {
 });
 
 // Log in to Discord.
-bot.login("token"); 
+bot.login("token");
 /**
  * Your token is found on the Bot tab of your bot's application page.
  * https://discord.com/developers/applications
@@ -107,7 +107,7 @@ I personally dislike slash commands due to their harsh limitations and lack of c
 // currently, we haven't decided this yet
 ```
 ## Ending it off
-Currently, we don't have a support server - consider reading our [docs](https://jay3332.github.io/js-cord/) for reference  
+You can join our [support server](https://discord.gg/R6pY3FWh3A) for help - or consider reading our [docs](https://jay3332.github.io/js-cord/) for reference.  
 You can also take a look at the [examples folder](https://github.com/jay3332/js-cord/tree/master/examples) for examples using js-cord.
 ## Credits
 #### Developers
