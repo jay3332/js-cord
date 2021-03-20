@@ -17,7 +17,7 @@ module.exports = class Message {
         this.content = data.content;
         this.id = data.id;
         this.tts = data.tts;
-        this.channel = this.client.getChannel(data.channel_id);
+        this.channel = this.client.cache.getChannel(data.channel_id);
         this.guild = data.guild_id ? client.getGuild(data.guild_id) : undefined;
         this.pinned = data.pinned;
 
@@ -49,7 +49,7 @@ module.exports = class Message {
     async addReaction(emoji) {
         if (typeof emoji === "string") {
             if (emoji.match(/\<?a?:?[a-zA-Z0-9_]{2,32}:\d{17,}\>?/)) {
-                
+
             }
         } else {}
     }
@@ -70,7 +70,7 @@ module.exports = class Message {
     }
     static fromData(client, data) {
         return new Message(client, data['channel_id'], data['id'], data);
-    } 
+    }
     parseData(data) {
         const client = this.client;
         const message_id = this.id;

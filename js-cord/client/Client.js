@@ -95,26 +95,22 @@ class Client {
     }
 
     getUser(id) {
-        id = id.toString();
         let res = this.cache.getUser(id);
         if (res) return res;
         return undefined;
     }
     getChannel(id) {
-        id = id.toString();
         let res = this.cache.getChannel(id);
         if (res) return res;
         return undefined;
     }
     getGuild(id) {
-        id = id.toString();
         let res = this.cache.getGuild(id);
         if (res) return res;
         return undefined;
     }
     getMessage(channel_id, id) {
-        id = id.toString();
-        channel_id = channel_id.toString();
+        let res = this.cache.getMessage(channel, id);
         if (res) return res;
         return undefined;
     }
@@ -148,7 +144,7 @@ class Client {
         let channel = new Channel(this, channelId);
         this.channelCache.set(channelId, channel);
         return channel;
-    } 
+    }
 
     getGuild(guildId) {
         guildId = guildId.toString();
@@ -171,7 +167,7 @@ class Client {
             throw new ConnectionError("You're already logged in.");
         /*if (!token.match(/([^\W_]{24}\.[^\W_]{6}\.[\w\-]{27}|mfa\.[\w\-]{84})/))
             throw new ConnectionError("Invalid token.");*/
-        this.token = token;    
+        this.token = token;
         this.isBotApplication = token.startsWith("mfa.") ? false : bot;
         this.http.putToken(token, bot);
         await this.http.establishGateway();
@@ -219,7 +215,7 @@ class Client {
         const fn = (...args) => {
             if (!!check) {
                 if (!check(...args)) return;
-            } 
+            }
             finished = true;
             this.removeListener(event, fn);
         }
@@ -227,7 +223,7 @@ class Client {
         const start = Date.now();
         while ((() => {
             if (finished) return false;
-            if (timeout>0) {if (Date.now()-start > timeout) 
+            if (timeout>0) {if (Date.now()-start > timeout)
                                 return false;}
 
         })()) {}
