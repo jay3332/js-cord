@@ -17,7 +17,7 @@ module.exports = class Messageable {
             options = content;
             content = content.content;
         }
-        
+
         let allOptions = [];
         if (!content) content = '';
         else allOptions.push("content");
@@ -27,7 +27,7 @@ module.exports = class Messageable {
         if (options.hasOwnProperty("embed") &&
             options.embed instanceof Embed) {
             embed = options.embed.json;
-            allOptions.push("embed"); 
+            allOptions.push("embed");
         }
         if (options.hasOwnProperty("tts") &&
             typeof options.tts === "boolean") {
@@ -37,7 +37,7 @@ module.exports = class Messageable {
 
         try { content = content.toString() } catch(_){}
         if (!this.cls) { this.cls = require("../structures/Message"); }
-        const response = await this.http.sendMessage(this.id, content, embed, tts);
+        const response = await this.http.sendMessage(this.id, content, JSON.stringify(embed), tts);
         return new this.cls(this.client, response);
     }
     async fetchMessage(id) {
@@ -50,7 +50,7 @@ module.exports = class Messageable {
             limit = options.limit || 100;
         }
         // if (options.hasOwnProperty("around")) {
-         
+
         // }
         if (!this.cls) { this.cls = require("../structures/Message"); }
         const response = this.http.getHistory(this.id);

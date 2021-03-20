@@ -3,19 +3,19 @@ const { parseHex } = require('../util/Useful');
 class Embed {
     constructor(obj = {}) {
 		this.type = 'rich';
-        
+
 		if (!obj) {
 			this.title = null;
 			this.author = {};
 			this.footer = {};
 			this.url = null;
-			
+
 			this.description = null;
 			this.fields = [];
-			
+
 			this.image = {};
 			this.thumbnail = {};
-			
+
 			this.timestamp = null;
             this.colour = null;
 		} else {
@@ -24,7 +24,7 @@ class Embed {
                 const valid = ['title', 'author', 'footer', 'url', 'description', 'fields', 'image', 'thumbnail', 'timestamp', 'colour'];
                 if (!valid.includes(key)) delete obj[key];
             };
-			
+
             for (const prop of Object.keys(obj)) {
                 this[prop] = obj[prop];
             };
@@ -37,14 +37,14 @@ class Embed {
             description: this.description,
             color: this.colour,
             url: this.url,
-            timestamp: this.timestamp 
+            timestamp: this.timestamp
                        ? new Date(this.timestamp)
                        : null,
             fields: this.fields,
             thumbnail: this.thumbnail,
             image: this.image,
-            author: this.author!=={} || null,
-            footer: this.footer!=={} || null,
+            author: this.author!=={} ? this.author : null,
+            footer: this.footer!=={} ? this.footer : null,
             fields: this.fields,
         }
     }
@@ -89,7 +89,7 @@ class Embed {
         return this;
     }
 	setTimestamp(timestamp = Date.now()) {
-        if (timestamp instanceof Date) 
+        if (timestamp instanceof Date)
             timestamp = timestamp.getTime();
         this.timestamp = timestamp;
         return this;
@@ -113,7 +113,7 @@ class Embed {
     }
 
 	/*get colour() {
-		return this._colour 
+		return this._colour
 			? `#${this._colour.toString(16).padStart(6, '0')}` : null;
     }*/
 
