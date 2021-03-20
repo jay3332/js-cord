@@ -69,17 +69,17 @@ function getUnionFunction(types) {
         if (!['string', 'function'].includes(typeof type)) {
             throw new TypeError("Argument type must be a string or function.")
         }
-        const buffer = (typeof type === "string") ? 
+        const buffer = (typeof type === "string") ?
         type.toLowerCase().replace("_", "").replace(" ", "") : type;
         if (typeof type === "string") {
             if (!Object.keys(DEFAULT_TYPES).includes(type)) {
                 throw new ReferenceError(`Default type "${type}" not found.`);
             } else {
                 return DEFAULT_TYPES[type];
-            } 
+            }
         }
         else { return type };
-        
+
     });
     if (!Object.keys(DEFAULT_TYPES).includes(arg.type)) {
         throw new ReferenceError("Default type not found.");
@@ -107,7 +107,7 @@ class Command {
         this.cooldown = null;
         this.guildOnly = guildOnly;
         this.permissions = permissions;
-        this.exec = exec; 
+        this.exec = exec;
         this.cog = cog;
         this.args = args;
         this.bot = bot;
@@ -155,7 +155,7 @@ class Command {
                     }
                 }
                 // once that's done, the arguments should be valid.
-            } 
+            }
         }
 
         for (const option of Object.keys(options)) {
@@ -181,7 +181,7 @@ class Command {
         return result;
     } */
     get signature() {
-        /** 
+        /**
          * Returns the signature / usage of the command, e.g.
          * <argument> [optional] [text...]
          */

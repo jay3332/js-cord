@@ -1,6 +1,6 @@
-const { 
+const {
     ConnectionError, InvalidEventError, ConstructionError,
-    GuildOnlyError,  CheckError,        PermissionError 
+    GuildOnlyError,  CheckError,        PermissionError
 } = require("./errors/DiscordEventError");
 
 module.exports = {
@@ -37,6 +37,7 @@ module.exports = {
     BaseConverter: require("./converters/BaseConverter"),
     UserConverter: require("./converters/User"),
     MemberConverter: require("./converters/Member"),
+    TextChannelConverter: require("./converters/TextChannel"),
 
     errors: {
         ConnectionError: ConnectionError,
