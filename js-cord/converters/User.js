@@ -2,25 +2,25 @@ const BaseConverter = require('./BaseConverter');
 const ConversionError = require('../errors/ConversionError');
 
 module.exports = class UserConverter extends BaseConverter {
-    convert(ctx, argument) {
+    convert(ctx, arg) {
         const users = ctx.bot.users;
         // parse mentions
-        if (argument.match(/<@!?\d{17,}>/)) {
-            argument = argument.replace(/[<@!>]/g, "");
-        } if (argument.match(/\d{17,}/)) {
+        if (arg.match(/\<@!?\d{17,}\>/)) {
+            arg = arg.replace(/[\<@!\>]/g, "");
+        } if (arg.match(/\d{17,}/)) {
             // check ids
-            const filtered = users.filter(user => user.id === argument);
-            if (filtered.length > 0) return filtered[0];
-        } if (argument.match(/.{2,32}#\d{4}/)) {
+            const filtered = users.find(user => user.id === arg);
+            if (filtered) return filtered;
+        } if (arg.match(/.{2,32}#\d{4}/)) {
             // check user#discrim
-            const filtered = users.filter(user => user.toString() === argument);
-            if (filtered.length > 0) return filtered[0];
-        } 
+            const filtered = users.find(user => user.toString() === arg);
+            if (filtered) return filtered;
+        }
         // check username
-        const filtered = users.filter(user => user.name === argument);
-        if (filtered.length > 0) return filtered[0];
+        const filtered = users.find(user => user.name === arg);
+        if (filtered) return filtered;
 
         // throw an error
-        throw new ConversionError(`User "${argument}" not found.`);
+        throw new ConversionError(`User "${arg}" not found.`);
     }
 }
