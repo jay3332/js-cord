@@ -21,9 +21,9 @@ module.exports = class Message {
         this.guild = data.guild_id ? client.getGuild(data.guild_id) : undefined;
         this.pinned = data.pinned;
 
-        if (data.author.id && this.guild) this.author = this.guild.cache.getMember(data.author.id);
+        if(data.author){if (data.author.id && this.guild) this.author = this.guild.cache.getMember(data.author.id);
         if (!this.author) this.author = this.client.getUser(data.author.id);
-        if (!this.author) { let u = new User(client, data.author); this.client.cache.addUser(u); this.author = u }
+        if (!this.author) { let u = new User(client, data.author); this.client.cache.addUser(u); this.author = u }}
 
         this.createdAt = Date.parse(data.timestamp);
         this.editedAt = Date.parse(data.edited_timestamp);
