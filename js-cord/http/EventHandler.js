@@ -59,7 +59,7 @@ module.exports = async function handleEvent(client, event, data) {
         client.cache.addMessage(newMsg);
         let oldMsg = client.cache.getMessage(data.channel_id, data.id);
         if (oldMsg) rawEvent.cachedMessage = oldMsg;
-        await client.emit("rawMessageEdit", [ rawEvent ]); 
+        await client.emit("rawMessageEdit", [ rawEvent ]);
         await client.emit("messageEdit", [oldMsg, newMsg]);
     } else if (event === "MESSAGE_DELETE") {
         await client.emit("rawMessageDelete", [ data ]);
@@ -72,6 +72,8 @@ module.exports = async function handleEvent(client, event, data) {
             .filter(maybeMessage => !!maybeMessage);
         await client.emit("messageBulkDelete", [converted]);
     }
+
+    if (client.debug) console.log(data);
 
     // debugging, comment out rather than delete
     // console.log(event);
