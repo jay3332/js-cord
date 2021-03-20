@@ -32,8 +32,8 @@ class Requester {
 
         let body = JSON.stringify(reqbody || {});
         let result = await http(route.url, { method: method, headers: headers, body: !!reqbody ? body : undefined });
+        let res = result.json();
 
-        let res = await result.json();
         if (res.retry_after) {
             await new Promise(r => setTimeout(r, res.retry_after*1000));
             result = await http(route.url, { method: method, headers: headers, body: !!reqbody ? body : undefined });
@@ -51,8 +51,8 @@ class Requester {
         // return response;
 
         // return JSON.parse(http(method, route.url, params).getBody('utf8'));
-        
-        /* const params = body 
+
+        /* const params = body
             ? {headers, body: JSON.stringify(body)}
             : {headers};
 
@@ -60,7 +60,7 @@ class Requester {
             method,
             hostname: route.base,
             path: route.path,
-            
+
         }); */
     }
 
