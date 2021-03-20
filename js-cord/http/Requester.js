@@ -39,6 +39,7 @@ class Requester {
             result = await http(route.url, { method: method, headers: headers, body: !!reqbody ? body : undefined });
             res = result.json();
         }
+        if (this.cilent.debug) console.log(res);
         return res;
 
         /* const response = needle.request(method, route.url, (reqbody || {}), {json: true, headers: headers}, (

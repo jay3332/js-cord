@@ -11,10 +11,10 @@ const Check = require('../commands/Check'),
 	Cooldown = require('../commands/Cooldown');
 
 class Bot extends Client {
-    constructor({ prefix, prefixCaseInsensitive=false, commandsCaseInsensitive=false, guildOnly=false, 
-                  allowedMentions, intents, slash }) {
-        
-        super({ allowedMentions: allowedMentions, intents: intents });
+    constructor({ prefix, prefixCaseInsensitive=false, commandsCaseInsensitive=false, guildOnly=false,
+                  allowedMentions, intents, slash, debug }) {
+
+        super({ allowedMentions: allowedMentions, intents: intents, slash: slash, debug: debug });
 
         this.allEvents.push(
             "command",
@@ -33,7 +33,7 @@ class Bot extends Client {
 
         if (!["string", "function", "array"].includes(typeof prefix)) {
             throw new ConstructionError("Prefix must be a String, Function, or Array.");
-        } 
+        }
         if (this.prefixCaseInsensitive) {
             if (!(this.prefix instanceof Array || this.prefix instanceof Function)) {
                 this.prefix = this.prefix.toLowerCase();
@@ -73,7 +73,7 @@ class Bot extends Client {
             throw new Error("Command settings must be a string or object.")
         } if (!options.hasOwnProperty('name')) {
             throw new Error("\"name\" is a required object parameter.")
-        } 
+        }
 
         const name = options.name;
         let aliases = [];
@@ -91,7 +91,7 @@ class Bot extends Client {
                 }
             }
         }
-        
+
         let checks = [];
         let cooldown = Cooldown.none();
         let guildOnly = this.guildOnly;
@@ -112,7 +112,7 @@ class Bot extends Client {
         for (let option of Object.keys(options)) {
             if (["name", "alias", "aliases", "check", "checks", "cooldown", "guildOnly", "permissions", "cog", "args", "arguments"].includes(option)) {
                 delete options[option];
-            } 
+            }
         }
 
         const final = new Command(this, name, aliases, checks, guildOnly, permissions, cooldown, exec, options, cog, args);
@@ -123,7 +123,7 @@ class Bot extends Client {
         //console.log(this.commands);
         if (this.commandsCaseInsensitive) name = name.toLowerCase();
         for (let command of this.commands) {
-            if (command.name == name || command.aliases.includes(name)) 
+            if (command.name == name || command.aliases.includes(name))
                 return command;
         } return null;
     }
@@ -145,7 +145,7 @@ class Bot extends Client {
                 }
             }
             return null;
-        } 
+        }
         return null;
     }
     async parseContext(message) {

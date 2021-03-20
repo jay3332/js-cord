@@ -13,13 +13,14 @@ const Slash = require("../slash/Slash");
  * Represents a client connection to Discord.
  */
 class Client {
-    constructor({ allowedMentions=AllowedMentions.default(), intents=Intents.default(), slash=false }={}) {
+    constructor({ allowedMentions=AllowedMentions.default(), intents=Intents.default(), slash=false, debug=false }={}) {
         //this.allowedMentions = (options.hasOwnProperty("allowedMentions")) ? options.allowedMentions : AllowedMentions.default();
         //this.intents = (options.hasOwnProperty("intents")) ? options.intents : Intents.default();
 
         this.allowedMentions = allowedMentions;
         this.intents = intents;
 
+        this.debug = debug;
         this.isSlashClient = slash;
         this.cache = new ClientCache();
         this.token = null;
