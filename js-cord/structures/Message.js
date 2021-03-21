@@ -3,6 +3,8 @@ const Channel = require("../structures/Channel");
 const Member = require("../structures/Member");
 const User = require("../structures/User");
 const Guild = require("../structures/Guild");
+const Emoji = require("../structures/Emoji");
+const PartialEmoji = require("../structures/PartialEmoji");
 
 const TYPES = ["default", "groupUserAdd", "groupUserRemove",
         "call", "groupChannelNameEdit", "groupChannelIconEdit",
@@ -17,6 +19,8 @@ module.exports = class Message {
         this.content = data.content;
         this.id = data.id;
         this.tts = data.tts;
+        this._guild_id = data.guild_id || "@me";
+        this._channel_id = data.channel_id;
         this.channel = this.client.cache.getChannel(data.channel_id);
         this.guild = data.guild_id ? client.getGuild(data.guild_id) : undefined;
         this.pinned = data.pinned;
@@ -46,17 +50,40 @@ module.exports = class Message {
         }
         if (data.reactions) this.reactions = data.reactions.map(reaction => new Reaction(client, reaction, this));
     }
+    get jumpURL() {
+        return `https://discord.com/channels/${this._guild_id}/${this._channel_id}/${this.id}`;
+    }
     async addReaction(emoji) {
         if (typeof emoji === "string") {
-            if (emoji.match(/\<?a?:?[a-zA-Z0-9_]{2,32}:\d{17,}\>?/)) {
-
+            if (emoji.length > 6) {
+                emoji = emoji
+                    .replace(/\</g, "")
+                    .replace(/\>/g, "");
+                if (emoji.startsWith(":"))
+                    emoji = emoji.replace(":", "");
+                if (emoji.startsWith("a:"))
+                    emoji = emoji.replace("a:", "");
             }
-        } else {}
+        } else if (emoji instanceof Emoji || emoji instanceof PartialEmoji) {
+            if (!emoji.id) emoji = emoji.name;
+            else {
+                emoji = `${emoji.name}:${emoji.id}`
+            }
+        }
+        await this.client.http.addReaction(this._channel_id, this.id, emoji);
     }
     async addReactions(...emojis) {
         for (emoji of emojis) {
             await this.addReaction(emoji);
         }
+    }
+    async reply(content, options={}) {
+        options.reference = this.id;
+        await this.channel.send(content, options);
+    }
+    async delete() {
+        await this.client.http.deleteMessage(this._channel_id, this.id);
+        return this;
     }
 }
 

@@ -13,6 +13,7 @@ module.exports = class Messageable {
                 "Cannot send messages in this channel: Channel is not text-based.");
         }
 
+        if (!this.cls) { this.cls = require("../structures/Message"); }
         if (typeof content == "object") {
             options = content;
             content = content.content;
@@ -24,20 +25,26 @@ module.exports = class Messageable {
 
         let embed = null;
         let tts = false;
-        if (options.hasOwnProperty("embed") &&
-            options.embed instanceof Embed) {
+        let reference = null;
+        if (options.embed instanceof Embed) {
             embed = options.embed.json;
             allOptions.push("embed");
         }
-        if (options.hasOwnProperty("tts") &&
-            typeof options.tts === "boolean") {
+        if (typeof options.tts === "boolean") {
             tts = options.tts;
             allOptions.push("tts");
         }
+        if (typeof options.reference === "string") {
+            reference = options.reference;
+            allOptions.push("reference");
+        } else if (options.reference instanceof this.cls) {
+            reference = options.reference.id;
+            allOptions.push("reference");
+        }
 
         try { content = content.toString() } catch(_){}
-        if (!this.cls) { this.cls = require("../structures/Message"); }
-        const response = await this.http.sendMessage(this.id, content, embed, tts);
+
+        const response = await this.http.sendMessage(this.id, content, embed, tts, null, null, reference);
         return new this.cls(this.client, response);
     }
     async fetchMessage(id) {

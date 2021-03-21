@@ -156,12 +156,17 @@ class Requester {
         if (embed) payload['embed'] = embed;
         if (nonce) payload['nonce'] = nonce;
         if (allowed_mentions) payload['allowed_mentions'] = allowed_mentions;
-        if (message_reference) payload['message_reference'] = message_reference;
+        if (message_reference) payload['message_reference'] = { message_id: message_reference };
         return await this.request(route, payload);
     }
 
     async getMessage(channel_id, message_id) {
         const route = new Route('GET', `/channels/${channel_id}/messages/${message_id}`);
+        return await this.request(route);
+    }
+
+    async deleteMessage(channel_id, message_id) {
+        const route = new Route('DELETE', `/channels/${channel_id}/messages/${message_id}`);
         return await this.request(route);
     }
 
