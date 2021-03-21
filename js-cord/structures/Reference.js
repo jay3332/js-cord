@@ -1,5 +1,3 @@
-const Message = require("../structures/Message");
-
 module.exports = class Reference {
     constructor(client, data) {
         this.client = client;
@@ -10,6 +8,7 @@ module.exports = class Reference {
     }
     async resolve() {
         // fetches from http
+        const Message = require("../structures/Message");
         const response = await this.client.http.getMessage(this.channel_id, this.message_id);
         const msg =  new Message(this.client, response);
         this.client.cache.addMessage(msg);
