@@ -71,15 +71,17 @@ module.exports = class Message {
             }
         }
         await this.client.http.addReaction(this._channel_id, this.id, emoji);
+        return this;
     }
     async addReactions(...emojis) {
         for (emoji of emojis) {
             await this.addReaction(emoji);
         }
+        return this;
     }
     async reply(content, options={}) {
         options.reference = this.id;
-        await this.channel.send(content, options);
+        return await this.channel.send(content, options);
     }
     async delete() {
         await this.client.http.deleteMessage(this._channel_id, this.id);
