@@ -5,6 +5,7 @@ const User = require("../structures/User");
 const Guild = require("../structures/Guild");
 const Emoji = require("../structures/Emoji");
 const PartialEmoji = require("../structures/PartialEmoji");
+const Reference = require("../structures/Reference");
 
 const TYPES = ["default", "groupUserAdd", "groupUserRemove",
         "call", "groupChannelNameEdit", "groupChannelIconEdit",
@@ -49,6 +50,14 @@ module.exports = class Message {
             this.channelMentions = data.mention_channels.map(channelMention => this.client.cache.getChannel(channelMention.id));
         }
         if (data.reactions) this.reactions = data.reactions.map(reaction => new Reaction(client, reaction, this));
+        if (data.message_reference) {
+            this.reference = new Reference(client, data.message_reference);
+            if (data.referenced_message) {
+                const msg = new Message(client, data.referenced_message);
+                this.client.cache.addMessage(msg);
+                this.reference.resolved = msg;
+            }
+        }
     }
     get jumpURL() {
         return `https://discord.com/channels/${this._guild_id}/${this._channel_id}/${this.id}`;
