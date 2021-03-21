@@ -49,7 +49,10 @@ module.exports = class Messageable {
     }
     async fetchMessage(id) {
         if (!this.cls) { this.cls = require("../structures/Message"); }
-        return new this.cls(this.client, this.http.getMessage(this.id, id));
+        const response = await this.http.getMessage(this.id, id);
+        const msg = new this.cls(this.client, response);
+        this.client.cache.addMessage(msg);
+        return msg;
     }
     history(limit=100, options={}) {
         if (typeof limit === "object") {
