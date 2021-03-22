@@ -8,6 +8,8 @@ I've always liked JavaScript's syntax better than Python's, but I tend to use Py
 + Built-in command handler
     + Advanced argument parsing
     + Flag parsing
++ Built-in debugging methods
++ Built-in paginator/menu support
 + Voice receive/send support
 + Slash command support
 + Webhook support
