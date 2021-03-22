@@ -34,12 +34,15 @@ module.exports = class Message {
         this.editedAt = Date.parse(data.edited_timestamp);
         this.mentionsEveryone = data.mention_everyone;
 
-        if (data.mentions)
+        if (data.mentions) {
+            this.mentionedIDs = data.mentions.map(u => u.id);
+            this.mentionsMe = this.mentionedIDs.includes(this.client.user.id);
             this.mentions = data.mentions.map(user => {
                 let finalUser = new User(client, user);
                 this.client.cache.addUser(finalUser);
                 return finalUser;
             });
+        }
         if (data.mention_roles && this.guild)
             this.roleMentions = data.mention_roles.map(role_id => {
                 let role = this.guild.getRole(role_id);

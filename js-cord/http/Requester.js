@@ -147,6 +147,11 @@ class Requester {
         return await this.request(new Route('POST', '/auth/logout'));
     }
 
+    async getApplicationInfo() {
+        const route = new Route('GET', '/oauth2/applications/@me');
+        return await this.request(route);
+    }
+
     async sendMessage(destination_id, content="", embed=null, tts=false, nonce=null, allowed_mentions=null, message_reference=null) {
         const route = new Route('POST', `/channels/${destination_id}/messages`);
 

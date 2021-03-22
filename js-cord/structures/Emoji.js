@@ -8,7 +8,7 @@ module.exports = class Emoji {
         this.client = client;
         this.id = data.id;
         this.name = data.name;
-        if (data.user) 
+        if (data.user)
             this.user = new User(client, data.user);
         if (data.roles) {
             this.roles = data.roles.map(role => new Role(client, role));
@@ -52,13 +52,13 @@ module.exports = class Emoji {
     urlAs({ format, size }) {
 
         let url = `https://cdn.discordapp.com/emojis/${this.id}.`;
-        
+
         format = format               ? format.toLowerCase() : this.defaultFormat;
         size   = parseAssetSize(size) ? `?size=${size}`      : "";
-        
-        let validFormats = [ "png" ];
+
+        let validFormats = ["png", "jpg", "jpeg", "webp"];
         if (this.animated) validFormats.push("gif");
-        if (!validFormats.includes(format)) format = this.defaultFormat; 
+        if (!validFormats.includes(format)) format = this.defaultFormat;
 
         return url + format + size;
     }

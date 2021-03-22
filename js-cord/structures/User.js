@@ -17,21 +17,28 @@ module.exports = class User {
 
     get avatarAnimated() { return !this.avatar ? undefined : this.avatar.startsWith("a_") }
     get defaultFormat() { return this.avatarAnimated ? "gif" : "png" }
-    get avatarUrl() { return this.avatarUrlAs({ format: this.defaultFormat }) } 
+    get avatarUrl() { return this.avatarUrlAs({ format: this.defaultFormat }) }
     avatarUrlAs({ format, size }) {
         if (!this.avatar) return undefined;
 
         let url = `https://cdn.discordapp.com/avatars/${this.id}/${this.avatar}.`;
-        
+
         format = format               ? format.toLowerCase() : this.defaultFormat;
         size   = parseAssetSize(size) ? `?size=${size}`      : "";
-        
+
         let validFormats = ["png", "jpeg", "jpg", "webp"];
         if (this.avatarAnimated) validFormats.push("gif");
-        if (!validFormats.includes(format)) format = this.defaultFormat; 
+        if (!validFormats.includes(format)) format = this.defaultFormat;
         if (format === "jpeg") format = "jpg";
 
         return url + format + size;
+    }
+
+    get isOwner() {
+        if (this.client.ownerIDs) {
+            return this.client.ownerIDs.includes(this.id);
+        }
+        return this.client.ownerID === this.id;
     }
 }/*
         this.dmChannel = null;
@@ -48,7 +55,7 @@ module.exports = class User {
         this.mention = `<@!${user_id}>`;
         this.discriminator = data['discriminator'];
         this.avatarHash = data['avatar'];
-        try { 
+        try {
             this.avatarAnimated = this.avatarHash.startsWith("a_");
         } catch(err) {
             this.avatarAnimated = false;
@@ -58,12 +65,12 @@ module.exports = class User {
 
         this.bot = data['bot'];
         this.tag = `${this.name}#${this.discriminator}`;
-        try { this.createdAt = parseSnowflake(this.id); } 
+        try { this.createdAt = parseSnowflake(this.id); }
         catch (err) { this.createdAt = null; }
         this.flagValue = data['flags'];
         this.premiumType = data['premium_type'];
-        this.publicFlagValue = data['public_flags'];        
-    } 
+        this.publicFlagValue = data['public_flags'];
+    }
     static fromData(client, data) {
         return new User(client, data['id'], data);
     }
@@ -102,7 +109,7 @@ module.exports = class User {
         const channelData = this.client.http.openUserDM();
         this.dmChannel = new Channel(this.client, channelData['id'], this);
     }
-    
+
     send(...args) {
         if (!this.dmChannel) {
             this.openDM();

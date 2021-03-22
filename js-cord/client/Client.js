@@ -8,6 +8,7 @@ const User = require("../structures/User");
 const Guild = require("../structures/Guild");
 const { ClientCache } = require("../client/Cache");
 const Slash = require("../slash/Slash");
+const Application = require("../structures/Application");
 
 /**
  * Represents a client connection to Discord.
@@ -116,63 +117,25 @@ class Client {
         return undefined;
     }
 
-    /*
-    getUser(userId) {
-        userId = userId.toString();
-        if (this.userCache.has(userId)) return this.userCache.get(userId);
-        let user = new User(this, userId);
-        this.userCache.set(userId, user);
-        return user;
-    }
-
-    fetchUser(userId) {
-        userId = userId.toString();
-        let user = new User(this, userId);
-        this.userCache.set(userId, user);
-        return user;
-    }
-
-    getChannel(channelId) {
-        channelId = channelId.toString();
-        if (this.channelCache.has(channelId)) return this.channelCache.get(channelId);
-        let channel = new Channel(this, channelId);
-        this.channelCache.set(channelId, channel);
-        return channel;
-    }
-
-    fetchChannel(channelId) {
-        channelId = channelId.toString();
-        let channel = new Channel(this, channelId);
-        this.channelCache.set(channelId, channel);
-        return channel;
-    }
-
-    getGuild(guildId) {
-        guildId = guildId.toString();
-        if (this.guildCache.has(guildId)) return this.guildCache.get(guildId);
-        let guild = new Guild(this, guildId);
-        this.guildCache.set(guildId, guild);
-        return guild;
-    }
-
-    fetchGuild(guildId) {
-        guildId = guildId.toString();
-        let guild = new Guild(this, guildId);
-        this.guildCache.set(guildId, guild);
-        return guild;
-    }*/
-
-
     async login(token, bot = true) {
         if (this.loggedIn)
             throw new ConnectionError("You're already logged in.");
-        /*if (!token.match(/([^\W_]{24}\.[^\W_]{6}\.[\w\-]{27}|mfa\.[\w\-]{84})/))
-            throw new ConnectionError("Invalid token.");*/
         this.token = token;
         this.isBotApplication = token.startsWith("mfa.") ? false : bot;
         this.http.putToken(token, bot);
         await this.http.establishGateway();
+        await this._getApplication();
         return this;
+    }
+
+    async _getApplication() {
+        const response = await this.http.getApplicationInfo();
+        if (response) {
+            this.id = response.id;
+            this.application = new Application(response);
+            this.ownerID = this.application.ownerID;
+            this.ownerIDs = this.application.ownerIDs || [this.ownerID];
+        }
     }
 
     async logout() {
