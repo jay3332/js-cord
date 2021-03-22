@@ -132,7 +132,7 @@ class Client {
         const response = await this.http.getApplicationInfo();
         if (response) {
             this.id = response.id;
-            this.application = new Application(response);
+            this.application = new Application(this, response);
             this.ownerID = this.application.ownerID;
             this.ownerIDs = this.application.ownerIDs || [this.ownerID];
         }
