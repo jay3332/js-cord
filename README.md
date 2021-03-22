@@ -10,6 +10,7 @@ I've always liked JavaScript's syntax better than Python's, but I tend to use Py
     + Flag parsing
 + Voice receive/send support
 + Slash command support
++ Webhook support
 ## Useful Links
 + [Repository](https://github.com/jay3332/js-cord)
 + [Documentation](https://jay3332.github.io/js-cord)
