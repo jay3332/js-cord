@@ -96,11 +96,11 @@ class Requester {
         });
     }
 
-    async doHeartbeat(_this) {
-        _this.lastPing = parseFloat(process.hrtime().join("."));
-        _this.client.ws.send(JSON.stringify({
+    async doHeartbeat() {
+        this.lastPing = parseFloat(process.hrtime().join("."));
+        this.client.ws.send(JSON.stringify({
             op: 1,
-            d: _this.sequence || null
+            d: this.sequence || null
         }));
     }
 
@@ -135,7 +135,7 @@ class Requester {
                 }
             }));
 
-            setInterval(this.doHeartbeat, payloadData.heartbeat_interval, this);
+            setInterval( async () => await this.doHeartbeat(), payloadData.heartbeat_interval );
         } else if (op == 11) {
             // nice, we got a heartbeat ack, this means things went well.
             if (this.lastPing) {
