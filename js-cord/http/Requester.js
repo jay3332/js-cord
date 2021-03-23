@@ -18,6 +18,8 @@ class Requester {
         this.userAgent = 'DiscordBot (js-cord 1.0)';
         this.latencies = [];
         this.lastPing = null;
+        this.sequence = null;
+        this.sessionID = null;
     };
 
     async request(route, reqbody, contentType="application/json") {
@@ -94,22 +96,32 @@ class Requester {
         });
     }
 
+    async doHeartbeat() {
+        this.lastPing = parseFloat(process.hrtime().join("."));
+        this.client.ws.send(JSON.stringify({
+            op: 1,
+            d: this.sequence
+        });
+    }
+
     async parseWebsocketData(data) {
         const payloadData = data.d;
         const op = parseInt(data.op);
         if (!data) return;
         if (op === 0) {
             // it's an event
+            this.sequence = data.s || this.sequence;
             await handleEvent(this.client, data.t, payloadData);
         } else if (op == 1) {
             // it's a heartbeat, we should send one back.
             // we should also start timing:
             this.lastPing = parseFloat(process.hrtime().join("."));
             this.client.ws.send(JSON.stringify({
-                op: 1, sequence: data.s
+                op: 1, sequence: data
             }));
         } else if (op == 10) {
-            //console.log("ok");
+
+            await this.doHeartbeat();
             this.client.ws.send(JSON.stringify({
                 op: 2,
                 d: {
@@ -122,11 +134,8 @@ class Requester {
                     }
                 }
             }));
-            /*
-            this.lastPing = parseFloat(process.hrtime().join("."));
-            this.client.ws.send(JSON.stringify({
-                op: 1, sequence: data.s
-            })); */
+
+            setInterval(this.doHeartbeat, payloadData.heartbeat_interval);
         } else if (op == 11) {
             // nice, we got a heartbeat ack, this means things went well.
             if (this.lastPing) {
