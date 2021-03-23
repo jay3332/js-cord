@@ -101,7 +101,7 @@ class Requester {
         this.client.ws.send(JSON.stringify({
             op: 1,
             d: this.sequence
-        });
+        }));
     }
 
     async parseWebsocketData(data) {
