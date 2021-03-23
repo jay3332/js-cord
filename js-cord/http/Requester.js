@@ -227,6 +227,24 @@ class Requester {
       return await this.request(route, options);
     }
 
+    // guilds
+
+    async createGuild(name, icon, region, roles, channels) {
+        const route = new Route('POST', '/guilds');
+        return await this.request(route, {
+            name: name,
+            icon: icon || null,
+            region: region || null,
+            roles: roles || null,
+            channels: channels || null
+        })
+    }
+
+    async deleteGuild(guild_id) {
+        const route = new Route('DELETE', `/guilds/${guild_id}`);
+        return await this.request(route);
+    }
+
     // roles
 
     async getRole(guild_id, role_id) {

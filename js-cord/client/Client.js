@@ -148,6 +148,31 @@ class Client {
         return this;
     }
 
+    async createGuild(name, options) {
+        if (typeof name === "object") {
+            options = name;
+            name = options.name
+        }
+        if (!name)
+            throw new Error("Name is a required argument that is missing.");
+        if (options.roles)
+            options.roles = options.roles.map(role => role.json);
+        if (options.channels)
+            options.channels = options.channels.map(role => channel.json);
+        if (options.icon)
+            {}
+        const response = await this.http.createGuild(name, options.icon, options.roles, options.channels);
+        return new Guild(this, response);
+    }
+
+    async deleteGuild(guild) {
+        if (guild instanceof Guild) {
+            guild = guild.id;
+        }
+        const response = await this.http.deleteGuild(guild);
+        return response;
+    }
+
     listen(event, fn) {
         this.listeners[event] = fn;
         return this;
