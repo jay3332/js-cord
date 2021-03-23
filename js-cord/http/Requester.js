@@ -254,6 +254,13 @@ class Requester {
         return await this.request(route);
     }
 
+    // guild templates
+
+    async deleteTemplate(guild_id, template) {
+      const route = new Route('DELETE', `/guilds/${guild_id}/templates/${template}`);
+      return await this.request(route);
+    }
+
     // roles
 
     async getRole(guild_id, role_id) {
