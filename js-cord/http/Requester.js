@@ -220,6 +220,13 @@ class Requester {
         return await this.request(route, options);
     }
 
+    // webhooks
+
+    async webhookSend(webhook_id, webhook_token, options) {
+      const route = new Route('POST', `/webhooks/${webhook_id}/${webhook_token}`);
+      return await this.request(route, options);
+    }
+
     // roles
 
     async getRole(guild_id, role_id) {
