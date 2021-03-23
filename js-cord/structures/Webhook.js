@@ -19,7 +19,7 @@ module.exports = class Webhook {
     delete() {
         // this.client.http.deleteWebhook()
     }
-    send(id, token, options) {
+    send(content, options) {
         this.client.http.webhookSend(id, token, options);
     }
     // will work on http later
