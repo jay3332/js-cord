@@ -77,7 +77,7 @@ class Requester {
         const response = this.request(route);
         const extension = "?v=8&encoding=json";
         const url = !!response['url']
-                    ? (response['url'] + extensions)
+                    ? (response['url'] + extension)
                     : "wss://gateway.discord.gg/?"+extension;
         this.client.ws = new ws(url);
         await this.setupWebsocket();
@@ -96,11 +96,11 @@ class Requester {
         });
     }
 
-    async doHeartbeat() {
-        this.lastPing = parseFloat(process.hrtime().join("."));
-        this.client.ws.send(JSON.stringify({
+    async doHeartbeat(_this) {
+        _this.lastPing = parseFloat(process.hrtime().join("."));
+        _this.client.ws.send(JSON.stringify({
             op: 1,
-            d: this.sequence
+            d: _this.sequence || null
         }));
     }
 
@@ -135,7 +135,7 @@ class Requester {
                 }
             }));
 
-            setInterval(this.doHeartbeat, payloadData.heartbeat_interval);
+            setInterval(this.doHeartbeat, payloadData.heartbeat_interval, this);
         } else if (op == 11) {
             // nice, we got a heartbeat ack, this means things went well.
             if (this.lastPing) {
