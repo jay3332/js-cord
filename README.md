@@ -27,6 +27,11 @@ Or, if you want the latest version, clone this repository using git:
 ```
 npm install git+https://github.com/jay3332/js-cord
 ```
+## Updating js-cord
+When an update comes out for js-cord, you can update it with `npm`:
+```
+npm update js-cord
+```
 ## Examples
 #### Here is a simple ping-pong bot made using js-cord:
 ```js
