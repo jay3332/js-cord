@@ -5,13 +5,13 @@ module.exports = class Webhook {
         this.avatar = data.avatar;
         this.token = data.token;
         this.type = data.type;
-        this.guildId = data.guild_id
+        this.guild = data.guild_id
             ? client.getGuild(data.guild_id) : undefined;
-        this.channelId = data.channel_id
+        this.channel = data.channel_id
             ? client.getChannel(data.channel_id) : undefined;
         this.creator = data.user.id
             ? client.getUser(data.user.id) : undefined;
-        this.applicationId = data.application_id;
+        this.applicationID = data.application_id;
     }
     edit() {
         // this.client.http.editWebhook()
