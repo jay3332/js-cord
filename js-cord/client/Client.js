@@ -63,7 +63,7 @@ class Client {
 
     get currentLatency() {
         // Returns the most recent websocket latency reading.
-        return this.http.latencies[-1];
+        return this.http.latencies.slice(-1)[0];
     }
 
     get averageLatency() {
