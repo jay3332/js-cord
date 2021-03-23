@@ -30,6 +30,7 @@ class Client {
 
         this.listeners = {};
         this.individualListeners = {}; // events, but they append
+        this.upSince = null;
 
         this.allEvents = [
             "ready", "reconnect", "resumed",
@@ -71,6 +72,12 @@ class Client {
         const readings = this.http.latencies.slice(-20);
         const sum = readings.reduce((a, b) => a+b, 0);
         return sum / readings.length;
+    }
+
+    get uptime() {
+        if (!this.upSince) return 0;
+        const current = parseFloat(process.hrtime().join("."));
+        return current - this.upSince;
     }
 
     get slash() {

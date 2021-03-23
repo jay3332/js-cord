@@ -20,6 +20,7 @@ module.exports = async function handleEvent(client, event, data) {
         // we don't wanna start emitting events with no data
         return;
     if (event === "READY") {
+        client.upSince = parseFloat(process.hrtime().join("."));
         client.http.sessionID = data.session_id;
         client.loggedIn = true;
         client.user = new ClientUser(client, data.user);
