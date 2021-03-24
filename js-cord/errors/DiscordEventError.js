@@ -16,6 +16,12 @@ class ConstructionError extends Error {
 	}
 }
 
+class NSFWOnlyError extends Error {
+    constructor (...args) {
+        super(...args);
+    }
+}
+
 class GuildOnlyError extends Error {
     constructor(...args) {
         super(...args);
@@ -34,7 +40,7 @@ class PermissionError extends Error {
     }
 }
 
-module.exports = { 
+module.exports = {
     ConnectionError, InvalidEventError, ConstructionError,
-    GuildOnlyError,  CheckError,        PermissionError 
+    GuildOnlyError,  CheckError,        PermissionError
 }
