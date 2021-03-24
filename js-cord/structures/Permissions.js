@@ -34,15 +34,18 @@ FLAGS = {
 
 module.exports = class Permissions {
     constructor(value) {
+        if (value & 8n) === 8n {
+            this.value = 104324673n
+        }
         this.value = value;
         for (let flag of Object.keys(FLAGS)) {
-            this[flag] = !!(value & FLAGS[flag]);
+            this[flag] = !!((value & FLAGS[flag]) === FLAGS[flag]);
         }
     }
     get asArray() {
         let res = [];
         for (let flag of Object.keys(FLAGS)) {
-            if (!!(this.value & FLAGS[flag]))
+            if (!!((this.value & FLAGS[flag]) === FLAGS[flag]))
                 res.push(flag);
         }
         return res;

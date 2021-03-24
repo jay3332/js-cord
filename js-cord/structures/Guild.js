@@ -22,8 +22,8 @@ module.exports = class Guild {
         if (data.members) {
             data.members.forEach(member => {
                 let memberStruct = new Member(
-                    this.client, 
-                    member, 
+                    this.client,
+                    member,
                     member.user,
                     this
                 );
@@ -31,11 +31,12 @@ module.exports = class Guild {
                 this.cache.addMember(memberStruct);
                 this.client.cache.addUser(userStruct);
             });
-        } 
+        }
         if (data.roles) {
             data.roles.forEach(role => {
                 this.cache.addRole(new Role(this.client, role, this));
             });
+            this.defaultRole = this.getRole(this.id);
         }
         if (data.channels) {
             data.channels.forEach(channel => {
@@ -53,7 +54,7 @@ module.exports = class Guild {
             });
         }
         if (data.emojis) {
-            
+
         }
     }
     get owner() {
@@ -108,7 +109,7 @@ module.exports = class Guild {
     get iconAnimated() { return this.icon ? this.icon.startsWith("a_") : false }
     get defaultFormat() { return this.iconAnimated ? "gif" : "png" }
     get iconUrl() { return this.avatarUrlAs({ format: this.defaultFormat }) }
-    
+
     iconUrlAs({ format, size }) {
         if (!this.icon) return undefined;
 
@@ -116,10 +117,10 @@ module.exports = class Guild {
 
         format = format               ? format.toLowerCase() : this.defaultFormat;
         size   = parseAssetSize(size) ? `?size=${size}`      : "";
-        
+
         let validFormats = ["png", "jpeg", "jpg", "webp"];
         if (this.iconAnimated) validFormats.push("gif");
-        if (!validFormats.includes(format)) format = this.defaultFormat; 
+        if (!validFormats.includes(format)) format = this.defaultFormat;
         if (format === "jpeg") format = "jpg";
 
         return url + format + size;

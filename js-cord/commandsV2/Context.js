@@ -1,3 +1,5 @@
+const Messageable = require("../structures/Messageable");
+
 module.exports = class CommandContext extends Messageable {
     constructor(message, bot, prefix, command, args, invokedWith) {
         super(bot, message.channel.id);
@@ -16,5 +18,5 @@ module.exports = class CommandContext extends Messageable {
         this.reference = message.reference;
         this.content = message.content;
     }
-    
+
 }

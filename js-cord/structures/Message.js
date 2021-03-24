@@ -62,6 +62,9 @@ module.exports = class Message {
             }
         }
     }
+    get fullID() {
+        return `${this._channel_id}-${this.id}`;
+    }
     get jumpURL() {
         return `https://discord.com/channels/${this._guild_id}/${this._channel_id}/${this.id}`;
     }
@@ -69,12 +72,11 @@ module.exports = class Message {
         if (typeof emoji === "string") {
             if (emoji.length > 6) {
                 emoji = emoji
-                    .replace(/\</g, "")
-                    .replace(/\>/g, "");
-                if (emoji.startsWith(":"))
-                    emoji = emoji.replace(":", "");
+                    .replace(/[\<\>]/g, "");
                 if (emoji.startsWith("a:"))
                     emoji = emoji.replace("a:", "");
+                if (emoji.startsWith(":"))
+                    emoji = emoji.replace(":", "");
             }
         } else if (emoji instanceof Emoji || emoji instanceof PartialEmoji) {
             if (!emoji.id) emoji = emoji.name;

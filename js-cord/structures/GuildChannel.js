@@ -1,5 +1,6 @@
 const Channel = require("../structures/Channel");
 const Invite = require("../structures/Invite");
+const Permissions = require("../structures/Permissions");
 
 module.exports = class GuildChannel extends Channel {
     constructor(client, data, guild) {
@@ -8,7 +9,7 @@ module.exports = class GuildChannel extends Channel {
         this.id = data.id;
         this.name = data.name;
         this.guild = guild ||
-                     client.getGuild(data.id) || 
+                     client.getGuild(data.id) ||
                      null;
         this.position = data.position;
         if (this.guild) {
@@ -16,14 +17,17 @@ module.exports = class GuildChannel extends Channel {
         }
     }
     get members() {
-        // Returns an Array of users who have the VIEW_CHANNEL permission
-        // Currently, permissions/overwrites, and it's system have not been made yet, so this will return an empty Array
-        return [];
+        return this.guild.members.filter(member => this.permissionsFor(member).viewChannel)
     }
-    permissionsFor(structure /* Member or Role */) {
+    permissionsFor(member) {
         // Returns a discord.Permissions object of the permissions for a member or role,
         // this will return null
-        return null;
+        if (this.guild) {
+            if (this.guild.ownerID === member.id) {
+                return Permissions.all();
+            }
+            
+        }
     }
     overwritesFor(structure /* Member or Role */) {
         // Similar to permissionsFor but for PermissionOverwrites
@@ -53,16 +57,16 @@ module.exports = class GuildChannel extends Channel {
         return this.edit({ permnissions: permissions, overwrites: overwrites }, reason);
     }
     edit({ name, topic, slowmode, permissions, overwrites, category, synced, nsfw, bitrate, userLimit }={}, reason=null) {
-        
+
     }
     createInvite({ temporary = false, maxAge = 86400, maxUses = 0, unique, reason } = {}) {
         const response = this.client.http.createInvite(this.id, {
             data: {
-                temporary: temporary, 
+                temporary: temporary,
                 max_age: maxAge,
                 max_uses: maxUses,
                 unique: unique
-            }, 
+            },
             reason: reason
         });
         return new Invite(this.client, response);
@@ -72,7 +76,7 @@ module.exports = class GuildChannel extends Channel {
     }
     clone(name, reason) {
         if (!name) name=this.name;
-        return this.guild.createChannel( 
+        return this.guild.createChannel(
             name, {
                 overwrites: this.overwrites,
                 topic: this.topic,
