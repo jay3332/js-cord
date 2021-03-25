@@ -34,7 +34,7 @@ FLAGS = {
 
 module.exports = class Permissions {
     constructor(value) {
-        if (value & 8n) === 8n {
+        if ((value & 8n) === 8n) {
             this.value = 104324673n
         }
         this.value = value;

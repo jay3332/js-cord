@@ -9,7 +9,7 @@ module.exports = class Webhook {
             ? client.getGuild(data.guild_id) : undefined;
         this.channel = data.channel_id
             ? client.getChannel(data.channel_id) : undefined;
-        this.creator = data.user.id
+        this.author = data.user.id
             ? client.getUser(data.user.id) : undefined;
         this.applicationID = data.application_id;
     }

@@ -68,6 +68,11 @@ module.exports = class Message {
     get jumpURL() {
         return `https://discord.com/channels/${this._guild_id}/${this._channel_id}/${this.id}`;
     }
+    /**
+     * Adds a reaction to this message.
+     * @param {(string|Emoji|PartialEmoji)} emoji The emoji to react with.
+     * @returns {Message} The message itself.
+     */
     async addReaction(emoji) {
         if (typeof emoji === "string") {
             if (emoji.length > 6) {

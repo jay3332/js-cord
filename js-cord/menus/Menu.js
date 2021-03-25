@@ -70,11 +70,17 @@ module.exports = class Menu {
         return this;
     }
     async start({ timeout=0 }) {
+        if (this._active)
+            return;
         if (!this.message)
             throw new Error("You must send the starting message to start the menu. (See `Menu#send`)");
         this._active = true;
         for (button of this._buttons) {
             await this.message.addReaction(button);
+        }
+        if (timeout>0) {
+            await new Promise(r => setTimeout(r, timeout));
+            this.stop()
         }
     }
     stop() {

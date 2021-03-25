@@ -1,4 +1,5 @@
 const Embed = require("../structures/Embed");
+const getMessagePayload = require("../util/MessagePayload");
 
 module.exports = class Messageable {
     constructor(client, id) {
@@ -13,39 +14,11 @@ module.exports = class Messageable {
                 "Cannot send messages in this channel: Channel is not text-based.");
         }
 
-        if (!this.cls) { this.cls = require("../structures/Message"); }
-        if (typeof content == "object") {
-            options = content;
-            content = content.content;
-        }
-
-        let allOptions = [];
-        if (!content) content = '';
-        else allOptions.push("content");
-
-        let embed = null;
-        let tts = false;
-        let reference = null;
-        if (options.embed instanceof Embed) {
-            embed = options.embed.json;
-            allOptions.push("embed");
-        }
-        if (typeof options.tts === "boolean") {
-            tts = options.tts;
-            allOptions.push("tts");
-        }
-        if (typeof options.reference === "string") {
-            reference = options.reference;
-            allOptions.push("reference");
-        } else if (options.reference instanceof this.cls) {
-            reference = options.reference.id;
-            allOptions.push("reference");
-        }
-
-        try { content = content.toString() } catch(_){}
-
-        const response = await this.http.sendMessage(this.id, content, embed, tts, null, null, reference);
-        return new this.cls(this.client, response);
+        if (!this.cls) this.cls = require("../structures/Message");
+        const payload = await getMessagePayload(content, options);
+        const response = await this.http.sendMessage(this.id, payload);
+        if (typeof response === "object") return new this.cls(this.client, response);
+        return response.map(msg => new this.cls(client, msg));
     }
     async fetchMessage(id) {
         if (!this.cls) { this.cls = require("../structures/Message"); }

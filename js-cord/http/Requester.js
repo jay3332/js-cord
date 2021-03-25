@@ -161,17 +161,16 @@ class Requester {
         return await this.request(route);
     }
 
-    async sendMessage(destination_id, content="", embed=null, tts=false, nonce=null, allowed_mentions=null, message_reference=null) {
+    async sendMessage(destination_id, payload) {
         const route = new Route('POST', `/channels/${destination_id}/messages`);
-
-        let payload = {};
-        if (content) payload['content'] = content;
-        if (tts) payload['tts'] = true;
-        if (embed) payload['embed'] = embed;
-        if (nonce) payload['nonce'] = nonce;
-        if (allowed_mentions) payload['allowed_mentions'] = allowed_mentions;
-        if (message_reference) payload['message_reference'] = { message_id: message_reference };
-        return await this.request(route, payload);
+        if (typeof payload === "object") return await this.request(route, payload);
+        else if (payload instanceof Array) {
+            let msgs = [];
+            for (const pay of payload) {
+                msgs.push(await this.request(route, pay))
+            }
+            return msgs;
+        }
     }
 
     async getMessage(channel_id, message_id) {
@@ -230,6 +229,15 @@ class Requester {
     }
 
     // webhooks
+
+    async createWebhook(channel_id, name, avatar=null, reason=null) {
+        const payload = {
+            name: name,
+            avatar: avatar,
+            reason: reason
+        }
+        return await this.request(route, payload);
+    }
 
     async webhookSend(webhook_id, webhook_token, options) {
       const route = new Route('POST', `/webhooks/${webhook_id}/${webhook_token}`);
