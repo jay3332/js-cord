@@ -11,7 +11,7 @@ let Colors = {
 	RED: 0xe74c3c,
 	GREY: 0x95a5a6,
 	NAVY: 0x34495e,
-    YELLOW: 0xf7d434,
+  YELLOW: 0xf7d434,
 	DARK_AQUA: 0x11806a,
 	DARK_GREEN: 0x1f8b4c,
 	DARK_BLUE: 0x206694,

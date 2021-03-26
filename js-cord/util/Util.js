@@ -6,7 +6,6 @@ class Util {
     static getGithubSource(object) {
         const BASE = "https://github.com/jay3332/js-cord";
         if (!object) return BASE;
-        
     }
 
     static parseAssetSize(size) {
@@ -53,7 +52,7 @@ class Util {
 		if (spoiler) text = Util.escapeSpoiler(text);
 		return text;
 	};
-	
+
 	static escapeCodeBlock(text) {
 		return text.replace(/```/g, '\\`\\`\\`')
 	}
@@ -75,6 +74,12 @@ class Util {
 	}
 	static escapeSpoiler(text) {
 		return text.replace(/\|\|/g, '\\|\\|')
+	}
+
+	static hasInviteLink(text) {
+		if (typeof text !== 'string') return false;
+		const invRegex = /(https?:\/\/)?(discord\.gg|discord(app)?\.com\/invite)\/\w+/g;
+		return !!text.match(invRegex);
 	}
 }
 
