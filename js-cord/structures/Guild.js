@@ -1,13 +1,14 @@
 const Util = require("../util/Util");
-const Member = require("../structures/Member");
-const User = require("../structures/User");
-const Role = require("../structures/Role");
+const Member = require("./Member");
+const User = require("./User");
+const Role = require("./Role");
 const { GuildCache } = require('../client/Cache');
 const { parseSnowflake, parseAssetSize } = Util;
-const GuildChannel = require("../structures/GuildChannel");
-const TextChannel = require("../structures/TextChannel");
-const VoiceChannel = require("../structures/VoiceChannel");
-const Category = require("../structures/Category")
+const GuildChannel = require("./GuildChannel");
+const TextChannel = require("./TextChannel");
+const VoiceChannel = require("./VoiceChannel");
+const Category = require("./Category");
+const Emoji = require('./Emoji');
 
 module.exports = class Guild {
     constructor(client, data, cache) {
@@ -21,12 +22,7 @@ module.exports = class Guild {
         if (this.id) this.createdAt = parseSnowflake(this.id);
         if (data.members) {
             data.members.forEach(member => {
-                let memberStruct = new Member(
-                    this.client,
-                    member,
-                    member.user,
-                    this
-                );
+                let memberStruct = new Member(this.client, member, member.user, this);
                 let userStruct = new User(this.client, member.user);
                 this.cache.addMember(memberStruct);
                 this.client.cache.addUser(userStruct);
@@ -54,7 +50,9 @@ module.exports = class Guild {
             });
         }
         if (data.emojis) {
-
+          data.emojis.forEach(emoji => {
+            this.cache.addEmoji(emoji);
+          })
         }
     }
     get owner() {
@@ -84,29 +82,39 @@ module.exports = class Guild {
     get emojis() {
         return this.cache.emojis
     }
-    getMember(id) {
-        const res = this.cache.getMember(id);
-        if (res) return res;
-        return undefined;
+    getMember(member) {
+        if (member instanceof Member) member = member.id;
+        else if (typeof member === 'number') member = member.toString();
+        else return;
+        return this.cache.getMember(member);
     }
-    getRole(id) {
-        const res = this.cache.getRole(id);
-        if (res) return res;
-        return undefined;
+    getRole(role) {
+        if (role instanceof Role) role = role.id;
+        else if (typeof role === 'number') role = role.toString();
+        else return;
+        return this.cache.getRole(role);
     }
-    getEmoji(id) {
-        const res = this.cache.getEmoji(id);
-        if (res) return res;
-        return undefined;
+    getEmoji(emoji) {
+        const onlyId = /^\d{17,19}$/, emojiFormat = /^<a?:\w{2,32}:(?<id>\d{17,19})>$/;
+        if (emoji instanceof Emoji) emoji = emoji.id;
+        else if (typeof emoji === 'number') emoji = emoji.toString();
+        else if (typeof emoji === 'string') {
+          if (emoji.match(onlyId)) {}
+          else if (emoji.match(emojiFormat)) {
+            emoji = emoji.match(emojiFormat).id
+          }
+        }
+        else return;
+        return this.cache.getEmoji(emoji);
     }
     asMember(user) {
         return this.getMember(user.id);
     }
     get me() {
-        return this.asMember(this.client.user)
+        return this.asMember(this.client.user);
     }
 
-    get iconAnimated() { return this.icon ? this.icon.startsWith("a_") : false }
+    get iconAnimated() { return this.icon && this.icon.startsWith("a_") }
     get defaultFormat() { return this.iconAnimated ? "gif" : "png" }
     get iconUrl() { return this.avatarUrlAs({ format: this.defaultFormat }) }
 

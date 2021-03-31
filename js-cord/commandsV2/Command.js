@@ -122,7 +122,7 @@ module.exports = class Command {
         this.cog = cog;
         this.parent = parent;
         this.callback = callback;
-        this.onError = this.onError = (_, err) => {
+        this.onError = (_, err) => {
             throw err;
             //this.bot.emit("commandError", [this, error]);
         }
@@ -210,6 +210,6 @@ module.exports = class Command {
         if (this.guildOnly && ['dm', 'group'].includes(ctx.channel.type)) return false;
         if (this.nsfwOnly && ctx.channel.nsfw) return false;
         if (this.ownerOnly && !ctx.author.isOwner) return false;
-        
+
     }
 }

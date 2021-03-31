@@ -114,19 +114,13 @@ class GuildCache {
         return buffer;
     }
     getMember(id) {
-        let filtered = this.members.find(item => item.id === id);
-        if (filtered) return filtered;
-        return undefined
+        return this.members.find(item => item.id === id);
     }
     getRole(id) {
-        let filtered = this.roles.find(item => item.id === id);
-        if (filtered) return filtered;
-        return undefined
+        return this.roles.find(item => item.id === id);
     }
     getEmoji(id) {
-        let filtered = this.emojis.find(item => item.id === id);
-        if (filtered) return filtered;
-        return undefined
+        return this.emojis.find(item => item.id === id);
     }
 }
 
