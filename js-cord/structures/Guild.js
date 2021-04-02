@@ -86,26 +86,34 @@ module.exports = class Guild {
         if (member instanceof Member) member = member.id;
         else if (typeof member === 'number') member = member.toString();
         else return;
-        return this.cache.getMember(member);
+        return this.cache.getMember(member); // or undefined
     }
     getRole(role) {
         if (role instanceof Role) role = role.id;
         else if (typeof role === 'number') role = role.toString();
+        else if (typeof role === 'string') {
+            if (role.match(/^\d{17,19}$/)) {} // pass
+            else {
+                query = this.queryRoles(role, {limit: 1});
+                role = query.length ? query[0].id : undefined;
+            }
+            if (!role) return;
+        }
         else return;
-        return this.cache.getRole(role);
+        return this.cache.getRole(role); // or undefined
     }
     getEmoji(emoji) {
         const onlyId = /^\d{17,19}$/, emojiFormat = /^<a?:\w{2,32}:(?<id>\d{17,19})>$/;
         if (emoji instanceof Emoji) emoji = emoji.id;
         else if (typeof emoji === 'number') emoji = emoji.toString();
         else if (typeof emoji === 'string') {
-          if (emoji.match(onlyId)) {}
-          else if (emoji.match(emojiFormat)) {
-            emoji = emoji.match(emojiFormat).id
-          }
+            if (emoji.match(onlyId)) {} // pass
+            else if (emoji.match(emojiFormat)) {
+                emoji = emoji.match(emojiFormat).id
+            }
         }
         else return;
-        return this.cache.getEmoji(emoji);
+        return this.cache.getEmoji(emoji); // or undefined
     }
     asMember(user) {
         return this.getMember(user.id);
@@ -113,6 +121,15 @@ module.exports = class Guild {
     get me() {
         return this.asMember(this.client.user);
     }
+
+    // queryRoles(query, { limit }) {
+    //   let cache = this.cache.roles, query = query.toString(), res;
+    //   // find by id
+    //   res = cache.find(role => role.id === query);
+    //   if (res) return res;
+    // 
+    //
+    // }
 
     get iconAnimated() { return this.icon && this.icon.startsWith("a_") }
     get defaultFormat() { return this.iconAnimated ? "gif" : "png" }
