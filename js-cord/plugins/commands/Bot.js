@@ -19,6 +19,7 @@ module.exports = class Bot extends Client {
                 }
             }
             this._setupOptions({botDefaults, ...options});
+            super(clientOptions);
         } else if (typeof options === 'string') {
             this._setupOptions({...botDefaults, prefix: options})
         }
@@ -30,7 +31,8 @@ module.exports = class Bot extends Client {
                 throw new CommandErrors.ConstructionError('Prefix is a required option that is missing.');
             if (!(['string', 'function'].includes(typeof prefix) || 
                   prefix instanceof Array)) 
-                throw new CommandErrors.ConstructionError('hi');
+                throw new CommandErrors.ConstructionError('Prefix must be a string, array of strings, \
+                                                           or a function that returns a string or array of strings.');
             this.prefix = prefix;
         }
     }

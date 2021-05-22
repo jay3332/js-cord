@@ -1,19 +1,20 @@
-const Asset = require('../models/Asset');
+const Asset = require('./Asset');
+const Object = require('./Object');
 
 
-module.exports = class User {
+module.exports = class User extends Object {
     constructor(client, data) {
-        this._client = client;
-        this._rawData = data;
+        this.#client = client;
+        this.#rawData = data;
         if (data) this.loadData(data);
-    
     }
     
     loadData(data) {
-        this.id = data.id;
+        super(data.id);
         this.name = data.username;
         this.discriminator = data.discriminator;
-        this.avatar = new Asset(`avatars/${this.id}`, data.avatar);
+        this.avatar = new Asset(`avatars/${data.id}`, data.avatar);
+        this.bot = data.bot;
     }
 
     get tag() {
