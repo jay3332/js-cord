@@ -4,7 +4,7 @@ class Markdown {
 	}
 	static escapeInlineCode(text) {
 		return text.replace(/[^\\]`/g, '\\`')
-	}
+	} 
 	static escapeBold(text) {
 		return text.replace(/\*\*/g, '\\*\\*')
 	}
@@ -26,6 +26,11 @@ class Markdown {
 		if (typeof text !== 'string') return false;
 		const invRegex = /(https?:\/\/)?(discord\.gg|discord(app)?\.com\/invite)\/\w+/g;
 		return !!text.match(invRegex);
+	}
+
+	static removeInviteLinks(text, repl) {
+		const invRegex = /(https?:\/\/)?(discord\.gg|discord(app)?\.com\/invite)\/\w+/g;
+		return text.replace(invRegex, repl);
 	}
 }
 
@@ -54,7 +59,7 @@ module.exports = {
             const unix = parseInt(binary.substring(0, 42), 2)+epoch;
             return new Date(unix);
         }
-        catch (_) {
+        catch {
             return false;
         }
     },

@@ -1,15 +1,17 @@
-const Object = require('./Object');
+const DiscordObject = require('./DisordObject');
 const Asset = require('./Asset');
 
-module.exports = class Guild extends Object {
+module.exports = class Guild extends DiscordObject {
     constructor(client, data) {
         this.client = client;
         this.rawData = data;
-        if (data) this.loadData(data);
+        if (data) {
+            this.loadData(data);
+            super(data.id);
+        }
     }
 
     loadData(data) {
-        super(data.id);
         this.name = data.name;
         this.icon = new Asset(`icons/${data.id}`, data.icon);
         this.splash = new Asset(`splashes/${data.id}`, data.splash);

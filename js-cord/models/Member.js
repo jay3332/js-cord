@@ -6,7 +6,10 @@ module.exports = class Member extends User {
         this.client = client;
         this.rawData = data;
         this.guild = guild;
-        if (data) this.loadData(data);
+        if (data) {
+            this.loadData(data);
+            super(client, data);
+        }
     }
 
     toUser() {

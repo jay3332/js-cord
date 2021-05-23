@@ -1,8 +1,7 @@
 const Asset = require('./Asset');
-const Object = require('./Object');
+const DiscordObject = require('./DiscordObject'); 
 
-
-module.exports = class User extends Object {
+module.exports = class User extends DiscordObject {
     constructor(client, data) {
         this.client = client;
         this.rawData = data;

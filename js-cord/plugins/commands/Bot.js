@@ -18,14 +18,14 @@ module.exports = class Bot extends Client {
                     clientOptions[option] = value;
                 }
             }
-            this._setupOptions({botDefaults, ...options});
+            this.#setupOptions({botDefaults, ...options});
             super(clientOptions);
         } else if (typeof options === 'string') {
-            this._setupOptions({...botDefaults, prefix: options})
+            this.#setupOptions({...botDefaults, prefix: options})
         }
     }
 
-    _setupOptions(opts) {
+    #setupOptions(opts) {
         with (opts) {
             if (!prefix) 
                 throw new CommandErrors.ConstructionError('Prefix is a required option that is missing.');

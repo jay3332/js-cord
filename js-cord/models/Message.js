@@ -1,16 +1,18 @@
-const Object = require('./Object');
+const DiscordObject = require('./DiscordObject');
 const User = require('./User');
 const Member = require('./Member');
 
-module.exports = class Message extends Object {
+module.exports = class Message extends DiscordObject {
     constructor(client, data) {
         this.client = client;
         this.rawData = data;
-        if (data) this.loadData(data);
+        if (data) {
+            this.loadData(data);
+            super(data.id);
+        }
     }
 
     loadData(data) {
-        super(data.id);
 
         if (this.author) this.author = data.member 
             ? new Member(this.client, null, data.member) 
