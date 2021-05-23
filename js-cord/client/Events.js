@@ -1,7 +1,13 @@
+const Message = require('../models/Message');
+const Guild = require('../models/Guild');
+
 const WHITELISTED_EVENTS = [
-    "READY", "RESUMED",
-    "GUILD_CREATE", "GUILD_DELETE",
-    "GUILD_MEMBER_ADD", "GUILD_MEMBER_REMOVE",
+    "READY", 
+    "RESUMED",
+    "GUILD_CREATE", 
+    "GUILD_DELETE",
+    "GUILD_MEMBER_ADD", 
+    "GUILD_MEMBER_REMOVE",
     "GUILD_MEMBERS_CHUNK"
 ];
 
@@ -25,14 +31,21 @@ module.exports = async function emitEvent(client, event, data) {
     
     // guilds
     else if (event === "GUILD_CREATE") {
-        const unavailable = data.unavailable || null;
+        const unavailable = data.unavailable;
         if (unavailable) return;
 
         const guild = new Guild(client, data);
         client.cache.guilds.push(guild);
         if (unavailable === false)
-            await client.emit("guildAvailable", [ guild ]);
+            await client.emit("guildAvailable", guild);
         else
-            await client.emit("guildJoin", [ guild ]);
+            await client.emit("guildJoin", guild);
+    }
+
+    // messages
+    else if (event === "MESSAGE_CREATE") {
+        const message = new Message(client, data);
+        client.cache.messages.push(message);
+        await client.emit("message", message);
     }
 }

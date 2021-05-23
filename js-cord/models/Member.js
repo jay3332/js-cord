@@ -3,13 +3,11 @@ const User = require('./User');
 
 module.exports = class Member extends User {
     constructor(client, guild, data) {
+        super(client, data.user);
         this.client = client;
         this.rawData = data;
         this.guild = guild;
-        if (data) {
-            this.loadData(data);
-            super(client, data);
-        }
+        this.loadData(data);
     }
 
     toUser() {

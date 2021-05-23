@@ -1,4 +1,5 @@
 //const { Log, NoLog } = require('../loggers');
+const { sum } = require('../utils');
 const { InvalidToken } = require('../errors/Errors');
 const Requester = require('../core/Requester');
 const Websocket = require('../core/Websocket');
@@ -38,6 +39,15 @@ module.exports = class Client extends Emitter {
 
     get gatewayVersion() {
         return this.#gatewayVersion;
+    }
+
+    get latency() {
+        /**
+         * Returns the bot's latency in milliseconds.
+         */
+        let latencies = this.ws.latencies;
+        let lastThree = latencies.slice(-3);
+        return (sum(lastThree) / lastThree.length) * 1000
     }
 
     #putToken(token) {

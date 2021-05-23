@@ -32,12 +32,12 @@ module.exports = class Emitter {
         let listeners = this.listeners.filter(listener => listener.event === event);
         if (!listeners) return;
 
-        listeners.forEach(async(listener) => {
+        for (let listener of listeners) {
             await listener.callback(...parameters);
             if (listener._count) listener._count--;
-        });
+        }
 
         this.listeners = this.listeners
-            .filter(listener => typeof listener._count === 'number' && listener._count > 0);
+            .filter(listener => !listener._count || (typeof listener._count === 'number' && listener._count > 0));
     }
 }

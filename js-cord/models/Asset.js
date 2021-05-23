@@ -5,7 +5,7 @@ const DEFAULT_VALID_FORMATS = [ 'png', 'jpg', 'jpeg', 'webp', 'gif' ];
 const DEFAULT_VALID_SIZES   = [ 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096 ];
 
 module.exports = class Asset {
-    constructor(baseURL, hash, { validFormats = DEFAULT_VALID_FORMATS, validSizes = DEFAULT_VALID_SIZES, animated }) {
+    constructor(baseURL, hash, { validFormats = DEFAULT_VALID_FORMATS, validSizes = DEFAULT_VALID_SIZES, animated } = {}) {
         this._baseURL = CDN_URL + baseURL;
         this._validFormats = validFormats;
         this._validSizes = validSizes;

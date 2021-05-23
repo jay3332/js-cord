@@ -12,7 +12,7 @@ class Route {
     }
 
     get url() {
-        return this.baseURL + route; 
+        return this.baseURL + '/' + this.route; 
     }
 }
 
@@ -82,5 +82,10 @@ module.exports = class Requester {
 
     async logout() {
         return await this.request(this.route('POST', '/auth/logout'));
+    }
+
+    async createMessage(destinationID, payload) {
+        const route = `/channels/${destinationID}/messages`;
+        return await this.request(this.route('POST', route), payload);
     }
 }
