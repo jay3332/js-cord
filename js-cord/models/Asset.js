@@ -6,10 +6,10 @@ const DEFAULT_VALID_SIZES   = [ 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 
 
 module.exports = class Asset {
     constructor(baseURL, hash, { validFormats = DEFAULT_VALID_FORMATS, validSizes = DEFAULT_VALID_SIZES, animated }) {
-        this.#baseURL = CDN_URL + baseURL;
-        this.#validFormats = validFormats;
-        this.#validSizes = validSizes;
-        this.#animated = animated;
+        this._baseURL = CDN_URL + baseURL;
+        this._validFormats = validFormats;
+        this._validSizes = validSizes;
+        this._animated = animated;
         this.hash = hash;
     } 
 
@@ -18,9 +18,9 @@ module.exports = class Asset {
     }
 
     get animated() {
-        if (this.#animated == null)
+        if (this._animated == null)
             return this.hash.startsWith('a_');
-        return this.#animated;
+        return this._animated;
     }
 
     get defaultFormat() {
@@ -36,19 +36,19 @@ module.exports = class Asset {
                 format = format.slice(1,)
             format = format.toLowercase();
 
-            if (!this.#validFormats.includes(format)) 
+            if (!this._validFormats.includes(format)) 
                 throw new BadFormat(`Format '${format}' is invalid.`);
         return format;
     }
 
-    get urlAs({ format, size, staticFormat }) {
+    urlAs({ format, size, staticFormat }) {
         format = format ? this.#assertFormat(format) : this.defaultFormat;
         staticFormat = staticFormat ? this.#assertFormat(staticFormat) : this.defaultFormat;
 
         format = this.animated ? format : staticFormat;
-        let url = `${this.#baseURL}/${hash}.${format}`;
+        let url = `${this._baseURL}/${hash}.${format}`;
         if (size) {
-            if (!this.#validSizes.includes(size)) 
+            if (!this._validSizes.includes(size)) 
                 throw new BadFormat(`Size '${size}' is invalid.`);
             url += `?size=${size}`
         }

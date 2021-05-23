@@ -18,6 +18,8 @@ class Route {
 
 
 module.exports = class Requester {
+    #apiVersion;
+
     constructor(client, v=9) {
         this.client = client;
         this.#apiVersion = v;

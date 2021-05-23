@@ -2,6 +2,9 @@ const { DiscordError } = require("../errors/Errors");
 const ws = require('ws');
 
 module.exports = class Websocket {
+    #gatewayVersion;
+    #started;
+
     constructor(client, v=9) {
         if (!client.http) 
             throw new DiscordError('Cannot retrieve sufficient information (No valid HTTP connection.)');
@@ -29,7 +32,7 @@ module.exports = class Websocket {
         if (this.#started) 
             throw new DiscordError('Gateway has already been started.');
 
-        this.ws = new ws(url);
+        this.ws = new ws(this.socketURL);
         await this.setupWebsocket();
     }
 
@@ -45,7 +48,7 @@ module.exports = class Websocket {
 
     async doHeartbeat() {
         this.lastPing = parseFloat(process.hrtime().join("."));
-        this.send(JSON.stringify({
+        await this.send(JSON.stringify({
             op: 1,
             d: this.sequence
         }));
@@ -82,7 +85,7 @@ module.exports = class Websocket {
                 }
             }));
 
-            setInterval(this.doHeartbeat, data.heartbeat_interval);
+            setInterval(async() => await this.doHeartbeat(), data.heartbeat_interval);
         } else if (op == 11) {
             // nice, we got a heartbeat ack, this means things went well.
             if (this.lastPing) {

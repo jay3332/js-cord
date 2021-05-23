@@ -1,4 +1,4 @@
-const { Log, NoLog } = require('../loggers');
+//const { Log, NoLog } = require('../loggers');
 const { InvalidToken } = require('../errors/Errors');
 const Requester = require('../core/Requester');
 const Websocket = require('../core/Websocket');
@@ -6,11 +6,14 @@ const Emitter = require('./Emitter')
 
 
 module.exports = class Client extends Emitter {
-    constructor({ apiVersion = 9, gatewayVersion = 9, logger = NoLog }) {
+    #apiVersion;
+    #gatewayVersion;
+
+    constructor({ apiVersion = 9, gatewayVersion = 9, /*logger = NoLog*/ } = {}) {
         super();
 
-        if (!logger instanceof Log) 
-            throw new TypeError('Invalid type for option "logger"');
+        // if (!logger instanceof Log) 
+        //     throw new TypeError('Invalid type for option "logger"');
 
         this.cache = {
             guilds: [],
@@ -21,7 +24,7 @@ module.exports = class Client extends Emitter {
         }
 
         this.loggedIn = false;
-        this.logger = logger;
+        this.logger = { log: (..._) => {} };
         this.http = undefined;
         this.ws = undefined;
 
@@ -52,6 +55,9 @@ module.exports = class Client extends Emitter {
 
     async start(token) {
         this.#putToken(token);
+        this.#establishHTTP();
+        this.#establishWebsocket();
+        await this.ws.start();
     }
 
     login(token) {

@@ -4,13 +4,15 @@ const Object = require('./Object');
 
 module.exports = class User extends Object {
     constructor(client, data) {
-        this.#client = client;
-        this.#rawData = data;
-        if (data) this.loadData(data);
+        this.client = client;
+        this.rawData = data;
+        if (data) { 
+            this.loadData(data);
+            super(data.id);
+        }
     }
     
     loadData(data) {
-        super(data.id);
         this.name = data.username;
         this.discriminator = data.discriminator;
         this.avatar = new Asset(`avatars/${data.id}`, data.avatar);

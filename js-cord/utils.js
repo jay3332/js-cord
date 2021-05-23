@@ -70,5 +70,9 @@ module.exports = {
 		if (strikethrough) text = Markdown.escapeStrikethrough(text);
 		if (spoiler) text = Markdown.escapeSpoiler(text);
 		return text;
+	},
+
+	index: (object, value) => {
+		return Object.keys(object).find(k => object[k] === value);
 	}
 }

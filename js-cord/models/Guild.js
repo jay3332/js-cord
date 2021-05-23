@@ -3,8 +3,8 @@ const Asset = require('./Asset');
 
 module.exports = class Guild extends Object {
     constructor(client, data) {
-        this.#client = client;
-        this.#rawData = data;
+        this.client = client;
+        this.rawData = data;
         if (data) this.loadData(data);
     }
 
@@ -15,10 +15,10 @@ module.exports = class Guild extends Object {
         this.splash = new Asset(`splashes/${data.id}`, data.splash);
         this.region = data.region;
         this.members = data.members.map(member => {
-            let obj = new Member(this.#client, member);
+            let obj = new Member(this.client, member);
             let user = obj.toUser();
             
-            if (user) this.#client.cache.users.push(user);
+            if (user) this.client.cache.users.push(user);
             return obj;
         });
     }

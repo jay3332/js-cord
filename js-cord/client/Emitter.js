@@ -32,7 +32,7 @@ module.exports = class Emitter {
         let listeners = this.listeners.filter(listener => listener.event === event);
         if (!listeners) return;
 
-        listeners.forEach(listener => {
+        listeners.forEach(async(listener) => {
             await listener.callback(...parameters);
             if (listener._count) listener._count--;
         });
