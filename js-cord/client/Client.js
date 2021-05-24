@@ -70,22 +70,24 @@ module.exports = class Client extends Emitter {
 
     /**
      * Tries to get a user from the internal cache.
-     * @param {number} id 
-     * @returns {user or undefined} Returns the user or undefined if it can't find one
+     * @param {number} id The id of the user to find.
+     * @returns {?User} The found user.
      */
     getUser(id) {
         return this.cache.users.find(user => user.id == id);
     }
     /**
      * Tries to get a channel from the internal cache.
-     * @param {number} id 
+     * @param {number} id The id of the guild to find.
+     * @returns {?Guild} The found guild.
      */
     getGuild(id) {
         return this.cache.guilds.find(guild => guild.id == id);
     }
     /**
      * Tries to get a channel from the internal cache.
-     * @param {number} id 
+     * @param {number} id The id of the channel to find.
+     * @returns {?Channel} The found channel.
      */
     getChannel(id) {
         return this.cache.channels.find(channel => channel.id == id);
