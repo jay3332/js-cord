@@ -53,6 +53,10 @@ module.exports = class Client extends Emitter {
         this.ws = new Websocket(this, this.gatewayVersion);
     }
 
+    /**
+     * @async
+     * @param {*} token 
+     */
     async start(token) {
         this.#putToken(token);
         this.#establishHTTP();
@@ -64,14 +68,25 @@ module.exports = class Client extends Emitter {
         this.start(token).then();
     }
 
+    /**
+     * Tries to get a user from the internal cache.
+     * @param {number} id 
+     * @returns {user or undefined} Returns the user or undefined if it can't find one
+     */
     getUser(id) {
         return this.cache.users.find(user => user.id == id);
     }
-
+    /**
+     * Tries to get a channel from the internal cache.
+     * @param {number} id 
+     */
     getGuild(id) {
         return this.cache.guilds.find(guild => guild.id == id);
     }
-
+    /**
+     * Tries to get a channel from the internal cache.
+     * @param {number} id 
+     */
     getChannel(id) {
         return this.cache.channels.find(channel => channel.id == id);
     }
