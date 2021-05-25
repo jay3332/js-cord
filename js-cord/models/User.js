@@ -14,6 +14,7 @@ module.exports = class User extends DiscordObject {
         this.discriminator = data.discriminator;
         this.avatar = new Asset(`avatars/${data.id}`, data.avatar);
         this.bot = data.bot;
+        this.system = data.system;
     }
 
     get tag() {

@@ -40,5 +40,9 @@ module.exports = {
     ChannelType: enums.ChannelType,
     MessageType: enums.MessageType,
     MessageActivityType: enums.MessageActivityType,
-    StickerFormatType: enums.StickerFormatType
+    StickerFormatType: enums.StickerFormatType,
+
+    plugins: {
+        commands: require('./plugins/commands')
+    }
 }

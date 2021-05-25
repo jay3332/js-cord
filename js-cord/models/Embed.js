@@ -96,22 +96,24 @@ module.exports = class Embed {
     setTitle(title, url) {
         this.title = title;
         if (url) this.url = url;
-        return self
+        return this
     } 
 
     setDescription(description) {
         this.description = description;
-        return self
+        return this
     }
 
     appendDescription(description) {
+        if (!this.description) 
+            this.description = '';
         this.description += '\n' + description;
-        return self;
+        return this
     }
 
     setURL(url) {
         this.url = url;
-        return self
+        return this
     }
 
     setColor(color) {
@@ -127,7 +129,7 @@ module.exports = class Embed {
         }
 
         this.color = color;
-        return self
+        return this
     }
 
     setColour(colour) {
@@ -139,7 +141,7 @@ module.exports = class Embed {
         if (typeof timestamp === 'number')
             timestamp = new Date(timestamp);
         this.timestamp = timestamp;
-        return self
+        return this
     }
 
     #craftField(name, value, inline = true) {
@@ -158,22 +160,32 @@ module.exports = class Embed {
 
     addField(name, value, inline) {
         this.fields.push(this.#craftField(name, value, inline));
-        return self
+        return this
     }
 
     removeField(index) {
         this.fields.splice(index, 1);
-        return self
+        return this
+    }
+
+    setField(index, name, value, inline) {
+        this.fields[index] = this.#craftField(name, value, inline);
+        return this
+    }
+
+    spliceField(index, remove, name, value, inline) {
+        this.fields.splice(index, remove, this.#craftField(name, value, inline));
+        return this
     }
 
     insertField(index, name, value, inline) {
         this.fields.splice(index, 0, this.#craftField(name, value, inline));
-        return self
+        return this
     }
 
     clearFields() {
         this.fields = [];
-        return self
+        return this
     }
     
     popField() {
@@ -182,12 +194,12 @@ module.exports = class Embed {
 
     shiftField() {
         this.fields.shift();
-        return self
+        return this
     }
 
     swapField(index, otherIndex) {
         [this.fields[index], this.fields[otherIndex]] = [this.fields[otherIndex], this.fields[index]];
-        return self
+        return this
     }
 
     findField(name) {
@@ -196,7 +208,7 @@ module.exports = class Embed {
 
     setFields(fields) {
         this.fields = fields;
-        return self
+        return this
     }
 
     #buildFooter(text, iconURL) {
@@ -215,7 +227,7 @@ module.exports = class Embed {
             text: text || this.footer.text,
             iconURL: iconURL || this.footer.iconURL
         }
-        return self
+        return this
     }
 
     setFooterText(text) {
@@ -247,7 +259,7 @@ module.exports = class Embed {
             iconURL: iconURL || this.author.iconURL,
             url: url || this.author.url
         }
-        return self
+        return this
     }
 
     setAuthorName(name) {
@@ -268,7 +280,7 @@ module.exports = class Embed {
             url = `attachment://${url.filename}`
         }
         this.thumbnail.url = url;
-        return self
+        return this
     }
 
     setImage(url) {
@@ -277,7 +289,7 @@ module.exports = class Embed {
             url = `attachment://${url.filename}`
         }
         this.image.url = url;
-        return self
+        return this
     }
 
     toJSON() {

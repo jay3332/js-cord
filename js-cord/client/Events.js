@@ -1,5 +1,6 @@
 const Message = require('../models/Message');
 const Guild = require('../models/Guild');
+const ClientUser = require('../models/ClientUser');
 
 const WHITELISTED_EVENTS = [
     "READY", 
@@ -21,8 +22,9 @@ module.exports = async function emitEvent(client, event, data) {
         client.startupTimestamp = parseFloat(process.hrtime().join("."));
         client.ws.sessionID = data.session_id;
         client.loggedIn = true;
-        //client.user = new ClientUser(client, data.user);
+        client.user = new ClientUser(client, data.user);
         await client.emit("ready")
+        
     } else if (event === "RESUMED") {
         await client.emit("resumed");
     } else if (event === "RECONNECT") {
@@ -47,5 +49,15 @@ module.exports = async function emitEvent(client, event, data) {
         const message = new Message(client, data);
         client.cache.messages.push(message);
         await client.emit("message", message);
+    } else if (event === "MESSAGE_UPDATE") {
+        // Is the message in our cache?
+        const cachedMessage = client.cache.messages.find(
+            msg => msg.channel.id == data.channel_id && msg.id == data.id
+        );
+
+        const message = new Message(client, data);
+        client.cache.messages.push(message);
+        if (cachedMessage) await client.emit("messageEdit", cachedMessage, message);
+        await client.emit("rawMessageEdit", message);
     }
 }

@@ -24,7 +24,8 @@ module.exports = class Guild extends DiscordObject {
 
             let obj = new Member(this.client, this, member);
             let user = obj.toUser();
-            
+
+            if (obj.id === this.client.id) this.me = obj; 
             if (user) this.client.cache.users.push(user);
             return obj;
         })
@@ -43,5 +44,8 @@ module.exports = class Guild extends DiscordObject {
             return channel;
         })
             .filter(channel => channel);
+
+        if (data.me && !this.me)
+            this.me = new Member(this.client, data.me); 
     }
 }

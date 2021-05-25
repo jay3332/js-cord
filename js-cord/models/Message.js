@@ -1,4 +1,5 @@
 const DiscordObject = require('./DiscordObject');
+const MessageBuilder = require('./MessageBuilder');
 const User = require('./User');
 const Member = require('./Member');
 
@@ -34,5 +35,15 @@ module.exports = class Message extends DiscordObject {
 
     toString() {
         return this.content;
+    }
+
+    async edit(content, options) {
+        let builder = new MessageBuilder(this.channel, content, options, 'edit', this.id);
+        return await builder.build().send();
+    } 
+
+    async reply(content, options) {
+        options.reference = this.id;
+        return await this.channel.send(content, options);
     }
 }

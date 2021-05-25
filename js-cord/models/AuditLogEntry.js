@@ -15,6 +15,6 @@ module.exports = class AuditLogEntry extends DiscordObject {
         this.user = this.client.getUser(data.user_id);
         this.event = data.action_type;
         this.options = data.options;
-        this.reason = data.reason;
+        this.reason = data.reason; // im gonna test edits
     }
 }

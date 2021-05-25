@@ -1,10 +1,10 @@
 class Markdown {
-    static escapeCodeBlock(text) {
+	static escapeCodeBlock(text) {
 		return text.replace(/```/g, '\\`\\`\\`')
 	}
 	static escapeInlineCode(text) {
 		return text.replace(/[^\\]`/g, '\\`')
-	} 
+	}
 	static escapeBold(text) {
 		return text.replace(/\*\*/g, '\\*\\*')
 	}
@@ -38,7 +38,7 @@ class Markdown {
 function sum(array, key) {
 	key = key || (i => i);
 	return array.reduce(
-		(a, b) => key(a) + key(b), 0
+		(a, b) => a + key(b), 0
 	);
 }
 
@@ -50,9 +50,9 @@ class BasePaginator {
 	 */
 
 	constructor({
-		prefix = '```', 
-		suffix = '```', 
-		maxSize = 2000, 
+		prefix = '```',
+		suffix = '```',
+		maxSize = 2000,
 		delimiter = '\n'
 	} = {}) {
 		this.prefix = prefix;
@@ -80,10 +80,10 @@ class BasePaginator {
 	addLine(line = '', empty = false) {
 		let maxSize = this.maxSize - this.prefix.length - this.suffix.length;
 		maxSize -= this.delimiter.length * 2;
-		
+
 		if (line.length > maxSize) throw new RangeError('Line is too large.');
 
-		if (this.count + line.length + this.delimiter.length > 
+		if (this.count + line.length + this.delimiter.length >
 			this.maxSize - this.suffix.length) this.closePage();
 
 		this.count += line.length + this.delimiter.length;
@@ -100,7 +100,7 @@ class BasePaginator {
 	}
 
 	closePage() {
-		if (this.suffix != undefined) 
+		if (this.suffix != undefined)
 			this.currentPage.push(this.suffix);
 		this._pages.push(this.currentPage.join(this.delimiter));
 		this.resetPage();
@@ -111,7 +111,7 @@ class BasePaginator {
 	}
 
 	get pages() {
-		if(this.currentPage.length > (this.prefix == undefined ? 0 : 1)) {
+		if (this.currentPage.length > (this.prefix == undefined ? 0 : 1)) {
 			this.closePage();
 		}
 		return this._pages;
@@ -126,14 +126,14 @@ class Paginator extends BasePaginator {
 	 */
 	constructor({
 		prefix = '```',
-		suffix = '```', 
-		maxSize = 2000, 
+		suffix = '```',
+		maxSize = 2000,
 		delimiter = '\n',
 		forceWrap = true,
 		includeWrapped = true
 	} = {}) {
-		if (!delimiter instanceof Array) 
-			delimiter = [ delimiter ];
+		if (!delimiter instanceof Array)
+			delimiter = [delimiter];
 
 		super({
 			prefix: prefix,
@@ -151,20 +151,20 @@ class Paginator extends BasePaginator {
 		let maxSize = this.maxSize - this.prefix.length - this.suffix.length - 2;
 
 		while (line.length > maxSize) {
-			let search = line.slice(0, maxSize-1);
+			let search = line.slice(0, maxSize - 1);
 			let wrapped = false;
 
 			for (let delim of this.delimiters) {
 				let position = search.lastIndexOf(delim);
-				
+
 				if (position > 0) {
 					super.addLine(line.slice(0, position), empty);
 					wrapped = true;
 
 					line = line.slice(
-						this.includeWrapped 
-							? position 
-							: position + delim.length
+						this.includeWrapped ?
+						position :
+						position + delim.length
 					);
 
 					break;
@@ -172,8 +172,8 @@ class Paginator extends BasePaginator {
 
 				if (!wrapped) {
 					if (this.forceWrap) {
-						super.addLine(line.slice(0, maxSize-1));
-						line = line.slice(maxSize-1);
+						super.addLine(line.slice(0, maxSize - 1));
+						line = line.slice(maxSize - 1);
 					} else {
 						throw new RangeError('Line was too large to wrap.');
 					}
@@ -191,42 +191,54 @@ class Paginator extends BasePaginator {
 
 
 module.exports = {
-	BasePaginator, 
+	BasePaginator,
 	Paginator,
 
 	sum,
-    sleep: async (milliseconds) => {
-        await new Promise(r => setTimeout(r, milliseconds));
-    },
+	sleep: async (milliseconds) => {
+		await new Promise(r => setTimeout(r, milliseconds));
+	},
+	
+	maybePromise: async (func, ...args) => {
+		let result = func(...args);
+		if (result instanceof Promise)
+			result = await result;
+		return result;
+	},
 
-    parseSnowflake: (snowflake) => {
-        const epoch = 1420070400000;
-        let binary = '';
-        try {
-            snowflake = snowflake.toString()
-            let high = parseInt(snowflake.slice(0, -10));
-            let low = parseInt(snowflake.slice(-10));
+	parseSnowflake: (snowflake) => {
+		const epoch = 1420070400000;
+		let binary = '';
+		try {
+			snowflake = snowflake.toString()
+			let high = parseInt(snowflake.slice(0, -10));
+			let low = parseInt(snowflake.slice(-10));
 
-            while (high > 0 || low > 0) {
-                binary = String(low & 1) + binary;
-                low = Math.floor(low / 2);
-                if (high > 0) {
-                    low += 5000000000 * (high % 2);
-                    high = Math.floor(high / 2);
-                }
-            }
+			while (high > 0 || low > 0) {
+				binary = String(low & 1) + binary;
+				low = Math.floor(low / 2);
+				if (high > 0) {
+					low += 5000000000 * (high % 2);
+					high = Math.floor(high / 2);
+				}
+			}
 
-            binary = binary.toString(2).padStart(64, '0');
-            const unix = parseInt(binary.substring(0, 42), 2) + epoch;
-            return new Date(unix);
-        }
-        catch {
-            return false;
-        }
-    },
+			binary = binary.toString(2).padStart(64, '0');
+			const unix = parseInt(binary.substring(0, 42), 2) + epoch;
+			return new Date(unix);
+		} catch {
+			return false;
+		}
+	},
 
 	escapeMarkdown: (text, {
-		codeBlock = true, inlineCode = true, bold = true, italic = true, underline = true, strikethrough = true, spoiler = true,
+		codeBlock = true,
+		inlineCode = true,
+		bold = true,
+		italic = true,
+		underline = true,
+		strikethrough = true,
+		spoiler = true,
 	}) => {
 		if (inlineCode) text = Markdown.escapeInlineCode(text);
 		if (codeBlock) text = Markdown.escapeCodeBlock(text);
@@ -240,5 +252,5 @@ module.exports = {
 
 	index: (object, value) => {
 		return Object.keys(object).find(k => object[k] === value);
-	}
+	},
 }

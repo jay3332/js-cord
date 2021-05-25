@@ -6,7 +6,7 @@ const DEFAULT_VALID_SIZES   = [ 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 
 
 module.exports = class Asset {
     constructor(baseURL, hash, { validFormats = DEFAULT_VALID_FORMATS, validSizes = DEFAULT_VALID_SIZES, animated } = {}) {
-        this._baseURL = CDN_URL + baseURL;
+        this._baseURL = CDN_URL + '/' + baseURL;
         this._validFormats = validFormats;
         this._validSizes = validSizes;
         this._animated = animated;
@@ -46,7 +46,10 @@ module.exports = class Asset {
         staticFormat = staticFormat ? this.#assertFormat(staticFormat) : this.defaultFormat;
 
         format = this.animated ? format : staticFormat;
-        let url = `${this._baseURL}/${hash}.${format}`;
+        let url = this.hash 
+            ? `${this._baseURL}/${hash}.${format}`
+            : `${this._baseURL}.${format}`;
+
         if (size) {
             if (!this._validSizes.includes(size)) 
                 throw new BadFormat(`Size '${size}' is invalid.`);
