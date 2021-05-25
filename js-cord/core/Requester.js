@@ -93,4 +93,9 @@ module.exports = class Requester {
         const route = `/channels/${destinationID}/messages/${messageID}`;
         return await this.request(this.route('PATCH', route), payload);
     }
+
+    async getMembers(guildID, /*limit, after*/) {
+        const route = `/guilds/${guildID}/members`;
+        return await this.request(this.route('GET', route));
+    }
 }

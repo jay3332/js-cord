@@ -1,6 +1,7 @@
 //const { Log, NoLog } = require('../loggers');
 const { sum } = require('../utils');
 const { InvalidToken } = require('../errors/Errors');
+const SnowflakeSet = require('../models/SnowflakeSet');
 const Requester = require('../core/Requester');
 const Websocket = require('../core/Websocket');
 const Emitter = require('./Emitter')
@@ -17,11 +18,11 @@ module.exports = class Client extends Emitter {
         //     throw new TypeError('Invalid type for option "logger"');
 
         this.cache = {
-            guilds: [],
-            channels: [],
-            users: [],
-            messages: [],
-            emojis: []
+            guilds: new SnowflakeSet(),
+            channels: new SnowflakeSet(),
+            users: new SnowflakeSet(),
+            messages: new SnowflakeSet(),
+            emojis: new SnowflakeSet()
         }
 
         this.loggedIn = false;
@@ -107,5 +108,17 @@ module.exports = class Client extends Emitter {
      */
     getChannel(id) {
         return this.cache.channels.find(channel => channel.id == id);
+    }
+
+    get users() {
+        return this.cache.users
+    }
+
+    get channels() {
+        return this.cache.channels
+    }
+
+    get guilds() {
+        return this.cache.guilds
     }
 }

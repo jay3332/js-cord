@@ -12,7 +12,9 @@ const botDefaults = {
     commandsCaseInsensitive: true,
     stripAfterPrefix: false, 
     helpCommand: undefined,
-    description: undefined
+    description: undefined,
+    flagPrefix: '--',
+    shortFlagPrefix: '-'
 }
 
 module.exports = class Bot extends Client {
@@ -25,7 +27,7 @@ module.exports = class Bot extends Client {
                 }
             }
             super(clientOptions);
-            this.#setupOptions({botDefaults, ...options});
+            this.#setupOptions({...botDefaults, ...options});
         } else if (typeof options === 'string') {
             super();
             this.#setupOptions({...botDefaults, prefix: options})
@@ -44,11 +46,14 @@ module.exports = class Bot extends Client {
             throw new CommandErrors.ConstructionError(
                 'Prefix must be a string, array of strings, or a function that returns a string or array of strings.'
             );
+
         this.prefix = opts.prefix;
         this.prefixCaseInsensitive = opts.prefixCaseInsensitive;
         this.commandsCaseInsensitive = opts.commandsCaseInsensitive;
         this.description = opts.description;
         this.helpCommand = opts.helpCommand;
+        this.flagPrefix = opts.flagPrefix;
+        this.shortFlagPrefix = opts.shortFlagPrefix;
     }
 
     addDefaultListeners() {
@@ -58,7 +63,14 @@ module.exports = class Bot extends Client {
         this.on('message', async (msg) => {
             if (msg.author.bot) return;
             let ctx = await this.getContext(msg)
-            if (ctx) await this.invoke(ctx);
+            
+            if (
+                ctx 
+                && ctx.command != undefined
+                && ctx.args != undefined
+                && ctx.flags != undefined
+            ) 
+                await this.invoke(ctx);
         })
     }
 
@@ -99,6 +111,9 @@ module.exports = class Bot extends Client {
     }
 
     getCommand(query) {
+        /**
+         * TODO: Add alias support
+         */
         query = query.trim();
         const formatFn = this.commandsCaseInsensitive ? (s => s.toLowerCase()) : (s => s);
         if (this.commandsCaseInsensitive) query = query.toLowerCase();
@@ -108,17 +123,19 @@ module.exports = class Bot extends Client {
     async getContext(message) {
         let ctx = new Context(this, message);
         ctx.prefix = await this.getPrefix(message);
-        if (!ctx.prefix) return;  // The message probably doesn't start with a prefix
+        if (ctx.prefix == undefined) return;  // The message probably doesn't start with a prefix
 
         // Some commands have spaces in them, so we will 
         // do a reverse string view. Not to mention subcommands.
         let query = message.content.slice(ctx.prefix.length);
         let view = new BasicReverseStringView(query);
-        let foundCommand;
+        let foundCommand, word;
 
         while (!view.eof) {
-            foundCommand = this.getCommand(view.getWord())
+            word = view.getWord();
+            foundCommand = this.getCommand(word);
             if (foundCommand) {
+                ctx.invokedWith = word;
                 ctx.command = foundCommand;
                 break;
             }
@@ -129,7 +146,11 @@ module.exports = class Bot extends Client {
         }
 
         let rest = view.getRest().trim();
-        [ ctx.args, ctx.flags ] = await ctx.command.getArguments(ctx, rest);
+        try { 
+            [ ctx.args, ctx.flags ] = await ctx.command.getArguments(ctx, rest); 
+        } catch (exc) {  
+            await this.emit('commandError', ctx, exc);
+        }
         return ctx;
     }
 
@@ -151,7 +172,15 @@ module.exports = class Bot extends Client {
         command.callback = callback;
     }
 
-    // For flags, which are WIP
-    async getFlagPrefix() {}
-    async getShortFlagPrefix() {}
+    /**
+     * TODO: Dynamic flag prefixes.
+     * For now, this is the best we can do.
+     */
+    async getFlagPrefix(message) {
+        return this.flagPrefix;
+    }
+    
+    async getShortFlagPrefix(message) {
+        return this.shortFlagPrefix;
+    }
 }

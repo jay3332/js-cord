@@ -48,4 +48,38 @@ module.exports = class Guild extends DiscordObject {
         if (data.me && !this.me)
             this.me = new Member(this.client, data.me); 
     }
+
+    async fillMembers() {
+        const http = this.client.http;
+        const data = await http.getMembers(this.id);
+
+        this.members = data.map(member => {
+            if (!member) return;
+
+            let obj = new Member(this.client, this, member);
+            let user = obj.toUser();
+
+            if (obj.id === this.client.id) this.me = obj; 
+            if (user) this.client.cache.users.push(user);
+            return obj;
+        })
+            .filter(member => member);
+    }
+
+    getMember(id) {
+        return this.members.find(member => member.id == id);
+    }
+
+    getMemberNamed(query, { caseInsensitive = false } = {}) {
+        // If a discriminator was provided, use it too
+        const _ = caseInsensitive 
+            ? (text => text.toLowerCase())
+            : (text => text);
+
+        query = _(query);
+        if (query.match(/^.{2,32}#[0-9]{4}$/gs)) {
+            return this.members.find(member => _(member.tag) === query);
+        }
+        return this.members.find(member => _(member.name) === query || _(member.nick) === query);
+    }
 }
