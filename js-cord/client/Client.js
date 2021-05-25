@@ -71,7 +71,7 @@ module.exports = class Client extends Emitter {
     /**
      * Starts the bot.
      * @async
-     * @param {string} token 
+     * @param {string} token The token to use to login into the gateway.
      */
     async start(token) {
         this.#putToken(token);

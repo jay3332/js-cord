@@ -1,4 +1,9 @@
 module.exports = class Context {
+    /**
+     * 
+     * @param {*} bot 
+     * @param {*} message 
+     */
     constructor(bot, message) {
         this.bot = bot;
         this.message = message;
@@ -27,7 +32,7 @@ module.exports = class Context {
     get unix() {
         return this.message.createdAt.getTime()
     }
-
+    
     async invoke(command, args, flags) {
         return await command.invoke(this, args, flags);
     }
