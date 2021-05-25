@@ -10,7 +10,7 @@ module.exports = class Client extends Emitter {
     #apiVersion;
     #gatewayVersion;
 
-    constructor({ apiVersion = 9, gatewayVersion = 9, /*logger = NoLog*/ } = {}) {
+    constructor({ apiVersion = 9, gatewayVersion = 9, /*, logger = NoLog*/ } = {}) {
         super();
 
         // if (!logger instanceof Log) 
@@ -28,9 +28,14 @@ module.exports = class Client extends Emitter {
         this.logger = { log: (..._) => {} };
         this.http = undefined;
         this.ws = undefined;
+        this.user = undefined;
 
         this.#apiVersion = apiVersion;
         this.#gatewayVersion = gatewayVersion;
+    }
+
+    get id() {
+        return this.user?.id;
     }
 
     get apiVersion() {

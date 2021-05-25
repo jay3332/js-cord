@@ -1,6 +1,35 @@
 const { DiscordError } = require('../../errors/Errors');
 
+class CommandError extends DiscordError {};
+class ArgumentParsingError extends CommandError {};
+class QuoteParsingError extends ArgumentParsingError {};
+class ConversionError extends ArgumentParsingError {
+    constructor(original) {
+        super(original);
+        this.original = original;
+    }
+};
+
 module.exports = {
-    CommandError: class extends DiscordError {},
-    ConstructionError: class extends CommandError {}
+    CommandError,
+    ArgumentParsingError,
+    QuoteParsingError,
+    ConversionError,
+    CommandNotFound: class extends CommandError {
+        constructor(query) {
+            super(`Command '${query.replace(/'/g, "\\'")}' not found.`);
+            this.query = query;
+        }
+    },
+    ConstructionError: class extends CommandError {},
+    NotImplementedError: class extends CommandError {},
+    NoClosingQuoteError: class extends QuoteParsingError {},
+    UnexpectedQuoteError: class extends QuoteParsingError {},
+    ValidationError: class extends ConversionError {},
+    MissingRequiredArgument: class extends ArgumentParsingError {
+        constructor(arg) {
+            super(`You are missing the "${arg.name}" argument, which is required.`);
+            this.arg = arg;
+        }
+    }
 }
