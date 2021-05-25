@@ -54,8 +54,9 @@ module.exports = class Client extends Emitter {
     }
 
     /**
+     * Starts the bot.
      * @async
-     * @param {*} token 
+     * @param {string} token 
      */
     async start(token) {
         this.#putToken(token);
@@ -71,7 +72,7 @@ module.exports = class Client extends Emitter {
     /**
      * Tries to get a user from the internal cache.
      * @param {number} id 
-     * @returns {user or undefined} Returns the user or undefined if it can't find one
+     * @returns {user|undefined} Returns the user or undefined if it can't find one
      */
     getUser(id) {
         return this.cache.users.find(user => user.id == id);
@@ -79,6 +80,7 @@ module.exports = class Client extends Emitter {
     /**
      * Tries to get a channel from the internal cache.
      * @param {number} id 
+     * @returns {guild|undefined} Returns the user or undefined if it can't find one
      */
     getGuild(id) {
         return this.cache.guilds.find(guild => guild.id == id);
@@ -86,6 +88,7 @@ module.exports = class Client extends Emitter {
     /**
      * Tries to get a channel from the internal cache.
      * @param {number} id 
+     * @returns {guild|undefined} Returns the user or undefined if it can't find one
      */
     getChannel(id) {
         return this.cache.channels.find(channel => channel.id == id);
