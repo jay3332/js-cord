@@ -37,7 +37,9 @@ module.exports = async function emitEvent(client, event, data) {
         if (unavailable) return;
 
         const guild = new Guild(client, data);
+        await guild.fillMembers();
         client.cache.guilds.push(guild);
+        
         if (unavailable === false)
             await client.emit("guildAvailable", guild);
         else

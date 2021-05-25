@@ -7,6 +7,7 @@ module.exports = class Context {
         this.guild = message.guild;
         this.me = message.guild.me;
 
+        this.invokedWith = null;
         this.command = null;
         this.args = {},
         this.flags = {},

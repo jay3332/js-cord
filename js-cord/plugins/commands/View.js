@@ -93,7 +93,7 @@ class StringView {
 
     _getWord() {
         let current = this.buffer;
-        if (buffer == undefined) return null;
+        if (current == undefined) return null;
 
         let endQuote = this.quotes[current];
         let parsingQuote = !!endQuote;
