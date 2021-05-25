@@ -1,4 +1,5 @@
 //const { Log, NoLog } = require('../loggers');
+const { sum } = require('../utils');
 const { InvalidToken } = require('../errors/Errors');
 const Requester = require('../core/Requester');
 const Websocket = require('../core/Websocket');
@@ -9,7 +10,7 @@ module.exports = class Client extends Emitter {
     #apiVersion;
     #gatewayVersion;
 
-    constructor({ apiVersion = 9, gatewayVersion = 9, /*logger = NoLog*/ } = {}) {
+    constructor({ apiVersion = 9, gatewayVersion = 9, /*, logger = NoLog*/ } = {}) {
         super();
 
         // if (!logger instanceof Log) 
@@ -27,9 +28,14 @@ module.exports = class Client extends Emitter {
         this.logger = { log: (..._) => {} };
         this.http = undefined;
         this.ws = undefined;
+        this.user = undefined;
 
         this.#apiVersion = apiVersion;
         this.#gatewayVersion = gatewayVersion;
+    }
+
+    get id() {
+        return this.user?.id;
     }
 
     get apiVersion() {
@@ -38,6 +44,15 @@ module.exports = class Client extends Emitter {
 
     get gatewayVersion() {
         return this.#gatewayVersion;
+    }
+
+    get latency() {
+        /**
+         * Returns the bot's latency in milliseconds.
+         */
+        let latencies = this.ws.latencies;
+        let lastThree = latencies.slice(-3);
+        return (sum(lastThree) / lastThree.length) * 1000
     }
 
     #putToken(token) {

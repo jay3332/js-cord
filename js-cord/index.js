@@ -8,13 +8,41 @@
  * E.g.: jumpURL, channelID, someOtherMethod
  */
 
+const utils = require('./utils');
+const enums = require('./enums');
+const Color = require('./models/Color');
+
 module.exports = {
     Client: require('./client/Client'),
 
     Asset: require('./models/Asset'),
+    AuditLogEntry: require('./models/AuditLogEntry'),
+    Channel: require('./models/Channel'),
+    Color,
+    Colour: Color,
+    DiscordObject: require('./models/DiscordObject'),
+    Embed: require('./models/Embed'),
+    Guild: require('./models/Guild'),
+    Member: require('./models/Member'),
+    Message: require('./models/Message'),
+    MessageBuilder: require('./models/MessageBuilder'),
     User: require('./models/User'),
 
     loggers: require('./loggers'),
     constants: require('./constants'),
-    utils: require('./utils')
+    enums,
+    utils,
+
+    BasePaginator: utils.BasePaginator,
+    Paginator: utils.Paginator,
+
+    AuditLogEvent: enums.AuditLogEvent,
+    ChannelType: enums.ChannelType,
+    MessageType: enums.MessageType,
+    MessageActivityType: enums.MessageActivityType,
+    StickerFormatType: enums.StickerFormatType,
+
+    plugins: {
+        commands: require('./plugins/commands')
+    }
 }

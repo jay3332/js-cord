@@ -2,12 +2,10 @@ const DiscordObject = require('./DiscordObject');
 
 module.exports = class AuditLogEntry extends DiscordObject {
     constructor(client, data) {
+        super(data.id);
         this.client = client;
         this.rawData = data;
-        if (data) {
-            this.loadData(data);
-            super(data.id)
-        }
+        if (data) this.loadData(data);
     }
 
     loadData(data) {
@@ -17,6 +15,6 @@ module.exports = class AuditLogEntry extends DiscordObject {
         this.user = this.client.getUser(data.user_id);
         this.event = data.action_type;
         this.options = data.options;
-        this.reason = data.reason;
+        this.reason = data.reason; // im gonna test edits
     }
 }

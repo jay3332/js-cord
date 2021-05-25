@@ -12,7 +12,7 @@ class Route {
     }
 
     get url() {
-        return this.baseURL + route; 
+        return this.baseURL + '/' + this.route; 
     }
 }
 
@@ -30,7 +30,7 @@ module.exports = class Requester {
     }
 
     get token() {
-        if (!this.client.token) 
+        if (!this.client.token)
             throw new InvalidToken('Token is undefined.');
         return this.client.token
     }
@@ -82,5 +82,15 @@ module.exports = class Requester {
 
     async logout() {
         return await this.request(this.route('POST', '/auth/logout'));
+    }
+
+    async createMessage(destinationID, payload) {
+        const route = `/channels/${destinationID}/messages`;
+        return await this.request(this.route('POST', route), payload);
+    }
+
+    async editMessage(destinationID, messageID, payload) {
+        const route = `/channels/${destinationID}/messages/${messageID}`;
+        return await this.request(this.route('PATCH', route), payload);
     }
 }
