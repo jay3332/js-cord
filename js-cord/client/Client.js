@@ -3,7 +3,7 @@ const { sum } = require('../utils');
 const { InvalidToken } = require('../errors/Errors');
 const Intents = require('../models/Intents');
 const SnowflakeSet = require('../models/SnowflakeSet');
-const Requester = require('../core/Requester');
+const HTTPClient = require('../core/HTTPClient');
 const Websocket = require('../core/Websocket');
 const Emitter = require('./Emitter');
 const Guild = require('../models/Guild');
@@ -72,7 +72,7 @@ module.exports = class Client extends Emitter {
     }
 
     #establishHTTP() {
-        this.http = new Requester(this, this.apiVersion);
+        this.http = new HTTPClient(this, this.apiVersion);
     }
 
     #establishWebsocket() {

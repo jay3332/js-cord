@@ -14,6 +14,7 @@ const Color = require('./models/Color');
 
 module.exports = {
     Client: require('./client/Client'),
+    Queue: require('./core/Queue'),
 
     AllowedMentions: require('./models/AllowedMentions'),
     Asset: require('./models/Asset'),

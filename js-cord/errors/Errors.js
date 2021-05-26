@@ -9,5 +9,6 @@ module.exports = {
     DiscordError,
     BadFormat: class extends DiscordError {},
     ConstructionError: class extends DiscordError {},
-    InvalidToken: class extends DiscordError {}
+    InvalidToken: class extends DiscordError {},
+    HTTPError: class extends DiscordError {}
 }

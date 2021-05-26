@@ -306,5 +306,9 @@ module.exports = {
      */
     regexEscape: (literalString) => {
         return literalString.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&');
+    },
+
+    get time() {
+        return parseFloat(process.hrtime().join('.')) * 1000
     }
 }

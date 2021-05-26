@@ -1,133 +1,190 @@
 const fetch = require('node-fetch');
-const { HTTP_URL } = require('../constants');
-const { sleep } = require('../utils');
-const { InvalidToken } = require('../errors/Errors');
+const Queue = require('./Queue');
+const utils = require('../utils');
+const { HTTPError } = require('../errors/Errors');
 
-class Route {
-    constructor(v, method='GET', route='/') {
-        if (route.startsWith('/')) route = route.slice(1,);
-        this.baseURL = `${HTTP_URL}/v${v}`; 
-        this.method = method;
-        this.route = route;
-    }
+let badRequests = 0;
+let resetCounterAt = null;
+const REQUEST_OFFSET = 500;
+const RETRY_LIMIT = 1;
 
-    get url() {
-        return this.baseURL + '/' + this.route; 
-    }
-}
-
-
+// Rate-limit handling inspired by discord.py.
+// Most of this logic comes from how discord.js handles ratelimits.
 module.exports = class Requester {
-    #apiVersion;
-
-    constructor(client, v=9) {
-        this.client = client;
-        this.#apiVersion = v;
-    } 
-
-    get userAgent() {
-        return 'DiscordBot (js-cord 1.0)';
-    }
-
-    get token() {
-        if (!this.client.token)
-            throw new InvalidToken('Token is undefined.');
-        return this.client.token
-    }
-
-    route(...args) {
-        return new Route(this.#apiVersion, ...args);
+    constructor(http) {
+        this.http = http;
+        this._queue = new Queue();
+        this._reset = -1;
+        this._remaining = -1;
+        this._limit = -1;
+        this.retries = new Map();
     }
 
     async request(route, payload, contentType = 'application/json') {
-        let method = route.method.toLowerCase();
-        let headers = {
-            'Content-Type': contentType,
-            'User-Agent': this.userAgent,
-            'X-Ratelimit-Precision': 'millisecond',
-            'Authorization': `Bot ${this.token}`
+        await this._queue.wait();
+        try {
+            return await this.__request(route, payload, contentType);
+        } finally {
+            this._queue.shift();
         }
+    }
+
+    get globallyLimitted() {
+        return this.http.ratelimit.remaining <= 0 
+            && Date.now() < this.http.ratelimit.reset;
+    }
+
+    get locallyLimited() {
+        return this._remaining <= 0 
+            && Date.now() < this._reset;
+    }
+
+    get ratelimited() {
+        return this.globallyLimitted || this.locallyLimited;
+    }
+
+    get running() {
+        return this._queue.count > 0 || this.ratelimited;
+    }
+ 
+    _delay(delay) {
+        return new Promise(r => {
+            setTimeout(() => {
+                this.http.ratelimit.delay = null;
+                r();
+            }, delay);
+        })
+    }
+
+    _incrRetries(key) {
+        let buffer = this.retries.get(key);
+        this.retries.set(key, buffer + 1);
+    }
+
+    async __request(route, payload, contentType) {
+        const headers = {
+            'Content-Type': contentType,
+            'User-Agent': this.http.userAgent,
+            'Authorization': `Bot ${this.http.token}`
+        };
+
+        const method = route.method.toLowerCase();
 
         let body;
-
         if (payload) {
             payload['Content-Type'] = contentType
             body = JSON.stringify(payload);
         }
 
-        let options = { method: method, headers: headers, body: body };
-        let result = await fetch(route.url, options);
-        let data = result.json();
+        if (!this.retries.has([route, payload]))
+            this.retries.set([route, payload], 0);
+        const options = { method: method, headers: headers, body: body };
 
-        if (data.retry_after) {
-            await sleep(data.retry_after * 1000);
-            result = await fetch(route.url, options);
-            data = result.json();
+        while (this.ratelimited) {
+            const isGlobalLimit = this.globallyLimitted;
+            let limit, timeout, delay;
+
+            if (isGlobalLimit) {
+                limit = this.http.ratelimit.limit;
+                timeout = this.http.ratelimit.reset + REQUEST_OFFSET - Date.now();
+
+                if (!this.http.ratelimit.delay)
+                    this.http.ratelimit.delay = this._delay(timeout);
+                delay = this.http.ratelimit.delay;
+            } else {
+                limit = this._limit;
+                timeout = this._reset + REQUEST_OFFSET - Date.now();
+                delay = utils.sleep(timeout);
+            }
+
+            await delay;
         }
 
-        if (this.client.debug) 
-            console.log(data);
-        return data;
-    }
+        if (!this.http.ratelimit.reset || this.http.ratelimit.reset < Date.now()) {
+            this.http.ratelimit.reset = Date.now() + 1000;
+            this.http.ratelimit.remaining = this.http.ratelimit.limit;
+            
+        }
+        this.http.ratelimit.remaining--;
 
-    async getRecommendedShardCount() {
-        const route = this.route('GET', '/gateway/bot');
-        let result = await this.request(route);
-        return result.shards
-    }
+        let response;
+        try {
+            response = await fetch(route.url, options);
+        } catch (exc) {
+            if (this.retries.get([route, payload]) >= RETRY_LIMIT) {
+                throw new HTTPError(`${error.status}: ${exc.message}`);
+            }
 
-    async getClientInformation() {
-        return await this.request(this.route('GET', '/users/@me'));
-    }
+            this._incrRetries([route, payload]);
+            return this.__request(route, payload, contentType);
+        }
 
-    async logout() {
-        return await this.request(this.route('POST', '/auth/logout'));
-    }
+        let _timeout;
+        if (response?.headers) {
+            const h = response.headers;
+            const date = h.get('date');
+            const limit = h.get('x-ratelimit-limit');
+            const remaining = h.get('x-ratelimit-remaining');
+            const reset = h.get('x-ratelimit-reset');
+            const resetAfter = h.get('x-ratelimit-reset-after');
 
-    async createMessage(destinationID, payload) {
-        const route = `/channels/${destinationID}/messages`;
-        return await this.request(this.route('POST', route), payload);
-    }
+            this._limit = limit ? Number(limit) : Infinity;
+            this._remaining = remaining ? Number(remaining) : 1;
+            this._reset = reset || resetAfter
+                ? (
+                    resetAfter 
+                    ? Date.now() + Number(resetAfter) * 1000
+                    : new Date(Number(reset) * 1000).getTime()
+                        - (new Date(date).getTime() - Date.now())
+                ) : Date.now();
+            
+            if (!resetAfter && route.url.includes('reactions'))
+                this._reset = new Date(date).getTime() - (
+                    new Date(date).getTime() - Date.now()
+                );
+            
+            let retryAfter = h.get('retry-after');
+            retryAfter = retryAfter ? Number(retryAfter) * 1000 : -1;
+            if (retryAfter > 0) {
+                if (h.get('x-ratelimit-global')) {
+                    this.http.ratelimit.remaining = 0;
+                    this.http.ratelimit.reset = Date.now() + retryAfter;
+                } else if (!this.locallyLimited) {
+                    _timeout = retryAfter;
+                }
+            }
+        }
 
-    async editMessage(destinationID, messageID, payload) {
-        const route = `/channels/${destinationID}/messages/${messageID}`;
-        return await this.request(this.route('PATCH', route), payload);
-    }
+        if ([401, 403, 429].includes(response.status)) {
+            if (!resetCounterAt || resetCounterAt < Date.now()) {
+                resetCounterAt = Date.now() + 1000 * 600;  // 10 minutes
+                badRequests = 0;
+            }
+            badRequests++;
+        }
 
-    async getGuild(guildID) {
-        return await this.request(this.route('GET', `/guilds/${guildID}`));
-    }
+        if (response.ok) 
+            return response;
 
-    async editGuild(guildID, payload) {
-        return await this.request(this.route('PATCH', `/guilds/${guildID}`), payload);
-    }
+        if (400 <= response.status < 500) {
+            if (response.status === 429) {
+                if (_timeout) {
+                    await utils.sleep(_timeout);
+                }
+                return this.__request(route, payload, contentType);
+            }
 
-    async deleteGuild(guildID) {
-        return await this.request(this.route('DELETE', `/guilds/${guildID}`));
-    }
+            throw new HTTPError(`Tried to ${route.method} from ${route.url}, received ${response.status}`)
+        }
 
-    async getGuildChannels(guildID) {
-        return await this.request(this.route('GET', `/guilds/${guildID}/channels`));
-    }
+        if (500 <= response.status < 600) {
+            if (this.retries.get([route, payload]) >= RETRY_LIMIT) {
+                throw new HTTPError(response.statusText);
+            }
+            this._incrRetries([route, payload]);
+            return this.__request(route, payload, contentType);
+        }
 
-    async createGuildChannel(guildID, payload) {
-        return await this.request(this.route('POST', `/guilds/${guildID}/channels`, payload));
-    }
-
-    async editGuildChannelPositions(guildID, payload) {
-        return await this.request(this.route('PATCH', `/guilds/${guildID}/channels`), payload);
-    }
-
-    async getMember(guildID, userID) {
-        return await this.request(this.route('GET', `/guilds/${guildID}/members/${userID}`));
-    }
-
-    async getMembers(guildID, /*limit, after*/) {
-        const route = `/guilds/${guildID}/members`;
-        return await this.request(this.route('GET', route));
-    }
-
-    async createGuild(name) {
-        return await this.request(this.route('POST', '/guilds'), {name: name});
+        return null;
     }
 }
