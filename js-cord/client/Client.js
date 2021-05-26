@@ -1,6 +1,7 @@
 //const { Log, NoLog } = require('../loggers');
 const { sum } = require('../utils');
 const { InvalidToken } = require('../errors/Errors');
+const Intents = require('../models/Intents');
 const SnowflakeSet = require('../models/SnowflakeSet');
 const Requester = require('../core/Requester');
 const Websocket = require('../core/Websocket');
@@ -12,7 +13,12 @@ module.exports = class Client extends Emitter {
     #apiVersion;
     #gatewayVersion;
 
-    constructor({ apiVersion = 9, gatewayVersion = 9, /*, logger = NoLog*/ } = {}) {
+    constructor({ 
+        allowedMentions,
+        intents = Intents.default(), 
+        apiVersion = 9,
+        gatewayVersion = 9 } = {}
+    ) {
         super();
 
         // if (!logger instanceof Log) 
@@ -25,6 +31,9 @@ module.exports = class Client extends Emitter {
             messages: new SnowflakeSet(),
             emojis: new SnowflakeSet()
         }
+
+        this.allowedMentions = allowedMentions;
+        this.intents = intents;
 
         this.loggedIn = false;
         this.logger = { log: (..._) => {} };
@@ -103,6 +112,13 @@ module.exports = class Client extends Emitter {
 
     get guilds() {
         return this.cache.guilds
+    }
+
+    async fetchGuild(id) {
+        const data = await this.http.getGuild(id);
+        const guild = new Guild(this, data);
+        this.cache.guilds.push(guild);
+        return guild;
     }
 
     async createGuild(name) {

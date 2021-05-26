@@ -15,8 +15,10 @@ const Color = require('./models/Color');
 module.exports = {
     Client: require('./client/Client'),
 
+    AllowedMentions: require('./models/AllowedMentions'),
     Asset: require('./models/Asset'),
     AuditLogEntry: require('./models/AuditLogEntry'),
+    Bitfield: require('./models/Bitfield'),
     Channel: require('./models/Channel'),
     ClientUser: require('./models/ClientUser'),
     Color,
@@ -26,9 +28,12 @@ module.exports = {
     File: require('./models/File'),
     Guild: require('./models/Guild'),
     GuildChannel: require('./models/GuildChannel'),
+    Intents: require('./models/Intents'),
+    InvertedBitfield: require('./models/InvertedFlags'),
     Member: require('./models/Member'),
     Message: require('./models/Message'),
     MessageBuilder: require('./models/MessageBuilder'),
+    Permissions: require('./models/Permissions'),
     SnowflakeSet: require('./models/SnowflakeSet'),
     TextChannel: require('./models/TextChannel'),
     User: require('./models/User'),

@@ -78,7 +78,7 @@ module.exports = class Websocket {
                 op: 2,
                 d: {
                     token: this.client.token,
-                    intents: 513,
+                    intents: this.client.intents.toString(),
                     properties: {
                         os: "linux",
                         '$browser': "js-cord",

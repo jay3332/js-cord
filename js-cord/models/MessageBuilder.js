@@ -35,6 +35,13 @@ module.exports = class MessageBuilder {
                 message_id: this.options.reference
             };
 
+        let mentions;
+        if (mentions = (this.options.allowedMentions || this.client.allowedMentions)) {
+            if (mentions.replies) mentions.replied_user = mentions.replies;
+            if (mentions.repliedUser) mentions.replied_user = mentions.repliedUser;
+            this.payload.allowed_mentions = mentions;
+        }
+
         return this
     }
     

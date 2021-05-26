@@ -202,6 +202,12 @@ module.exports = class Command {
         return cmds;
     }
 
+    command(options, callback) {
+        const cmd = this._bot.command(options, callback);
+        cmd.parent = this;
+        return cmd
+    }
+
     getSignature({ 
         required = '<>',
         optional = '[]',
