@@ -3,7 +3,6 @@ const { HTTP_URL } = require('../constants');
 const { sleep } = require('../utils');
 const { InvalidToken } = require('../errors/Errors');
 const Requester = require('./Requester');
-const { of } = require('../models/SnowflakeSet');
 
 class Route {
     constructor(v, method='GET', route='/') {
