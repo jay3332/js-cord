@@ -44,7 +44,6 @@ module.exports = class Requester {
         let headers = {
             'Content-Type': contentType,
             'User-Agent': this.userAgent,
-            'X-Ratelimit-Precision': 'millisecond',
             'Authorization': `Bot ${this.token}`
         }
 
