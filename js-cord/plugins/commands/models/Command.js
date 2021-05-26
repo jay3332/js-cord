@@ -38,9 +38,13 @@ const converterMapping = {
     user: require('./converters/UserConverter')
 }
 
-
+/**
+ * Transforms an object into a Converter class.
+ * @param {*} converter The object to turn into a Converter.
+ * @param {boolean} __recur Whether to prevent unions in unions.
+ * @returns {Converter} The sanitized Converter class.
+ */
 function sanitizeConverter(converter, __recur = true) {
-    // Turns a converter into a Converter class.
     if (typeof converter === 'function') {
         converter = class extends Converter {
             async convert(ctx, argument) {
@@ -116,6 +120,9 @@ module.exports = class Command {
         this._loadOptions(options);
     }
 
+    /**
+     * Sanitizes the arguments, converters, and flags.
+     */
     _sanitizeArguments() {
         for (let arg of this.args) {
             // The `optional` option will be primarily used.
@@ -168,6 +175,10 @@ module.exports = class Command {
         }
     }
 
+    /**
+     * Loads the command options.
+     * @param {Object} options The provided options.
+     */
     _loadOptions(options) {
         for (let [ option, value ] of Object.entries(options)) {
             if (!Object.keys(this).includes(option)) {
@@ -176,12 +187,18 @@ module.exports = class Command {
         }
     }
 
+    /**
+     * The command's qualified name.
+     */
     get qualifiedName() {
         if (!this.parent) return this.name;
         let parents = this.parents.reverse();
         return [ ...parents.map(p => p.name), this.name ].join(' ')
     }
 
+    /**
+     * The parent command if there is one.
+     */
     get parents() {
         if (!this.parent) return [];
         let parents = [];
@@ -196,18 +213,20 @@ module.exports = class Command {
         return parents;
     }
 
+    /**
+     * Gets all the subcommands of this command.
+     */
     get commands() {
         let cmds = this._bot.allCommands.filter(cmd => cmd.parent == this);
         if (!cmds) return undefined;
         return cmds;
     }
 
-    command(options, callback) {
-        const cmd = this._bot.command(options, callback);
-        cmd.parent = this;
-        return cmd
-    }
-
+    /**
+     * Returns the formatted signature of the command.
+     * @param {Object} options The symbols to use while generating the signature.
+     * @returns {string} The signature of the command.
+     */
     getSignature({ 
         required = '<>',
         optional = '[]',
@@ -239,10 +258,16 @@ module.exports = class Command {
         return parts.join(separator);
     }
 
+    /**
+     * Returns the signature of the command.
+     */
     get signature() {
         return this.getSignature()
     }
 
+    /**
+     * Returns the usage of the command.
+     */
     get usage() {
         return `${this.qualifiedName} ${this.signature}`.trim()
     }
@@ -254,8 +279,13 @@ module.exports = class Command {
     }
     async onError(_ctx, _error) {}
 
+    /**
+     * Splits the content into two groups: arguments and flags.
+     * @param {Context} ctx
+     * @param {string} content The content of the message.
+     * @returns {Array} The array of arguments and flags.
+     */
     async getArguments(ctx, content) {
-        // Split the content into two groups: arguments and flags.
         let flagPrefix = await this._bot.getFlagPrefix(ctx.message);
         let shorthandPrefix = await this._bot.getShortFlagPrefix(ctx.message);
         let flagSplitter = undefined;
@@ -293,6 +323,12 @@ module.exports = class Command {
         return [ args, {} ]
     } 
 
+    /**
+     * Parse arguments out of a string.
+     * @param {Context} ctx
+     * @param {string} content The content to parse arguments out of.
+     * @returns {Object} An object with argument name -> content.
+     */
     async _parseArguments(ctx, content) {
         let view = new StringView(content);
         let result = {};
@@ -345,8 +381,12 @@ module.exports = class Command {
         return result;
     }
 
+    /**
+     * On mobile, -- is usually replaced by an em dash. Here we reverse this.
+     * @param {string} content The content to replace long dashes.
+     * @returns {string} The replaced content.
+     */
     #replaceLongDash(content) {
-        // On mobile, -- is usually replaced by an em dash. Here we reverse this.
         let result = content.split(' ');
         for (let [i, arg] of result.entries()) {
             if (arg.startsWith("\u2014")) {
@@ -358,8 +398,17 @@ module.exports = class Command {
         return result.join(' ');
     }
 
+    /**
+     * Parse flags out of a string.
+     * @param {Context} ctx
+     * @param {string} content The content of the message.
+     * @param {string} flagPrefix The prefix for long flags. (default: --)
+     * @param {string} shortPrefix The prefix for short flags. (default: -)
+     * @returns {Object}
+     */
     async _parseFlags(ctx, content, flagPrefix, shortPrefix) {
         content = this.#replaceLongDash(content);
+        console.log(content);
 
         let parser = new ArgumentParser();
         for (let flag of this.flags) {
@@ -401,9 +450,16 @@ module.exports = class Command {
             }
         }
 
+        console.log(result);
         return result;
     }
- 
+
+    /**
+     * Calls the command function.
+     * @param {Context} ctx
+     * @param {Object} args The given arguments.
+     * @param {Object} flags The given flags.
+     */
     async invoke(ctx, args, flags) {
         try {
             await this.beforeInvoke(ctx);
