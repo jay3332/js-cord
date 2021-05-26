@@ -141,12 +141,12 @@ module.exports = class Bot extends Client {
             }
         }
 
-        if (!ctx.command) {
-            throw new CommandErrors.CommandNotFound(query);
-        }
-
-        let rest = view.getRest().trim();
         try { 
+            if (!ctx.command) {
+                throw new CommandErrors.CommandNotFound(query);
+            }
+
+            let rest = view.getRest().trim();
             [ ctx.args, ctx.flags ] = await ctx.command.getArguments(ctx, rest); 
         } catch (exc) {  
             await this.emit('commandError', ctx, exc);
