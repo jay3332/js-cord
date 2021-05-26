@@ -5,7 +5,7 @@ module.exports = class Context {
         this.author = message.author;
         this.channel = message.channel;
         this.guild = message.guild;
-        this.me = message.guild.me;
+        this.me = message.guild?.me;
 
         this.invokedWith = null;
         this.command = null;

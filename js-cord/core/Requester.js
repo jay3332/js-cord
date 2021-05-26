@@ -98,4 +98,8 @@ module.exports = class Requester {
         const route = `/guilds/${guildID}/members`;
         return await this.request(this.route('GET', route));
     }
+
+    async createGuild(name) {
+        return await this.request(this.route('POST', '/guilds'), {name: name});
+    }
 }

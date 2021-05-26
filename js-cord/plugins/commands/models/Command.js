@@ -354,7 +354,6 @@ module.exports = class Command {
 
     async _parseFlags(ctx, content, flagPrefix, shortPrefix) {
         content = this.#replaceLongDash(content);
-        console.log(content);
 
         let parser = new ArgumentParser();
         for (let flag of this.flags) {
@@ -396,7 +395,6 @@ module.exports = class Command {
             }
         }
 
-        console.log(result);
         return result;
     }
  

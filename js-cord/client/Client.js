@@ -4,7 +4,8 @@ const { InvalidToken } = require('../errors/Errors');
 const SnowflakeSet = require('../models/SnowflakeSet');
 const Requester = require('../core/Requester');
 const Websocket = require('../core/Websocket');
-const Emitter = require('./Emitter')
+const Emitter = require('./Emitter');
+const Guild = require('../models/Guild');
 
 
 module.exports = class Client extends Emitter {
@@ -102,5 +103,12 @@ module.exports = class Client extends Emitter {
 
     get guilds() {
         return this.cache.guilds
+    }
+
+    async createGuild(name) {
+        const data = await this.http.createGuild(name);
+        const guild = new Guild(this, data);
+        this.cache.guilds.push(guild);
+        return guild;
     }
 }
