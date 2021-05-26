@@ -20,6 +20,7 @@ The old but stable branch can be found [here](https://github.com/jay3332/js-cord
 
 ## Table of Contents
 + [Useful Links](#useful-links)
++ [Features](#features)
 + [Installation](#installation)
 + [Examples](#examples)
 + [Ending it off](#ending-it-off)
@@ -30,6 +31,21 @@ The old but stable branch can be found [here](https://github.com/jay3332/js-cord
 + [Documentation](https://jay3332.github.io/js-cord)
 + [Help Server](https://discord.gg/R6pY3FWh3A)
 
+## Features
+<sup>It is obvious that this all isn't true. These are what we plan for js-cord to achieve.</sup>
+
++ 100% API coverage
+    - Discord interaction support
+        - Slash commands, message components
+    - Voice send/receive support
+    - Easy to use webhook support
++ Extensive [documentation](https://jay3332.github.io/js-cord)
++ Built-in plugins
+    - Advanced command handing
+        - Easy to implement built-in commands
+        - Argument and flag parsing
+        - Easy error handling
+    - Menus and paginators
 
 ## Installation
 You can install js-cord using `npm`:
@@ -83,4 +99,4 @@ You can join our [support server](https://discord.gg/R6pY3FWh3A) for help - or c
 ## Credits
 #### Contributors
 Owner: [jay3332](https://github.com/jay3332)  
-Contributors: [Cats3153](https://github.com/Cats3153)
+Contributors: [Cats3153](https://github.com/Cats3153)  
