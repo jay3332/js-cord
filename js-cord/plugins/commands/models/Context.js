@@ -58,6 +58,7 @@ module.exports = class Context {
     }
 
     /**
+     * @async
      * Reinvokes the command provided from the original message.
      */
     async reinvoke() {
@@ -65,6 +66,7 @@ module.exports = class Context {
     }
 
     /**
+     * @async
      * Sends a message to the channel.
      * @param {string} content The content to send.
      * @param {Object} options The options to provide.
@@ -75,7 +77,7 @@ module.exports = class Context {
     }
 
     /**
-     * 
+     * @async
      * @param {string} content The content to reply with.
      * @param {Object} options The options to provide.
      * @returns {Promise<Message>}
