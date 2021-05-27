@@ -28,8 +28,8 @@ module.exports = class Websocket {
     async start() {
         if (this.#started) 
             throw new DiscordError('Gateway has already been started.');
-        let socketURL = await this.client.http.getConnectInformation()
-        socketURL += `?v=${this.#gatewayVersion}&encoding=json`
+        let socketURL = await this.client.http.getConnectInformation();
+        socketURL += `?v=${this.#gatewayVersion}&encoding=json`;
         this.ws = new ws(socketURL);
         await this.setupWebsocket();
     }
