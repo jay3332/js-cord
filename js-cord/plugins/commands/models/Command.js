@@ -42,17 +42,19 @@ const converterMapping = {
 function sanitizeConverter(converter, __recur = true) {
     // Turns a converter into a Converter class.
     if (typeof converter === 'function') {
-        converter = class extends Converter {
+        const _conv = class extends Converter {
             async convert(ctx, argument) {
                 return await maybePromise(converter, ctx, argument);
             }
         }
+        return _conv;
     } else if (converter instanceof Converter) {
-        converter = class extends Converter {
+        const _conv = class extends Converter {
             async convert(ctx, argument) {
                 return await converter.convert(ctx, argument);
             }
         } 
+        return _conv;
     } else if (typeof converter === 'string') {
         converter = converterMapping[converter.toLowerCase()];
     } else if ([Boolean, Number, BigInt, String].includes(converter)) {
@@ -78,7 +80,7 @@ function sanitizeConverter(converter, __recur = true) {
         }
     } else if (converter instanceof Array && __recur) {
         // This means that the converter is a union converter.
-        converter = class extends Converter {
+        const _conv = class extends Converter {
             async convert(ctx, argument) {
                 let errors = [];
                 for (let maybeConverter of converter) {
@@ -92,6 +94,7 @@ function sanitizeConverter(converter, __recur = true) {
                 throw new ConversionError(errors[errors.length-1]);
             }
         }
+        return _conv;
     } else if (!isSubclass(converter, Converter)) {
         throw new TypeError('Converters must extend `Converter`.');
     }
