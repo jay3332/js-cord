@@ -223,6 +223,18 @@ module.exports = class Command {
     }
 
     /**
+     * Creates and adds a command object to the bot.
+     * @param {Object} options The options to provide for the command.
+     * @param {function} callback The command's callback function.
+     * @returns {Command} The resulting command.
+     */
+    command(options, callback) {
+        const cmd = this._bot.command(options, callback);
+        cmd.parent = this;
+        return cmd;
+    }
+
+    /**
      * Returns the formatted signature of the command.
      * @param {Object} options The symbols to use while generating the signature.
      * @returns {string} The signature of the command.
