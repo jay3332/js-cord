@@ -89,10 +89,8 @@ module.exports = class HTTPClient {
         return data;
     }
 
-    async getRecommendedShardCount() {
-        const route = this.route('GET', '/gateway/bot');
-        let result = await this.request(route);
-        return result.shards
+    async getConnectInformation() {
+        return await this.request(this.route('GET', '/gateway/bot'));
     }
 
     async getClientInformation() {
