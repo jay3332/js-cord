@@ -2,6 +2,7 @@ const { maybePromise } = require('../utils');
 
 module.exports = class Emitter {
     constructor() {
+        this.waiting = [];
         this.listeners = [];
         this.strictListeners = {};
     }

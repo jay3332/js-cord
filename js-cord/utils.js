@@ -199,6 +199,11 @@ module.exports = {
         await new Promise(r => setTimeout(r, milliseconds));
     },
     
+    urandom: bits => {
+        const b = Array.from({ length: bits }, () => Math.round(Math.random()).toString()).join('');
+        return BigInt(b, 2);
+    },
+
     maybePromise: async (func, ...args) => {
         let result = func(...args);
         if (result instanceof Promise)

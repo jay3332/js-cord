@@ -31,6 +31,8 @@ module.exports = class Message extends DiscordObject {
 
         this.channel = this.client.getChannel(data.channel_id);
         if (data.guild_id) this.guild = this.client.getGuild(data.guild_id);
+
+        this._components = data.components;
     }
 
     toString() {

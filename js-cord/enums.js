@@ -54,7 +54,11 @@ module.exports = {
     InteractionType: {
         ping: 1,
         command: 2,
-        component: 3
+        component: 3,
+
+        slashCommand: 2,
+        applicationCommand: 2,
+        messageComponent: 3
     },
 
     InteractionResponseType: {
@@ -62,7 +66,14 @@ module.exports = {
         channelMessage: 4,
         deferredChannelMessage: 5,
         deferredMessageUpdate: 6,
-        messageUpdate: 7
+        messageUpdate: 7,
+
+        channelMessageWithSource: 4,
+        deferredChannelMessageWithSource: 5,
+        deferredMessageEdit: 6,
+        deferredUpdateMessage: 6,
+        messageEdit: 7,
+        updateMessage: 7
     },
 
     ComponentType: {

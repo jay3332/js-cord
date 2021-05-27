@@ -29,8 +29,8 @@ module.exports = class Components {
         return this
     }
 
-    addButton({ style, label, emoji, id, url, disabled } = {}) {
-        return this.addComponent(new Button({ style, label, emoji, id, url, disabled }));
+    addButton({ style, label, emoji, id, url, disabled } = {}, callback) {
+        return this.addComponent(new Button({ style, label, emoji, id, url, disabled }, callback));
     }
 
     toJSON() {

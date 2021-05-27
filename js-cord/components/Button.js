@@ -1,6 +1,6 @@
 const Component = require('./Component');
 const { ButtonStyle } = require('../enums');
-const { parseEmoji } = require('../utils');
+const { parseEmoji, urandom } = require('../utils');
 const PartialEmoji = require('../models/PartialEmoji');
 // const Emoji = require('../models/Emoji');
 
@@ -12,13 +12,18 @@ module.exports = class Button extends Component {
         id,
         url, 
         disabled = false
-    } = {}) {
+    } = {}, callback) {
+        if (style !== ButtonStyle.link && !id) {
+            id = urandom(32).toString(16); 
+        }
+    
         super(2, id);
         this.style = style;
         this.label = label;
         this.url = url;
         this.disabled = disabled;
-        
+        this.callback = callback;
+
         if (typeof emoji === 'string') 
             emoji = parseEmoji(emoji);
 

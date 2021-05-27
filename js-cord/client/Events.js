@@ -1,6 +1,8 @@
 const Message = require('../models/Message');
 const Guild = require('../models/Guild');
 const ClientUser = require('../models/ClientUser');
+const Interaction = require('../models/Interaction');
+const InteractionHandler = require('./Interactions');
 
 const WHITELISTED_EVENTS = [
     "READY", 
@@ -61,5 +63,13 @@ module.exports = async function emitEvent(client, event, data) {
         client.cache.messages.push(message);
         if (cachedMessage) await client.emit("messageEdit", cachedMessage, message);
         await client.emit("rawMessageEdit", message);
+    } 
+    
+    // interactions
+    else if (event === "INTERACTION_CREATE") {
+        await client.emit('rawInteraction', data);
+        const interaction = new Interaction(client, data);
+        await client.emit('interaction', interaction);
+        await InteractionHandler(interaction);
     }
 }

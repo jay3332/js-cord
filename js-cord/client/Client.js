@@ -33,6 +33,7 @@ module.exports = class Client extends Emitter {
             roles: new SnowflakeSet()
         }
 
+        this._components = [];
         this.allowedMentions = allowedMentions;
         this.intents = intents;
 

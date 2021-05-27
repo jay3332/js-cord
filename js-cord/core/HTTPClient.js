@@ -55,7 +55,11 @@ module.exports = class HTTPClient {
         }
 
         const res = await requester.request(route, payload, contentType);
-        return res.json();
+        try {
+            return await res.json();
+        } catch (exc) {
+            return null;
+        }
     }
 
     async _oldRequest(route, payload, contentType = 'application/json') {
@@ -148,5 +152,11 @@ module.exports = class HTTPClient {
 
     async createGuild(name) {
         return await this.request(this.route('POST', '/guilds'), {name: name});
+    }
+
+    async respondToInteraction(id, token, type, payload) {
+        const route = `/interactions/${id}/${token}/callback`;
+        payload = { type: type, data: payload };
+        return await this.request(this.route('POST', route), payload);
     }
 }
