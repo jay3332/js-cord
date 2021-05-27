@@ -42,7 +42,7 @@ bot.command('ping', async (ctx) => {
 
 client.login(process.env.TOKEN)
 ```
-This looks a lot more efficient. And clean, of course.  
+This looks a lot more efficient. And clean, of course.
 ## What is "ctx"?
 "ctx" in the examples are just parameter names that represent the context of the command.  
 For example, you can access the user who invoked the command via `ctx.author`, or the message that contained the command via `ctx.message`. It is there so that you don't have to provide a s\*\*tload of parameters into every command's callback.

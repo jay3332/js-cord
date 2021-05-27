@@ -2,6 +2,7 @@ const { ChannelType } = require('../enums');
 const DiscordObject = require('./DiscordObject');
 const GuildChannel = require('./GuildChannel');
 const TextChannel = require('./TextChannel');
+const Role = require('./Role');
 const Member = require('./Member');
 const Asset = require('./Asset');
 
@@ -45,6 +46,15 @@ module.exports = class Guild extends DiscordObject {
         })
             .filter(channel => channel);
 
+        if (data.roles) this.roles = data.roles.map(role => {
+            if (!role) return;
+
+            let obj = new Role(this.client, this, role);
+            this.client.cache.roles.push(obj);
+            return obj;
+        })
+            .filter(role => role);
+
         if (data.me && !this.me)
             this.me = new Member(this.client, data.me); 
     }
@@ -81,5 +91,9 @@ module.exports = class Guild extends DiscordObject {
             return this.members.find(member => _(member.tag) === query);
         }
         return this.members.find(member => _(member.name) === query || _(member.nick) === query);
+    }
+
+    getRole(id) {
+        return this.roles.find(role => role.id == id);
     }
 }

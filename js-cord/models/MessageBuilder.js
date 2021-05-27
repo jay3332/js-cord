@@ -1,4 +1,5 @@
 const Embed = require('./Embed');
+const { InteractionResponseType } = require('../enums');
 
 
 module.exports = class MessageBuilder {
@@ -14,6 +15,7 @@ module.exports = class MessageBuilder {
         this.destinationID = destination.id;
         this.referenceID = options.reference?.id;
         this.options = options;
+        this.context = {};
         this.payload = {};
         this.files = [];
         this.type = type;
@@ -35,11 +37,47 @@ module.exports = class MessageBuilder {
                 message_id: this.options.reference
             };
 
+        if (this.options.ephemeral && this.type === 'interaction') {
+            this.payload.flags = 64;
+        }
+
+        if (this.type === 'interaction') {
+            const defer = this.options.defer || false;
+            if (this.options.edit) {
+                this.context.type = defer 
+                    ? InteractionResponseType.deferredMessageEdit
+                    : InteractionResponseType.messageEdit;
+            } else if (this.options.pong) {
+                this.context.type = InteractionResponseType.pong;
+            } else {
+                this.context.type = defer
+                    ? InteractionResponseType.deferredChannelMessage
+                    : InteractionResponseType.channelMessage;
+            }
+        }
+
+        if (this.options.type && this.type === 'interaction') {
+            this.context.type = this.options.type;
+        } else {
+            // If no type was provided just make it send a new message
+            this.context.type === InteractionResponseType.channelMessage;
+        }
+
         let mentions;
         if (mentions = (this.options.allowedMentions || this.client.allowedMentions)) {
             if (mentions.replies) mentions.replied_user = mentions.replies;
             if (mentions.repliedUser) mentions.replied_user = mentions.repliedUser;
             this.payload.allowed_mentions = mentions;
+        }
+
+        if (this.options.components) {
+            this.payload.components = this.options.components.toJSON();
+            this.options.components.components.forEach(component => {
+                // This is an action row.
+                const components = component.components;
+                // Only store components with a callback
+                this.client._components.push(...components.filter(c => c.id && c.callback));
+            })
         }
 
         return this
@@ -105,6 +143,10 @@ module.exports = class MessageBuilder {
             message = await this.client.http
                 .editMessage(this.destinationID, this.extra[0], this.payload);
             return new Message(this.client, message);
+        case 'interaction': 
+            message = await this.client.http
+                .respondToInteraction(...this.extra, this.context.type, this.payload);
+            if (message) return new Message(this.client, message);
         }
     }
 }

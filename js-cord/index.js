@@ -14,6 +14,7 @@ const Color = require('./models/Color');
 
 module.exports = {
     Client: require('./client/Client'),
+    Queue: require('./core/Queue'),
 
     AllowedMentions: require('./models/AllowedMentions'),
     Asset: require('./models/Asset'),
@@ -38,6 +39,11 @@ module.exports = {
     TextChannel: require('./models/TextChannel'),
     User: require('./models/User'),
 
+    Components: require('./components/Components'),
+    Component: require('./components/Component'),
+    ActionRow: require('./components/ActionRow'),
+    Button: require('./components/Button'),
+
     loggers: require('./loggers'),
     constants: require('./constants'),
     enums,
@@ -47,7 +53,11 @@ module.exports = {
     Paginator: utils.Paginator,
 
     AuditLogEvent: enums.AuditLogEvent,
+    ButtonStyle: enums.ButtonStyle,
     ChannelType: enums.ChannelType,
+    ComponentType: enums.ComponentType,
+    InteractionType: enums.InteractionType,
+    InteractionResponseType: enums.InteractionResponseType,
     MessageType: enums.MessageType,
     MessageActivityType: enums.MessageActivityType,
     StickerFormatType: enums.StickerFormatType,

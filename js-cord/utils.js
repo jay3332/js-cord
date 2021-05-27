@@ -199,11 +199,26 @@ module.exports = {
         await new Promise(r => setTimeout(r, milliseconds));
     },
     
+    urandom: bits => {
+        const b = Array.from({ length: bits }, () => Math.round(Math.random()).toString()).join('');
+        return BigInt(b, 2);
+    },
+
     maybePromise: async (func, ...args) => {
         let result = func(...args);
         if (result instanceof Promise)
             result = await result;
         return result;
+    },
+
+    parseEmoji: emoji => {
+        const re = /<(?<animated>a?):(?<name>[a-zA-Z0-9_]{2,32}):(?<id>[0-9]{17,})>/;
+        let groups = re.exec(emoji).groups;
+        if (groups) {
+            groups.animated = !!groups.animated;
+            return groups;
+        }
+        return { name: emoji };
     },
 
     parseSnowflake: (snowflake) => {
@@ -306,5 +321,9 @@ module.exports = {
      */
     regexEscape: (literalString) => {
         return literalString.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&');
+    },
+
+    get time() {
+        return parseFloat(process.hrtime().join('.')) * 1000
     }
 }

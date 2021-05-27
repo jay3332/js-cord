@@ -3,7 +3,7 @@ const { sum } = require('../utils');
 const { InvalidToken } = require('../errors/Errors');
 const Intents = require('../models/Intents');
 const SnowflakeSet = require('../models/SnowflakeSet');
-const Requester = require('../core/Requester');
+const HTTPClient = require('../core/HTTPClient');
 const Websocket = require('../core/Websocket');
 const Emitter = require('./Emitter');
 const Guild = require('../models/Guild');
@@ -29,9 +29,11 @@ module.exports = class Client extends Emitter {
             channels: new SnowflakeSet(),
             users: new SnowflakeSet(),
             messages: new SnowflakeSet(),
-            emojis: new SnowflakeSet()
+            emojis: new SnowflakeSet(),
+            roles: new SnowflakeSet()
         }
 
+        this._components = [];
         this.allowedMentions = allowedMentions;
         this.intents = intents;
 
@@ -72,7 +74,7 @@ module.exports = class Client extends Emitter {
     }
 
     #establishHTTP() {
-        this.http = new Requester(this, this.apiVersion);
+        this.http = new HTTPClient(this, this.apiVersion);
     }
 
     #establishWebsocket() {
@@ -101,7 +103,7 @@ module.exports = class Client extends Emitter {
      * @returns {?User} The found user.
      */
     getUser(id) {
-        return this.cache.users.find(user => user.id == id);
+        return this.cache.users.get(id);
     }
     /**
      * Tries to get a channel from the internal cache.
@@ -109,7 +111,7 @@ module.exports = class Client extends Emitter {
      * @returns {?Guild} The found guild.
      */
     getGuild(id) {
-        return this.cache.guilds.find(guild => guild.id == id);
+        return this.cache.guilds.get(id);
     }
     /**
      * Tries to get a channel from the internal cache.
@@ -117,19 +119,27 @@ module.exports = class Client extends Emitter {
      * @returns {?Channel} The found channel.
      */
     getChannel(id) {
-        return this.cache.channels.find(channel => channel.id == id);
+        return this.cache.channels.get(id);
+    }
+
+    getRole(id) {
+        return this.cache.roles.get(id);
     }
 
     get users() {
-        return this.cache.users
+        return this.cache.users.values();
     }
 
     get channels() {
-        return this.cache.channels
+        return this.cache.channels.values();
     }
 
     get guilds() {
-        return this.cache.guilds
+        return this.cache.guilds.values();
+    }
+
+    get roles() {
+        return this.cache.roles.values();
     }
 
     async fetchGuild(id) {
