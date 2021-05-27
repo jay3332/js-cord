@@ -307,16 +307,16 @@ module.exports = class Embed {
             footer: Object.keys(this.footer).length 
                 ? {
                     name: this.footer.name || null,
-                    iconURL: this.footer.iconURL || null
+                    icon_url: this.footer.iconURL || null
                 } : null,
             author: Object.keys(this.author).length
                 ? {
                     name: this.author.name || null,
-                    iconURL: this.author.iconURL || null,
+                    icon_url: this.author.iconURL || null,
                     url: this.author.url || null
                 } : null,
-            image: this.image.url ? this.image : null,
-            thumbnail: this.thumbnail.url ? this.thumbnail : null,
+            image: this.image ? { url: this.image.url } : null,
+            thumbnail: this.thumbnail ? { this.thumbnail.url } : null,
             fields: this.fields
         }
     }
