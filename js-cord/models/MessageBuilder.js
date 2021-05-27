@@ -42,6 +42,9 @@ module.exports = class MessageBuilder {
             this.payload.allowed_mentions = mentions;
         }
 
+        if (this.options.components)
+            this.payload.components = this.options.components.toJSON();
+
         return this
     }
     

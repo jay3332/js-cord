@@ -51,6 +51,43 @@ module.exports = {
         lottie: 3
     },
 
+    InteractionType: {
+        ping: 1,
+        command: 2,
+        component: 3
+    },
+
+    InteractionResponseType: {
+        pong: 1,
+        channelMessage: 4,
+        deferredChannelMessage: 5,
+        deferredMessageUpdate: 6,
+        messageUpdate: 7
+    },
+
+    ComponentType: {
+        row: 1,
+        actionRow: 1,
+        button: 2,
+        dropdown: 3
+    },
+
+    ButtonStyle: {
+        primary: 1,
+        secondary: 2,
+        success: 3,
+        danger: 4,
+        link: 5,
+        
+        blurple: 1,
+        gray: 2,
+        grey: 2,
+        green: 3,
+        red: 4,
+        url: 5,
+        hyperlink: 5
+    },
+
     AuditLogEvent: {
         guildUpdate: 1,
         channelCreate: 10,

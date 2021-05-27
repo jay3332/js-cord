@@ -1,4 +1,5 @@
 const User = require('./User');
+const Permissions = require('./Permissions');
 //const Guild = require('./Guild');
 
 module.exports = class Member extends User {
@@ -26,10 +27,17 @@ module.exports = class Member extends User {
         this.joinedAt = new Date(Date.parse(data.joinedAt));
         this.deafened = data.deaf;
         this.muted = data.mute;
-        this.pending = data.pending; 
+        this.pending = data.pending;
+        if (data.permissions)
+            this.permissions = new Permissions(BigInt(data.permissions)); 
+        this._roles = data.roles;
     }
 
     get displayName() {
         return this.nick || this.name
+    }
+
+    get roles() {
+        return this.guild.roles.filter(role => this._roles.includes(role.id));
     }
 }

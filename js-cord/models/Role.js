@@ -14,7 +14,8 @@ module.exports = class Role extends DiscordObject {
         this.color = new Color(data.color);
         this.hoist = data.hoist;
         this.position = data.position;
-        this.permissions = new Permissions(Bigint(data.permissions));
+        if (data.permissions)
+            this.permissions = new Permissions(BigInt(data.permissions));
         this.managed = data.managed;
         this.mentionable = data.mentionable;
 

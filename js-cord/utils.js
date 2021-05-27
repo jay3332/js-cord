@@ -206,6 +206,16 @@ module.exports = {
         return result;
     },
 
+    parseEmoji: emoji => {
+        const re = /<(?<animated>a?):(?<name>[a-zA-Z0-9_]{2,32}):(?<id>[0-9]{17,})>/;
+        let groups = re.exec(emoji).groups;
+        if (groups) {
+            groups.animated = !!groups.animated;
+            return groups;
+        }
+        return { name: emoji };
+    },
+
     parseSnowflake: (snowflake) => {
         const epoch = 1420070400000;
         let binary = '';

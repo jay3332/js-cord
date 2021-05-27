@@ -29,7 +29,8 @@ module.exports = class Client extends Emitter {
             channels: new SnowflakeSet(),
             users: new SnowflakeSet(),
             messages: new SnowflakeSet(),
-            emojis: new SnowflakeSet()
+            emojis: new SnowflakeSet(),
+            roles: new SnowflakeSet()
         }
 
         this.allowedMentions = allowedMentions;
@@ -102,6 +103,10 @@ module.exports = class Client extends Emitter {
         return this.cache.channels.find(channel => channel.id == id);
     }
 
+    getRole(id) {
+        return this.cache.roles.find(role => role.id == id);
+    }
+
     get users() {
         return this.cache.users
     }
@@ -112,6 +117,10 @@ module.exports = class Client extends Emitter {
 
     get guilds() {
         return this.cache.guilds
+    }
+
+    get roles() {
+        return this.cache.roles
     }
 
     async fetchGuild(id) {
