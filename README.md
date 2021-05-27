@@ -90,7 +90,7 @@ bot.command('ping', async (ctx) => {
     await ctx.reply('Pong!');
 });
 
-client.login(process.env.TOKEN);
+bot.login(process.env.TOKEN);
 ```
 
 ## Ending it off
