@@ -275,7 +275,7 @@ module.exports = class Command {
     async beforeInvoke(_ctx) {}
     async afterInvoke(_ctx) {}
     async callback(_ctx, _args, _flags) {
-        throw new NotImplementedError('Callback required for this command.')
+        throw new NotImplementedError('Callback required for this command.');
     }
     async onError(_ctx, _error) {}
 
@@ -283,7 +283,7 @@ module.exports = class Command {
      * Splits the content into two groups: arguments and flags.
      * @param {Context} ctx
      * @param {string} content The content of the message.
-     * @returns {Array} The array of arguments and flags.
+     * @returns {Promise<Array>} The array of arguments and flags.
      */
     async getArguments(ctx, content) {
         let flagPrefix = await this._bot.getFlagPrefix(ctx.message);
@@ -327,7 +327,7 @@ module.exports = class Command {
      * Parse arguments out of a string.
      * @param {Context} ctx
      * @param {string} content The content to parse arguments out of.
-     * @returns {Object} An object with argument name -> content.
+     * @returns {Promise<Object>} An object with argument name -> content.
      */
     async _parseArguments(ctx, content) {
         let view = new StringView(content);
@@ -404,7 +404,7 @@ module.exports = class Command {
      * @param {string} content The content of the message.
      * @param {string} flagPrefix The prefix for long flags. (default: --)
      * @param {string} shortPrefix The prefix for short flags. (default: -)
-     * @returns {Object}
+     * @returns {Promise<Object>}
      */
     async _parseFlags(ctx, content, flagPrefix, shortPrefix) {
         content = this.#replaceLongDash(content);

@@ -56,6 +56,9 @@ module.exports = class Bot extends Client {
         this.shortFlagPrefix = opts.shortFlagPrefix;
     }
 
+    /**
+     * Adds the default listeners to the bot.
+     */
     addDefaultListeners() {
         this.on('commandError', async (_, exc) => {
             console.error(exc);
@@ -74,6 +77,11 @@ module.exports = class Bot extends Client {
         })
     }
 
+    /**
+     * Parses a prefix from a message. (if found)
+     * @param {Message} message
+     * @returns {Promise<?string>} The prefix found in the message.
+     */
     async getPrefix(message) {
         const content = message.content;
         let prefix = this.prefix;
@@ -105,21 +113,23 @@ module.exports = class Bot extends Client {
                 return pf;
         }
         
-        /**
-         * TODO: stripAfterPrefix option
-         */
+        /* to-do: stripAfterPrefix option */
     }
 
     getCommand(query) {
-        /**
-         * TODO: Add alias support
-         */
         query = query.trim();
         const formatFn = this.commandsCaseInsensitive ? (s => s.toLowerCase()) : (s => s);
         if (this.commandsCaseInsensitive) query = query.toLowerCase();
         return this.commands.find(cmd => formatFn(cmd.qualifiedName) == query);
+
+        /* to-do: alias support */
     }
 
+    /**
+     * Returns the parsed context of amessage.
+     * @param {Message} message
+     * @returns {Context} The parsed context of the message.
+     */
     async getContext(message) {
         let ctx = new Context(this, message);
         ctx.prefix = await this.getPrefix(message);
@@ -154,11 +164,20 @@ module.exports = class Bot extends Client {
         return ctx;
     }
 
+    /**
+     * Invokes a command from a Context object.
+     * @param {Context} ctx
+     */
     async invoke(ctx) {
         // insert checks
         await ctx.invoke(ctx.command, ctx.args, ctx.flags);
     }
 
+    /**
+     * Adds a command to the bot.
+     * @param {Object} options The command options.
+     * @param {function} callback The command callback.
+     */
     command(options, callback) {
         if (typeof options === 'string') {
             options = { name: options };
@@ -172,14 +191,22 @@ module.exports = class Bot extends Client {
         command.callback = callback;
     }
 
+    /* to-do: dynamic flag prefixes */
+
     /**
-     * TODO: Dynamic flag prefixes.
-     * For now, this is the best we can do.
+     * Gets the bot's flag prefix.
+     * @param {Message} message
+     * @returns {string} The long flag prefix.
      */
     async getFlagPrefix(message) {
         return this.flagPrefix;
     }
     
+    /**
+     * Gets the bot's short flag prefix.
+     * @param {Message} message
+     * @returns {string} The short flag prefix.
+     */
     async getShortFlagPrefix(message) {
         return this.shortFlagPrefix;
     }
