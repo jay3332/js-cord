@@ -316,7 +316,7 @@ module.exports = class Embed {
                     url: this.author.url || null
                 } : null,
             image: this.image ? { url: this.image.url } : null,
-            thumbnail: this.thumbnail ? { this.thumbnail.url } : null,
+            thumbnail: this.thumbnail ? { url: this.thumbnail.url } : null,
             fields: this.fields
         }
     }

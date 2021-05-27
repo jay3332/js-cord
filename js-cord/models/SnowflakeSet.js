@@ -1,7 +1,7 @@
-module.exports = class SnowflakeSet extends Array {
+module.exports = class SnowflakeSet extends Map {
     /**
-     * Represents an array of DiscordObjects (ones that have parameter `id`).
-     * This ensures that only one copy of any snowflake is present in this array.
+     * Represents a map of snowflakes to their DiscordObjects (ones that have parameter `id`).
+     * This ensures that only one copy of any snowflake is present in this map.
      */
     constructor(...args) {
         super(...args);
@@ -9,12 +9,23 @@ module.exports = class SnowflakeSet extends Array {
 
     push(...objects) {
         for (const object of objects) {
-            const idx = this.map(o => o.id).indexOf(object.id);
-            if (idx !== -1) 
-                this[idx] = object;
-            else {
-                super.push(object);
-            }
+            this.set(object.id, object);
+        }
+    }
+
+    filter(predicate) {
+        let passed = [];
+        for (const value of this.values()) {
+            if (predicate(value))
+                passed.push(value);
+        }
+        return passed
+    }
+
+    find(predicate) {
+        for (const value of this.values()) {
+            if (predicate(value))
+                return value;
         }
     }
 }

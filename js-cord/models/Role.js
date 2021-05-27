@@ -5,6 +5,7 @@ const Color = require('./Color');
 module.exports = class Role extends DiscordObject {
     constructor(client, guild, data) {
         super(data.id);
+        this.client = client;
         this.guild = guild;
         if (data) this.loadData(data);
     }
@@ -28,5 +29,9 @@ module.exports = class Role extends DiscordObject {
 
     get colour() {
         return this.color;
+    }
+
+    get members() {
+        return this.guild.members.filter(member => member._roles.contains(this.id));
     }
 }

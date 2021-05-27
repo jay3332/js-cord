@@ -92,35 +92,35 @@ module.exports = class Client extends Emitter {
     }
 
     getUser(id) {
-        return this.cache.users.find(user => user.id == id);
+        return this.cache.users.get(id);
     }
 
     getGuild(id) {
-        return this.cache.guilds.find(guild => guild.id == id);
+        return this.cache.guilds.get(id);
     }
 
     getChannel(id) {
-        return this.cache.channels.find(channel => channel.id == id);
+        return this.cache.channels.get(id);
     }
 
     getRole(id) {
-        return this.cache.roles.find(role => role.id == id);
+        return this.cache.roles.get(id);
     }
 
     get users() {
-        return this.cache.users
+        return this.cache.users.values();
     }
 
     get channels() {
-        return this.cache.channels
+        return this.cache.channels.values();
     }
 
     get guilds() {
-        return this.cache.guilds
+        return this.cache.guilds.values();
     }
 
     get roles() {
-        return this.cache.roles
+        return this.cache.roles.values();
     }
 
     async fetchGuild(id) {
