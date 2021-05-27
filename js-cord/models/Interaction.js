@@ -46,7 +46,7 @@ module.exports = class Interaction extends DiscordObject {
                         }).filter(u => u);
 
                 if (buffer.members)
-                    this.data.members = Object.entries(buffer.memebrs)
+                    this.data.members = Object.entries(buffer.members)
                         .map(([ id, member ]) => {
                             if (!member) return;
                             member.user = this.data.users.find(u => u.id === id);
