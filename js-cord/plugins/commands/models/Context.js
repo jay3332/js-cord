@@ -1,4 +1,9 @@
 module.exports = class Context {
+    /**
+     * 
+     * @param {*} bot 
+     * @param {*} message 
+     */
     constructor(bot, message) {
         this.bot = bot;
         this.message = message;
@@ -27,7 +32,7 @@ module.exports = class Context {
     
     /**
      * The time the message to invoke the context was created at.
-     * Returns a `Date`.
+     * @returns {Date}
      */
     get now() {
         return this.message.createdAt;
@@ -35,7 +40,7 @@ module.exports = class Context {
 
     /**
      * The unix time the message to invoke the context was created at.
-     * Returns a `Number`.
+     * @returns {Number} 
      */
     get unix() {
         return this.message.createdAt.getTime()
@@ -43,6 +48,7 @@ module.exports = class Context {
 
     /**
      * Invokes a command.
+     * @async
      * @param {command} command The command to invoke.
      * @param {Object} args The arguments to provide.
      * @param {Object} flags The flags to provide.
@@ -52,6 +58,7 @@ module.exports = class Context {
     }
 
     /**
+     * @async
      * Reinvokes the command provided from the original message.
      */
     async reinvoke() {
@@ -59,6 +66,7 @@ module.exports = class Context {
     }
 
     /**
+     * @async
      * Sends a message to the channel.
      * @param {string} content The content to send.
      * @param {Object} options The options to provide.
@@ -69,7 +77,7 @@ module.exports = class Context {
     }
 
     /**
-     * 
+     * @async
      * @param {string} content The content to reply with.
      * @param {Object} options The options to provide.
      * @returns {Promise<Message>}
