@@ -188,7 +188,8 @@ module.exports = class Command {
     }
 
     /**
-     * The command's qualified name.
+     * Returns the command's qualified name.
+     * @returns {string}
      */
     get qualifiedName() {
         if (!this.parent) return this.name;
@@ -197,7 +198,8 @@ module.exports = class Command {
     }
 
     /**
-     * The parent command if there is one.
+     * Returns The parent command if there is one.
+     * @returns {?Command} 
      */
     get parents() {
         if (!this.parent) return [];
@@ -215,6 +217,7 @@ module.exports = class Command {
 
     /**
      * Gets all the subcommands of this command.
+     * @returns {Command<Array>} The list of Subcommands
      */
     get commands() {
         let cmds = this._bot.allCommands.filter(cmd => cmd.parent == this);
@@ -260,6 +263,7 @@ module.exports = class Command {
 
     /**
      * Returns the signature of the command.
+     * @returns {string} The signature of the command, which looks like a unix command signature.
      */
     get signature() {
         return this.getSignature()
@@ -267,6 +271,7 @@ module.exports = class Command {
 
     /**
      * Returns the usage of the command.
+     * @returns {string} The usage of command, which is the qualified name + the signaure
      */
     get usage() {
         return `${this.qualifiedName} ${this.signature}`.trim()
@@ -404,7 +409,7 @@ module.exports = class Command {
      * @param {string} content The content of the message.
      * @param {string} flagPrefix The prefix for long flags. (default: --)
      * @param {string} shortPrefix The prefix for short flags. (default: -)
-     * @returns {Promise<Object>}
+     * @returns {Promise<Object>} The parsed flags
      */
     async _parseFlags(ctx, content, flagPrefix, shortPrefix) {
         content = this.#replaceLongDash(content);
