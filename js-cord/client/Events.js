@@ -37,7 +37,7 @@ module.exports = async function emitEvent(client, event, data) {
         if (unavailable) return;
 
         const guild = new Guild(client, data);
-        await guild.fillMembers();
+        // await guild.fillMembers();
         client.cache.guilds.push(guild);
         
         if (unavailable === false)
@@ -54,7 +54,7 @@ module.exports = async function emitEvent(client, event, data) {
     } else if (event === "MESSAGE_UPDATE") {
         // Is the message in our cache?
         const cachedMessage = client.cache.messages.find(
-            msg => msg.channel.id == data.channel_id && msg.id == data.id
+            msg => msg.channel?.id == data.channel_id && msg.id == data.id
         );
 
         const message = new Message(client, data);

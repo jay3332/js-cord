@@ -94,8 +94,40 @@ module.exports = class Requester {
         return await this.request(this.route('PATCH', route), payload);
     }
 
+    async getGuild(guildID) {
+        return await this.request(this.route('GET', `/guilds/${guildID}`));
+    }
+
+    async editGuild(guildID, payload) {
+        return await this.request(this.route('PATCH', `/guilds/${guildID}`), payload);
+    }
+
+    async deleteGuild(guildID) {
+        return await this.request(this.route('DELETE', `/guilds/${guildID}`));
+    }
+
+    async getGuildChannels(guildID) {
+        return await this.request(this.route('GET', `/guilds/${guildID}/channels`));
+    }
+
+    async createGuildChannel(guildID, payload) {
+        return await this.request(this.route('POST', `/guilds/${guildID}/channels`, payload));
+    }
+
+    async editGuildChannelPositions(guildID, payload) {
+        return await this.request(this.route('PATCH', `/guilds/${guildID}/channels`), payload);
+    }
+
+    async getMember(guildID, userID) {
+        return await this.request(this.route('GET', `/guilds/${guildID}/members/${userID}`));
+    }
+
     async getMembers(guildID, /*limit, after*/) {
         const route = `/guilds/${guildID}/members`;
         return await this.request(this.route('GET', route));
+    }
+
+    async createGuild(name) {
+        return await this.request(this.route('POST', '/guilds'), {name: name});
     }
 }
