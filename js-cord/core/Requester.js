@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const Queue = require('./Queue');
 const utils = require('../utils');
-const { HTTPError } = require('../errors/Errors');
+const { HTTPError, APIError } = require('../errors/Errors');
 
 let badRequests = 0;
 let resetCounterAt = null;
@@ -173,8 +173,8 @@ module.exports = class Requester {
                 }
                 return this.__request(route, payload, contentType);
             }
-
-            throw new HTTPError(`Tried to ${route.method} from ${route.url}, received ${response.status}`)
+            let jsoned = await response.json();
+            throw new APIError(response, jsoned);
         }
 
         if (500 <= response.status < 600) {
