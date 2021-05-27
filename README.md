@@ -98,7 +98,8 @@ You can join our [support server](https://discord.gg/R6pY3FWh3A) for help - or c
 
 ## Credits
 #### Contributors
-Owner: [jay3332](https://github.com/jay3332)  
-Contributors: 
+##### Owner:
+[jay3332](https://github.com/jay3332)  
+##### Contributors:
 - [Cats3153](https://github.com/Cats3153)
 - [MrKomodoDragon](https://github.com/MrKomodoDragon)
