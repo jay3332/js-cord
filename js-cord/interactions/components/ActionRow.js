@@ -7,7 +7,7 @@ module.exports = class ActionRow extends Component {
     }
 
     /**
-     * Add an component to the row
+     * Add a component to the row
      * @param {Component} component 
      */
     addComponent(component) {

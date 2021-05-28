@@ -13,7 +13,7 @@ module.exports = class Component {
     }
     /**
      * Make a component from an `JSON`
-     * @param {JSON} data The raw Object
+     * @param {JSON} data The raw JSON
      * @returns {Component} The component made from the raw data.
      * 
      */
