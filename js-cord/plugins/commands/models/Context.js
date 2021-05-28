@@ -1,9 +1,8 @@
+/**
+ * Represents the context of a command. 
+ * This contains things such as the message, channel, and command the author invoked.
+ */
 module.exports = class Context {
-    /**
-     * Context constructor.
-     * @param {*} bot 
-     * @param {*} message 
-     */
     constructor(bot, message) {
         this.bot = bot;
         this.message = message;

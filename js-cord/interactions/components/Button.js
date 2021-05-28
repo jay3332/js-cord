@@ -4,6 +4,9 @@ const { parseEmoji, urandom } = require('../../utils');
 const PartialEmoji = require('../../models/PartialEmoji');
 // const Emoji = require('../models/Emoji');
 
+/**
+ * Represents a button component.
+ */
 module.exports = class Button extends Component {
     constructor({
         style = ButtonStyle.primary,

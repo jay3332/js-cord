@@ -17,6 +17,10 @@ const botDefaults = {
     shortFlagPrefix: '-'
 }
 
+/**
+ * Represents a bot using the commands plugin.
+ * This class extends {@link Client}.
+ */
 module.exports = class Bot extends Client {
     constructor(options) {
         if (typeof options === 'object') {

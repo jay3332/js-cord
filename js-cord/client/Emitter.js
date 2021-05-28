@@ -1,11 +1,10 @@
 const { maybePromise } = require('../utils');
 
+/**
+ * The base class that emits events and manages their callbacks.
+ * {@link Client} extends this class.
+ */
 module.exports = class Emitter {
-    /**
-     * The base class that emits events and manages their callbacks.
-     * {@link Client} extends this class.
-     */
-
     constructor() {
         this.waiting = [];
         this.listeners = [];

@@ -8,13 +8,11 @@ const Websocket = require('../core/Websocket');
 const Emitter = require('./Emitter');
 const Guild = require('../models/Guild');
 
-
+/**
+ * Represents a client connection to the Discord API and Gateway.
+ * @param {object?} options The options to use for the client. 
+ */
 module.exports = class Client extends Emitter {
-    /**
-     * Represents a client connection to the Discord API and Gateway.
-     * @param {object?} options The options to use for the client. 
-     */
-
     #apiVersion;
     #gatewayVersion;
 
