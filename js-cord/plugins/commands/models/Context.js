@@ -1,6 +1,6 @@
 module.exports = class Context {
     /**
-     * 
+     * Context constructor.
      * @param {*} bot 
      * @param {*} message 
      */
@@ -22,6 +22,7 @@ module.exports = class Context {
     /**
      * The prefix used to invoke the context, escaping mentions.
      * For example <@12345678> becomes @User#1234
+     * @returns {string}
      */
     get cleanPrefix() {
         return this.prefix.replace(/<@!?([0-9]{17,})>/g, (_, snowflake) => {

@@ -116,6 +116,11 @@ module.exports = class Bot extends Client {
         /* to-do: stripAfterPrefix option */
     }
 
+    /**
+     * Gets a command by name.
+     * @param {string} query The command query.
+     * @returns {Command} The command found from the search.
+     */
     getCommand(query) {
         query = query.trim();
         const formatFn = this.commandsCaseInsensitive ? (s => s.toLowerCase()) : (s => s);
