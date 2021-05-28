@@ -223,18 +223,44 @@ module.exports = class Client extends Emitter {
 
     /**
      * Creates a global slash command.
+     * You can also create guild slash commands here, too.
+     * 
      * @see {@link `Client#onSlashCommand`}
      * @param {SlashCommand} command The slash command to create.
+     * @param {Guild | string | Array<Guild | string>?} guilds 
+     * The guild or array of guilds that this slash command will be created in. Leave blank for global.
      * @param {function?} callback The callback for when this command is invoked. 
-     * @returns {SlashCommand} The slash command created.
+     * @returns {SlashCommand} The slash command created. 
      */
-    async createSlashCommand(command, callback) {
+    async createSlashCommand(command, guilds, callback) {
+        if (typeof guilds === 'function') {
+            callback = guilds;
+            guilds = undefined;
+        }
+        guilds = guilds || [];
+        if (!(guilds instanceof Array))
+            guilds = [ guilds ];
+
         const payload = command.toJSON();
-        const data = await this.http.createGlobalSlashCommand(payload);
-        command = SlashCommand.fromJSON(data);
-        
-        this.cache.commands.push(command);
-        if (callback) this.onSlashCommand(command, callback);
-        return command;
+        if (!guilds.length) {
+            const data = await this.http.createGlobalSlashCommand(payload);
+            command = SlashCommand.fromJSON(data);
+            
+            this.cache.commands.push(command);
+            if (callback) this.onSlashCommand(command, callback);
+            return command;
+        } else {
+            let data, commands = [];
+            for (let guild of guilds) {
+                const id = guild instanceof Guild
+                    ? guild.id : guild;
+                
+                data = await this.http.createGuildSlashCommand(id, payload);
+                command = SlashCommand.froomJSON(data);
+                if (callback) this.onSlashCommand(command, callback);
+                commands.push(command);
+            }
+            return commands[0];
+        }
     }
 }
