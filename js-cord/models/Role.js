@@ -4,7 +4,7 @@ const Color = require('./Color');
 
 /**
  * Represents a Discord role.
- * @extends DiscordObject
+ * @extends {DiscordObject}
  */
 module.exports = class Role extends DiscordObject {
     constructor(client, guild, data) {

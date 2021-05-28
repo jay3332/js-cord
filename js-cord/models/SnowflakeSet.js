@@ -3,7 +3,7 @@ const DiscordObject = require("./DiscordObject");
 /**
  * Represents a map of snowflakes to their DiscordObjects (ones that have parameter `id`).
  * This ensures that only one copy of any snowflake is present in this map.
- * @extends Map
+ * @extends {Map}
  */
 module.exports = class SnowflakeSet extends Map {
     constructor(...args) {
