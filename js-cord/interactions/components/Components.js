@@ -2,9 +2,19 @@ const ActionRow = require('./ActionRow');
 const Button = require('./Button');
 
 module.exports = class Components {
-    constructor() {
-        this.components = [];
-        this._buffer = null;
+    constructor({
+        __components = [],
+        __buffer = null
+    } = {}) {
+        this.components = __components;
+        this._buffer = __buffer;
+    }
+
+    copy() {
+        return new this.constructor({
+            __components: this.components,
+            __buffer: this._buffer
+        });
     }
 
     addRow(...components) {

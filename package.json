@@ -20,8 +20,17 @@
         "type": "git",
         "url": "git+https://github.com/jay3332/js-cord.git"
     },
-    "keywords": [],
-    "author": "",
+    "keywords": [
+        "discord",
+        "discord-api",
+        "api",
+        "bot",
+        "client",
+        "discordapp",
+        "js-cord",
+        "jscord"
+    ],
+    "author": "jay3332",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/jay3332/js-cord/issues"
@@ -31,5 +40,6 @@
         "presets": [
             "@babel/preset-env"
         ]
-    }
+    },
+    "runkitExampleFile": "./examples/ping-pong.js"
 }
