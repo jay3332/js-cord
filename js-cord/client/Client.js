@@ -81,6 +81,11 @@ module.exports = class Client extends Emitter {
         this.ws = new Websocket(this, this.gatewayVersion);
     }
 
+    /**
+     * Starts the bot.
+     * @async
+     * @param {string} token The token to use to login into the gateway.
+     */
     async start(token) {
         this.#putToken(token);
         this.#establishHTTP();
@@ -92,14 +97,27 @@ module.exports = class Client extends Emitter {
         this.start(token).then();
     }
 
+    /**
+     * Tries to get a user from the internal cache.
+     * @param {number} id The id of the user to find.
+     * @returns {?User} The found user.
+     */
     getUser(id) {
         return this.cache.users.get(id);
     }
-
+    /**
+     * Tries to get a channel from the internal cache.
+     * @param {number} id The id of the guild to find.
+     * @returns {?Guild} The found guild.
+     */
     getGuild(id) {
         return this.cache.guilds.get(id);
     }
-
+    /**
+     * Tries to get a channel from the internal cache.
+     * @param {number} id The id of the channel to find.
+     * @returns {?Channel} The found channel.
+     */
     getChannel(id) {
         return this.cache.channels.get(id);
     }

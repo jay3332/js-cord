@@ -38,9 +38,13 @@ const converterMapping = {
     user: require('./converters/UserConverter')
 }
 
-
+/**
+ * Transforms an object into a Converter class.
+ * @param {*} converter The object to turn into a Converter.
+ * @param {boolean} __recur Whether to prevent unions in unions.
+ * @returns {Converter} The sanitized Converter class.
+ */
 function sanitizeConverter(converter, __recur = true) {
-    // Turns a converter into a Converter class.
     if (typeof converter === 'function') {
         const _conv = class extends Converter {
             async convert(ctx, argument) {
@@ -119,6 +123,9 @@ module.exports = class Command {
         this._loadOptions(options);
     }
 
+    /**
+     * Sanitizes the arguments, converters, and flags.
+     */
     _sanitizeArguments() {
         for (let arg of this.args) {
             // The `optional` option will be primarily used.
@@ -171,6 +178,10 @@ module.exports = class Command {
         }
     }
 
+    /**
+     * Loads the command options.
+     * @param {Object} options The provided options.
+     */
     _loadOptions(options) {
         for (let [ option, value ] of Object.entries(options)) {
             if (!Object.keys(this).includes(option)) {
@@ -179,12 +190,20 @@ module.exports = class Command {
         }
     }
 
+    /**
+     * Returns the command's qualified name.
+     * @returns {string}
+     */
     get qualifiedName() {
         if (!this.parent) return this.name;
         let parents = this.parents.reverse();
         return [ ...parents.map(p => p.name), this.name ].join(' ')
     }
 
+    /**
+     * Returns The parent command if there is one.
+     * @returns {?Command} 
+     */
     get parents() {
         if (!this.parent) return [];
         let parents = [];
@@ -199,18 +218,33 @@ module.exports = class Command {
         return parents;
     }
 
+    /**
+     * Gets all the subcommands of this command.
+     * @returns {Command<Array>} The list of Subcommands
+     */
     get commands() {
         let cmds = this._bot.allCommands.filter(cmd => cmd.parent == this);
         if (!cmds) return undefined;
         return cmds;
     }
 
+    /**
+     * Creates and adds a command object to the bot.
+     * @param {Object} options The options to provide for the command.
+     * @param {function} callback The command's callback function.
+     * @returns {Command} The resulting command.
+     */
     command(options, callback) {
         const cmd = this._bot.command(options, callback);
         cmd.parent = this;
-        return cmd
+        return cmd;
     }
 
+    /**
+     * Returns the formatted signature of the command.
+     * @param {Object} options The symbols to use while generating the signature.
+     * @returns {string} The signature of the command.
+     */
     getSignature({ 
         required = '<>',
         optional = '[]',
@@ -242,10 +276,18 @@ module.exports = class Command {
         return parts.join(separator);
     }
 
+    /**
+     * Returns the signature of the command.
+     * @returns {string} The signature of the command, which looks like a unix command signature.
+     */
     get signature() {
         return this.getSignature()
     }
 
+    /**
+     * Returns the usage of the command.
+     * @returns {string} The usage of command, which is the qualified name + the signaure
+     */
     get usage() {
         return `${this.qualifiedName} ${this.signature}`.trim()
     }
@@ -253,12 +295,17 @@ module.exports = class Command {
     async beforeInvoke(_ctx) {}
     async afterInvoke(_ctx) {}
     async callback(_ctx, _args, _flags) {
-        throw new NotImplementedError('Callback required for this command.')
+        throw new NotImplementedError('Callback required for this command.');
     }
     async onError(_ctx, _error) {}
 
+    /**
+     * Splits the content into two groups: arguments and flags.
+     * @param {Context} ctx
+     * @param {string} content The content of the message.
+     * @returns {Promise<Array>} The array of arguments and flags.
+     */
     async getArguments(ctx, content) {
-        // Split the content into two groups: arguments and flags.
         let flagPrefix = await this._bot.getFlagPrefix(ctx.message);
         let shorthandPrefix = await this._bot.getShortFlagPrefix(ctx.message);
         let flagSplitter = undefined;
@@ -296,6 +343,12 @@ module.exports = class Command {
         return [ args, {} ]
     } 
 
+    /**
+     * Parse arguments out of a string.
+     * @param {Context} ctx
+     * @param {string} content The content to parse arguments out of.
+     * @returns {Promise<Object>} An object with argument name -> content.
+     */
     async _parseArguments(ctx, content) {
         let view = new StringView(content);
         let result = {};
@@ -348,8 +401,12 @@ module.exports = class Command {
         return result;
     }
 
+    /**
+     * On mobile, -- is usually replaced by an em dash. Here we reverse this.
+     * @param {string} content The content to replace long dashes.
+     * @returns {string} The replaced content.
+     */
     #replaceLongDash(content) {
-        // On mobile, -- is usually replaced by an em dash. Here we reverse this.
         let result = content.split(' ');
         for (let [i, arg] of result.entries()) {
             if (arg.startsWith("\u2014")) {
@@ -361,8 +418,17 @@ module.exports = class Command {
         return result.join(' ');
     }
 
+    /**
+     * Parse flags out of a string.
+     * @param {Context} ctx
+     * @param {string} content The content of the message.
+     * @param {string} flagPrefix The prefix for long flags. (default: --)
+     * @param {string} shortPrefix The prefix for short flags. (default: -)
+     * @returns {Promise<Object>} The parsed flags
+     */
     async _parseFlags(ctx, content, flagPrefix, shortPrefix) {
         content = this.#replaceLongDash(content);
+        console.log(content);
 
         let parser = new ArgumentParser();
         for (let flag of this.flags) {
@@ -404,9 +470,16 @@ module.exports = class Command {
             }
         }
 
+        console.log(result);
         return result;
     }
- 
+
+    /**
+     * Calls the command function.
+     * @param {Context} ctx
+     * @param {Object} args The given arguments.
+     * @param {Object} flags The given flags.
+     */
     async invoke(ctx, args, flags) {
         try {
             await this.beforeInvoke(ctx);
