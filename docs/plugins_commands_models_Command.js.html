@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: plugins/commands/models/Command.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: plugins/commands/models/Command.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { 
+    NotImplementedError,
+    ConversionError,
+    MissingRequiredArgument,
+    CommandError,
+    ArgumentParsingError
+} = require('../Errors');
+const DefaultConverters = require('./converters/DefaultConverters');
+const Converter = require('./converters/Converter');
+const { StringView } = require('../View');
+const { maybePromise, isSubclass } = require('../../../utils');
+const { ArgumentParser: _ArgumentParser } = require('argparse');
+
+
+class ArgumentParser extends _ArgumentParser {
+    constructor(...args) {
+        super(...args);
+    }
+
+    error(..._) {}
+}
+
+
+const converterMapping = {
+    string: DefaultConverters.StringConverter,
+    str: DefaultConverters.StringConverter,
+    text: DefaultConverters.StringConverter,
+    number: DefaultConverters.NumberConverter,
+    float: DefaultConverters.NumberConverter,
+    num: DefaultConverters.NumberConverter,
+    double: DefaultConverters.NumberConverter,
+    integer: DefaultConverters.IntegerConverter,
+    int: DefaultConverters.IntegerConverter,
+    bigint: DefaultConverters.BigIntConverter,
+    boolean: DefaultConverters.BooleanConverter,
+    bool: DefaultConverters.BooleanConverter,
+    member: require('./converters/MemberConverter'),
+    user: require('./converters/UserConverter')
+}
+
+/**
+ * Transforms an object into a Converter class.
+ * @param {*} converter The object to turn into a Converter.
+ * @param {boolean} __recur Whether to prevent unions in unions.
+ * @returns {Converter} The sanitized Converter class.
+ */
+function sanitizeConverter(converter, __recur = true) {
+    if (typeof converter === 'function') {
+        const _conv = class extends Converter {
+            async convert(ctx, argument) {
+                return await maybePromise(converter, ctx, argument);
+            }
+        }
+        return _conv;
+    } else if (converter instanceof Converter) {
+        const _conv = class extends Converter {
+            async convert(ctx, argument) {
+                return await converter.convert(ctx, argument);
+            }
+        } 
+        return _conv;
+    } else if (typeof converter === 'string') {
+        converter = converterMapping[converter.toLowerCase()];
+    } else if ([Boolean, Number, BigInt, String].includes(converter)) {
+        switch (converter) {
+        case String:
+            converter = DefaultConverters.StringConverter;
+            break;
+        case Boolean:
+            converter = DefaultConverters.BooleanConverter;
+            break;
+        case Number:
+            converter = DefaultConverters.NumberConverter;
+            break;
+        case BigInt:
+            converter = DefaultConverters.BigIntConverter;
+            break;
+        case require('../../../models/Member'):
+            converter = require('./converters/MemberConverter');
+            break;
+        case require('../../../models/User'):
+            converter = require('./converters/UserConverter');
+            break;
+        }
+    } else if (converter instanceof Array &amp;&amp; __recur) {
+        // This means that the converter is a union converter.
+        const _conv = class extends Converter {
+            async convert(ctx, argument) {
+                let errors = [];
+                for (let maybeConverter of converter) {
+                    try {
+                        maybeConverter = sanitizeConverter(maybeConverter, false);
+                        return await maybeConverter().convert(ctx, argument);
+                    } catch(exc) {
+                        errors.push(exc);
+                    }
+                }
+                throw new ConversionError(errors[errors.length-1]);
+            }
+        }
+        return _conv;
+    } else if (!isSubclass(converter, Converter)) {
+        throw new TypeError('Converters must extend `Converter`.');
+    }
+    return converter;
+}
+
+
+module.exports = class Command {
+    constructor(
+        bot, name, aliases = [], cooldowns = [], checks = [], 
+        args = [], flags = [], parent = null, options = {}
+    ) {
+        this._bot = bot;
+        this.name = name;
+        this.aliases = aliases;
+        this.cooldowns = cooldowns;
+        this.checks = checks;
+        this.args = args;
+        this.flags = flags;
+        this.parent = parent;
+        this._sanitizeArguments();
+        this._loadOptions(options);
+    }
+
+    /**
+     * Sanitizes the arguments, converters, and flags.
+     */
+    _sanitizeArguments() {
+        for (let arg of this.args) {
+            // The `optional` option will be primarily used.
+            if (arg.required != undefined) {
+                arg.optional = !arg.required;
+            }
+
+            // If there is a default value, make it optional.
+            if (arg.optional == undefined &amp;&amp; arg.default != undefined) {
+                arg.optional = true;
+            }
+
+            // The `type` alias can be used in favor of `converter`
+            if (arg.type &amp;&amp; !arg.converter) {
+                arg.converter = arg.type;
+            }
+
+            if (arg.converter) {
+                arg.converter = sanitizeConverter(arg.converter);
+            }
+
+            // If no converter was given, default to StringConverter
+            if (!arg.converter) {
+                arg.converter = DefaultConverters.StringConverter;
+            }
+        }
+
+        for (let flag of this.flags) {
+            // All we have to do is sanitize converters
+            // The `type` alias can be used in favor of `converter`
+            if (flag.type &amp;&amp; !flag.converter) {
+                flag.converter = flag.type;
+            }
+
+            if (flag.converter) {
+                flag.converter = sanitizeConverter(flag.converter);
+            }
+
+            // If no converter was given, default to StringConverter
+            if (!flag.converter) {
+                flag.converter = DefaultConverters.StringConverter;
+            }
+
+            if (flag.short != undefined &amp;&amp; flag.short.length !== 1) {
+                throw new SyntaxError('Shorthand flag names must be one character long.')
+            } 
+
+            if (!flag.aliases) flag.aliases = [];
+            if (flag.alias) flag.aliases.push(flag.alias);
+        }
+    }
+
+    /**
+     * Loads the command options.
+     * @param {Object} options The provided options.
+     */
+    _loadOptions(options) {
+        for (let [ option, value ] of Object.entries(options)) {
+            if (!Object.keys(this).includes(option)) {
+                this[option] = value;
+            }
+        }
+    }
+
+    /**
+     * Returns the command's qualified name.
+     * @returns {string}
+     */
+    get qualifiedName() {
+        if (!this.parent) return this.name;
+        let parents = this.parents.reverse();
+        return [ ...parents.map(p => p.name), this.name ].join(' ')
+    }
+
+    /**
+     * Returns The parent command if there is one.
+     * @returns {?Command} 
+     */
+    get parents() {
+        if (!this.parent) return [];
+        let parents = [];
+        let buffer = this;
+
+        while (true) {
+            if (buffer.parent) { 
+                parents.push(buffer.parent);
+                buffer = buffer.parent;
+            } else { break };
+        }
+        return parents;
+    }
+
+    /**
+     * Gets all the subcommands of this command.
+     * @returns {Command&lt;Array>} The list of Subcommands
+     */
+    get commands() {
+        let cmds = this._bot.allCommands.filter(cmd => cmd.parent == this);
+        if (!cmds) return undefined;
+        return cmds;
+    }
+
+    /**
+     * Creates and adds a command object to the bot.
+     * @param {Object} options The options to provide for the command.
+     * @param {function} callback The command's callback function.
+     * @returns {Command} The resulting command.
+     */
+    command(options, callback) {
+        const cmd = this._bot.command(options, callback);
+        cmd.parent = this;
+        return cmd;
+    }
+
+    /**
+     * Returns the formatted signature of the command.
+     * @param {Object} options The symbols to use while generating the signature.
+     * @returns {string} The signature of the command.
+     */
+    getSignature({ 
+        required = '&lt;>',
+        optional = '[]',
+        array = '...',
+        defaultIndicator = '=',
+        // includeFlags = false,
+        separator = ' '
+    } = {}) {   
+        if (!this.args.length + this.flags.length) 
+            return '';
+
+        const _required = t => required[0] + t + required[1];
+        const _optional = t => optional[0] + t + optional[1];
+
+        let text;
+        let parts = [];
+        for (let arg of this.args) {    
+            text = arg.name;
+            if (arg.consume &amp;&amp; arg.array) 
+                text += array;
+            if (arg.default != undefined) 
+                text += defaultIndicator + arg.default.toString();
+            
+            parts.push((
+                _optional ? arg.optional || arg.default : _required 
+            )(text));
+        }
+
+        return parts.join(separator);
+    }
+
+    /**
+     * Returns the signature of the command.
+     * @returns {string} The signature of the command, which looks like a unix command signature.
+     */
+    get signature() {
+        return this.getSignature()
+    }
+
+    /**
+     * Returns the usage of the command.
+     * @returns {string} The usage of command, which is the qualified name + the signaure
+     */
+    get usage() {
+        return `${this.qualifiedName} ${this.signature}`.trim()
+    }
+
+    async beforeInvoke(_ctx) {}
+    async afterInvoke(_ctx) {}
+    async callback(_ctx, _args, _flags) {
+        throw new NotImplementedError('Callback required for this command.');
+    }
+    async onError(_ctx, _error) {}
+
+    /**
+     * Splits the content into two groups: arguments and flags.
+     * @param {Context} ctx
+     * @param {string} content The content of the message.
+     * @returns {Promise&lt;Array>} The array of arguments and flags.
+     */
+    async getArguments(ctx, content) {
+        let flagPrefix = await this._bot.getFlagPrefix(ctx.message);
+        let shorthandPrefix = await this._bot.getShortFlagPrefix(ctx.message);
+        let flagSplitter = undefined;
+
+        for (let flag of this.flags) {
+            let cases = [];
+            if (flag.short) cases.push(shorthandPrefix + flag.short);
+            cases.push(...flag.aliases.map(alias => flagPrefix + alias), flagPrefix + flag.name);
+
+            let idx;
+            for (let case_ of cases) {
+                idx = content.indexOf(' ' + case_);
+                if (idx !== -1) {
+                    if (idx &lt; flagSplitter || flagSplitter == undefined) {
+                        flagSplitter = idx;
+                    }
+                } else {
+                    idx = content.indexOf(case_);
+                    if (idx === 0) {
+                        flagSplitter = idx; 
+                        break
+                    }
+                }
+            }
+        }
+
+        let args, flags;
+        if (flagSplitter != undefined) {
+            args = await this._parseArguments(ctx, content.slice(0, flagSplitter));
+            flags = await this._parseFlags(ctx, content.slice(flagSplitter).trim(), flagPrefix, shorthandPrefix);
+            return [ args, flags ];            
+        } 
+
+        args = await this._parseArguments(ctx, content);
+        return [ args, {} ]
+    } 
+
+    /**
+     * Parse arguments out of a string.
+     * @param {Context} ctx
+     * @param {string} content The content to parse arguments out of.
+     * @returns {Promise&lt;Object>} An object with argument name -> content.
+     */
+    async _parseArguments(ctx, content) {
+        let view = new StringView(content);
+        let result = {};
+        let buffer;
+
+        for (let arg of this.args) {
+            if (arg.array) {
+                // Greedily consume until we get an error
+                result[arg.name] = [];
+
+                while (!view.eof) {
+                    buffer = view.getWord({ skipSpace: true });
+                    if (!buffer) break;
+
+                    try {
+                        buffer = await (new arg.converter()).convert(ctx, buffer);
+                        result[arg.name].push(buffer);
+                    } catch (exc) {
+                        break;
+                    }
+                }
+                continue;
+            }
+            buffer = arg.consume 
+                ? view.getRest()
+                : view.getWord({ skipSpace: true });
+
+            if (buffer) { 
+                try {
+                    buffer = await (new arg.converter()).convert(ctx, buffer);
+                    result[arg.name] = buffer;
+                } catch (exc) {
+                    if (arg.optional) {
+                        result[arg.name] = arg.default;
+                    } else {
+                        throw new ConversionError(exc);
+                    }
+                }
+            } else {
+                // We're probably out of arguments,
+                // so raise MissingRequiredArgument or fill in defaults
+                if (arg.optional) {
+                    result[arg.name] = arg.default;
+                } else {
+                    throw new MissingRequiredArgument(arg);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * On mobile, -- is usually replaced by an em dash. Here we reverse this.
+     * @param {string} content The content to replace long dashes.
+     * @returns {string} The replaced content.
+     */
+    #replaceLongDash(content) {
+        let result = content.split(' ');
+        for (let [i, arg] of result.entries()) {
+            if (arg.startsWith("\u2014")) {
+                arg = arg.replace(/\u2014/g, '--');
+                result[i] = arg;
+            }
+        }
+
+        return result.join(' ');
+    }
+
+    /**
+     * Parse flags out of a string.
+     * @param {Context} ctx
+     * @param {string} content The content of the message.
+     * @param {string} flagPrefix The prefix for long flags. (default: --)
+     * @param {string} shortPrefix The prefix for short flags. (default: -)
+     * @returns {Promise&lt;Object>} The parsed flags
+     */
+    async _parseFlags(ctx, content, flagPrefix, shortPrefix) {
+        content = this.#replaceLongDash(content);
+        console.log(content);
+
+        let parser = new ArgumentParser();
+        for (let flag of this.flags) {
+            let allNames = [flag.name, ...flag.aliases]
+                .map(fl => flagPrefix + fl);
+            if (flag.short) allNames.push(shortPrefix + flag.short);
+
+            let options = flag.storeTrue 
+                ? { action: 'storeTrue' }  
+                : { nargs: '+' };
+
+            parser.addArgument(allNames, { ...options, default: flag.default, dest: flag.name }); 
+        }
+
+        let fl, parsed;
+        let result = {};
+        try {
+            parsed = parser.parseArgs(content.split(' ')); // Space to preserve newlines
+        } catch (exc) {
+            throw new ArgumentParsingError('Bad usage of flags.');
+        }
+
+        for (let [ key, value ] of Object.entries(parsed)) {
+            if (typeof value === 'boolean') {
+                result[key] = value;
+                continue;
+            }
+
+            if (value === null) {
+                result[key] = undefined;
+            }
+            if (value instanceof Array)
+                value = value.join(' ');
+            try { 
+                fl = this.flags.find(f => f.name === key);
+                result[key] = await (new fl.converter()).convert(ctx, value);
+            } catch (exc) {
+                throw new ConversionError(exc);
+            }
+        }
+
+        console.log(result);
+        return result;
+    }
+
+    /**
+     * Calls the command function.
+     * @param {Context} ctx
+     * @param {Object} args The given arguments.
+     * @param {Object} flags The given flags.
+     */
+    async invoke(ctx, args, flags) {
+        try {
+            await this.beforeInvoke(ctx);
+            await this._bot.emit('command', ctx);
+            await this.callback(ctx, args, flags);
+            await this.afterInvoke(ctx);
+        } catch (exc) {
+            await this.onError(ctx, exc);
+            await this._bot.emit('commandError', ctx, exc);
+        }
+        await this._bot.emit('commandComplete', ctx);
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BasicReverseStringView.html">BasicReverseStringView</a></li><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#sanitizeConverter">sanitizeConverter</a></li><li><a href="global.html#utils">utils</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu May 27 2021 20:34:12 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
