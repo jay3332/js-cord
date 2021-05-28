@@ -13,6 +13,10 @@ module.exports = class Client extends Emitter {
     #apiVersion;
     #gatewayVersion;
 
+    /**
+     * Represents a client connection to the Discord API and Gateway.
+     * @param {object?} options The options to use for the client. 
+     */
     constructor({ 
         allowedMentions,
         intents = Intents.default(), 
@@ -47,22 +51,31 @@ module.exports = class Client extends Emitter {
         this.#gatewayVersion = gatewayVersion;
     }
 
+    /**
+     * Returns this client's User ID.
+     */
     get id() {
         return this.user?.id;
     }
 
+    /**
+     * Gets the requested API version the client will use.
+     */
     get apiVersion() {
         return this.#apiVersion;
     }
 
+    /**
+     * Gets the requested gateway version the client will use.
+     */
     get gatewayVersion() {
         return this.#gatewayVersion;
     }
 
+    /**
+     * Returns the bot's latency in milliseconds.
+     */
     get latency() {
-        /**
-         * Returns the bot's latency in milliseconds.
-         */
         let latencies = this.ws.latencies;
         let lastThree = latencies.slice(-3);
         return (sum(lastThree) / lastThree.length) * 1000
@@ -111,7 +124,6 @@ module.exports = class Client extends Emitter {
      * @param {string} id The id of the guild to find.
      * @returns {?Guild} The found guild.
      */
-
     getGuild(id) {
         return this.cache.guilds.get(id);
     }
@@ -134,22 +146,39 @@ module.exports = class Client extends Emitter {
         return this.cache.roles.get(id);
     }
 
+    /**
+     * Gets all of the users currently stored in the internal cache.
+     */
     get users() {
         return [...this.cache.users.values()];
     }
 
+    /**
+     * Gets all of the channels currently stored in the internal cache.
+     */
     get channels() {
         return [...this.cache.channels.values()];
     }
 
+    /**
+     * Gets all of the guilds currently stored in the internal cache.
+     */
     get guilds() {
         return [...this.cache.guilds.values()];
     }
 
+    /**
+     * Gets all of the roles currently stored in the internal cache.
+     */
     get roles() {
         return [...this.cache.roles.values()];
     }
 
+    /**
+     * Fetches a guild via ID from the Discord API.
+     * @param {string} id The ID of the guild to fetch.
+     * @returns {Guild} The guild object. 
+     */
     async fetchGuild(id) {
         const data = await this.http.getGuild(id);
         const guild = new Guild(this, data);
@@ -157,6 +186,11 @@ module.exports = class Client extends Emitter {
         return guild;
     }
 
+    /**
+     * Creates a guild.
+     * @param {string} name The name of the guild.
+     * @returns {Guild} The guild created.
+     */
     async createGuild(name) {
         const data = await this.http.createGuild(name);
         const guild = new Guild(this, data);
