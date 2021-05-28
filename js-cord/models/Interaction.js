@@ -31,10 +31,6 @@ module.exports = class Interaction extends DiscordObject {
             if (buffer = this._data.component_type)
                 this.data.type = buffer;
 
-            if (buffer = this._data.options) {
-                // pass (Slash commands will come later.)
-            }
-
             if (buffer = this._data.resolved) {
                 if (buffer.users)
                     this.data.users = Object.values(buffer.users)
@@ -70,6 +66,13 @@ module.exports = class Interaction extends DiscordObject {
                             if (!channel) return;
                             return this.client.cache.getChannel(id);
                         }).filter(c => c);
+            }
+
+            if (buffer = this._data.options) {
+                this.data.options = {};
+                for (let { name, value } of buffer) {
+                    this.data.options[name] = value;
+                }
             }
         }
 

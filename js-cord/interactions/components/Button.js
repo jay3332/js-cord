@@ -1,7 +1,7 @@
 const Component = require('./Component');
-const { ButtonStyle } = require('../enums');
-const { parseEmoji, urandom } = require('../utils');
-const PartialEmoji = require('../models/PartialEmoji');
+const { ButtonStyle } = require('../../enums');
+const { parseEmoji, urandom } = require('../../utils');
+const PartialEmoji = require('../../models/PartialEmoji');
 // const Emoji = require('../models/Emoji');
 
 module.exports = class Button extends Component {
@@ -54,5 +54,14 @@ module.exports = class Button extends Component {
             url: this.url,
             disabled: this.disabled || false
         }
+    }
+
+    /**
+     * Stops your button from being interacted with.
+     * In reality, this just sets it's callback to nothing.
+     */
+    stop() {
+        this.callback = () => {};
+        return this;
     }
 }

@@ -27,6 +27,7 @@ The old but stable branch can be found [here](https://github.com/jay3332/js-cord
 + [Credits](#credits)
 
 ## Useful Links
++ [Guides](https://github.com/jay3332/js-cord/tree/rewrite/guides)
 + [Repository](https://github.com/jay3332/js-cord)
 + [Documentation](https://jay3332.github.io/js-cord)
 + [Help Server](https://discord.gg/R6pY3FWh3A)
@@ -95,6 +96,8 @@ bot.login(process.env.TOKEN);
 
 ## Ending it off
 You can join our [support server](https://discord.gg/R6pY3FWh3A) for help - or consider reading our [docs](https://jay3332.github.io/js-cord/) for reference.  
+
+There are also plenty of [guides](https://github.com/jay3332/js-cord/tree/rewrite/guides) on certain topics.
 
 ## Credits
 #### Contributors

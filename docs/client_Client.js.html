@@ -1,8 +1,35 @@
-//const { Log, NoLog } = require('../loggers');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: client/Client.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: client/Client.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//const { Log, NoLog } = require('../loggers');
 const { sum } = require('../utils');
 const { InvalidToken } = require('../errors/Errors');
 const Intents = require('../models/Intents');
-const SlashCommand = require('../interactions/slash/SlashCommand');
 const SnowflakeSet = require('../models/SnowflakeSet');
 const HTTPClient = require('../core/HTTPClient');
 const Websocket = require('../core/Websocket');
@@ -14,10 +41,6 @@ module.exports = class Client extends Emitter {
     #apiVersion;
     #gatewayVersion;
 
-    /**
-     * Represents a client connection to the Discord API and Gateway.
-     * @param {object?} options The options to use for the client. 
-     */
     constructor({ 
         allowedMentions,
         intents = Intents.default(), 
@@ -35,11 +58,9 @@ module.exports = class Client extends Emitter {
             users: new SnowflakeSet(),
             messages: new SnowflakeSet(),
             emojis: new SnowflakeSet(),
-            roles: new SnowflakeSet(),
-            commands: new SnowflakeSet()
+            roles: new SnowflakeSet()
         }
 
-        this._slash = [];
         this._components = [];
         this.allowedMentions = allowedMentions;
         this.intents = intents;
@@ -54,31 +75,22 @@ module.exports = class Client extends Emitter {
         this.#gatewayVersion = gatewayVersion;
     }
 
-    /**
-     * Returns this client's User ID.
-     */
     get id() {
         return this.user?.id;
     }
 
-    /**
-     * Gets the requested API version the client will use.
-     */
     get apiVersion() {
         return this.#apiVersion;
     }
 
-    /**
-     * Gets the requested gateway version the client will use.
-     */
     get gatewayVersion() {
         return this.#gatewayVersion;
     }
 
-    /**
-     * Returns the bot's latency in milliseconds.
-     */
     get latency() {
+        /**
+         * Returns the bot's latency in milliseconds.
+         */
         let latencies = this.ws.latencies;
         let lastThree = latencies.slice(-3);
         return (sum(lastThree) / lastThree.length) * 1000
@@ -127,6 +139,7 @@ module.exports = class Client extends Emitter {
      * @param {string} id The id of the guild to find.
      * @returns {?Guild} The found guild.
      */
+
     getGuild(id) {
         return this.cache.guilds.get(id);
     }
@@ -149,39 +162,22 @@ module.exports = class Client extends Emitter {
         return this.cache.roles.get(id);
     }
 
-    /**
-     * Gets all of the users currently stored in the internal cache.
-     */
     get users() {
         return [...this.cache.users.values()];
     }
 
-    /**
-     * Gets all of the channels currently stored in the internal cache.
-     */
     get channels() {
         return [...this.cache.channels.values()];
     }
 
-    /**
-     * Gets all of the guilds currently stored in the internal cache.
-     */
     get guilds() {
         return [...this.cache.guilds.values()];
     }
 
-    /**
-     * Gets all of the roles currently stored in the internal cache.
-     */
     get roles() {
         return [...this.cache.roles.values()];
     }
 
-    /**
-     * Fetches a guild via ID from the Discord API.
-     * @param {string} id The ID of the guild to fetch.
-     * @returns {Guild} The guild object. 
-     */
     async fetchGuild(id) {
         const data = await this.http.getGuild(id);
         const guild = new Guild(this, data);
@@ -189,52 +185,33 @@ module.exports = class Client extends Emitter {
         return guild;
     }
 
-    /**
-     * Creates a guild.
-     * @param {string} name The name of the guild.
-     * @returns {Guild} The guild created.
-     */
     async createGuild(name) {
         const data = await this.http.createGuild(name);
         const guild = new Guild(this, data);
         this.cache.guilds.push(guild);
         return guild;
     }
-
-    /**
-     * Listens for when a slash command is invoked.
-     * 
-     * Callback can take zero, one `(ctx: SlashContext)` parameter, 
-     * or two `(ctx: SlashContext, options: Object)` parameters.
-     * 
-     * You must supply a slash command or it's ID in this case.
-     * You can query slash commands by it's name via `Client#getSlashCommandNamed`.
-     * 
-     * @param {SlashCommand | string} command The slash command or it's ID to listen for. 
-     * @param {function} callback The callback of the command.
-     */
-    onSlashCommand(command, callback) {
-        if (typeof command === 'string') {
-            command = { id: command };
-        }
-        const id = command.id;
-        this._slash.push({ id: id, callback: callback });
-    }
-
-    /**
-     * Creates a global slash command.
-     * @see {@link `Client#onSlashCommand`}
-     * @param {SlashCommand} command The slash command to create.
-     * @param {function?} callback The callback for when this command is invoked. 
-     * @returns {SlashCommand} The slash command created.
-     */
-    async createSlashCommand(command, callback) {
-        const payload = command.toJSON();
-        const data = await this.http.createGlobalSlashCommand(payload);
-        command = SlashCommand.fromJSON(data);
-        
-        this.cache.commands.push(command);
-        if (callback) this.onSlashCommand(command, callback);
-        return command;
-    }
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BasicReverseStringView.html">BasicReverseStringView</a></li><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#sanitizeConverter">sanitizeConverter</a></li><li><a href="global.html#utils">utils</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu May 27 2021 20:34:12 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

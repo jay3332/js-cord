@@ -12,12 +12,12 @@ module.exports = class Component {
         return this.id;
     }
     /**
-     * Make a component from an `Object`
-     * @param {Object} data The raw Object
+     * Make a component from an `JSON`
+     * @param {JSON} data The raw Object
      * @returns {Component} The component made from the raw data.
      * 
      */
-    static fromData(data) {
+    static fromJSON(data) {
         return new this(data.type, data.custom_id);
     }
     /**

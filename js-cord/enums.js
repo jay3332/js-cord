@@ -76,6 +76,26 @@ module.exports = {
         updateMessage: 7
     },
 
+    SlashCommandOptionType: {
+        subcommand: 1, 
+        subcommandGroup: 2,
+        string: 3,
+        integer: 4,
+        boolean: 5,
+        user: 6,
+        channel: 7,
+        role: 8,
+        mentionable: 9,
+
+        group: 2,
+        str: 3,
+        text: 3,
+        int: 4,
+        number: 4,
+        bool: 5,
+        member: 6
+    },
+
     ComponentType: {
         row: 1,
         actionRow: 1,

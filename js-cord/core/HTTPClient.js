@@ -159,4 +159,17 @@ module.exports = class HTTPClient {
         payload = { type: type, data: payload };
         return await this.request(this.route('POST', route), payload);
     }
+
+    async createGlobalSlashCommand(payload) {
+        return await this.request(
+            this.route('POST', `/applications/${this.client.id}/commands`), payload
+        );
+    }
+
+    async createGuildSlashCommand(guildID, payload) {
+        return await this.request(
+            this.route('POST', `/applications/${this.client.id}/guilds/${guildID}/commands`),
+            payload
+        );
+    }
 }
