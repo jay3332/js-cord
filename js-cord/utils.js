@@ -289,8 +289,9 @@ module.exports = {
 	 * @param {number} start The number to start with. Defaults to 0.
 	 * @param {number} stop Represents when to stop generating.
 	 * @param {number} step The increment per iteration. 
+     * @yields {number} The current counter.
 	 */
-    range: function*(start, stop, step = 1) {
+    range: function* (start, stop, step = 1) {
         if (stop == undefined) {
             stop = start;
             start = 0;
@@ -306,8 +307,9 @@ module.exports = {
      * Similar to Python's built-in `enumerate` method. 
      * @param {generator} gen The generator to use. 
      * @param {number} start The starting number. Defaults to 0. 
+     * @yields {Array<number, any>} The paired number with it's object.
      */
-    enumerate: (gen, start = 0) => {
+    enumerate: function* (gen, start = 0) {
         let number = start;
         for (let thing in gen) {
             yield [number++, thing];

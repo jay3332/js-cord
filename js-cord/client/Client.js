@@ -227,9 +227,9 @@ module.exports = class Client extends Emitter {
      * 
      * @see {@link `Client#onSlashCommand`}
      * @param {SlashCommand} command The slash command to create.
-     * @param {Guild | string | Array<Guild | string>?} guilds 
+     * @param {?Guild | string | Array<Guild | string>} guilds 
      * The guild or array of guilds that this slash command will be created in. Leave blank for global.
-     * @param {function?} callback The callback for when this command is invoked. 
+     * @param {?function} callback The callback for when this command is invoked. 
      * @returns {SlashCommand} The slash command created. 
      */
     async createSlashCommand(command, guilds, callback) {

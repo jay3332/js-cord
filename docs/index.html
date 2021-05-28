@@ -1,65 +1,5228 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>JSDoc: Home</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <meta charset='utf-8'>
+  <title>js-cord 1.0.0 | Documentation</title>
+  <meta name='description' content='js-cord is a wrapper around the Discord API, designed to be easy and elegant to use.'>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='assets/bass.css' rel='stylesheet'>
+  <link href='assets/style.css' rel='stylesheet'>
+  <link href='assets/github.css' rel='stylesheet'>
+  <link href='assets/split.css' rel='stylesheet'>
 </head>
+<body class='documentation m0'>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'>js-cord</h3>
+          <div class='mb1'><code>1.0.0</code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            spellcheck='false'
+            autocapitalize='off'
+            autocorrect='off'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+              
+                
+                <li><a
+                  href='#utils'
+                  class=" toggle-sibling">
+                  utils
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#utilsissubclass'
+                        class='regular pre-open'>
+                        .isSubclass
+                      </a></li>
+                    
+                      <li><a
+                        href='#utilsrange'
+                        class='regular pre-open'>
+                        .range
+                      </a></li>
+                    
+                      <li><a
+                        href='#utilsenumerate'
+                        class='regular pre-open'>
+                        .enumerate
+                      </a></li>
+                    
+                      <li><a
+                        href='#utilsregexescape'
+                        class='regular pre-open'>
+                        .regexEscape
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#constructor'
+                  class="">
+                  constructor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#constructor'
+                  class="">
+                  constructor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#constructor'
+                  class="">
+                  constructor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#id'
+                  class="">
+                  id
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#apiversion'
+                  class="">
+                  apiVersion
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#gatewayversion'
+                  class="">
+                  gatewayVersion
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#latency'
+                  class="">
+                  latency
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#start'
+                  class="">
+                  start
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getuser'
+                  class="">
+                  getUser
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getguild'
+                  class="">
+                  getGuild
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getchannel'
+                  class="">
+                  getChannel
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getrole'
+                  class="">
+                  getRole
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#users'
+                  class="">
+                  users
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#channels'
+                  class="">
+                  channels
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#guilds'
+                  class="">
+                  guilds
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#roles'
+                  class="">
+                  roles
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#fetchguild'
+                  class="">
+                  fetchGuild
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#createguild'
+                  class="">
+                  createGuild
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#onslashcommand'
+                  class="">
+                  onSlashCommand
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#createslashcommand'
+                  class="">
+                  createSlashCommand
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#fields'
+                  class="">
+                  fields
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#constructor'
+                  class="">
+                  constructor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#stop'
+                  class="">
+                  stop
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#adddefaultlisteners'
+                  class="">
+                  addDefaultListeners
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getprefix'
+                  class="">
+                  getPrefix
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getcommand'
+                  class="">
+                  getCommand
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getcontext'
+                  class="">
+                  getContext
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#invoke'
+                  class="">
+                  invoke
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#command'
+                  class="">
+                  command
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getflagprefix'
+                  class="">
+                  getFlagPrefix
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getshortflagprefix'
+                  class="">
+                  getShortFlagPrefix
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#constructor'
+                  class="">
+                  constructor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#sanitizeconverter'
+                  class="">
+                  sanitizeConverter
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#_sanitizearguments'
+                  class="">
+                  _sanitizeArguments
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#_loadoptions'
+                  class="">
+                  _loadOptions
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#qualifiedname'
+                  class="">
+                  qualifiedName
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#parents'
+                  class="">
+                  parents
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#commands'
+                  class="">
+                  commands
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#command'
+                  class="">
+                  command
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getsignature'
+                  class="">
+                  getSignature
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#signature'
+                  class="">
+                  signature
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#usage'
+                  class="">
+                  usage
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getarguments'
+                  class="">
+                  getArguments
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#_parsearguments'
+                  class="">
+                  _parseArguments
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#_parseflags'
+                  class="">
+                  _parseFlags
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#invoke'
+                  class="">
+                  invoke
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#content'
+                  class="">
+                  content
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#convert'
+                  class="">
+                  convert
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#constructor'
+                  class="">
+                  constructor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#cleanprefix'
+                  class="">
+                  cleanPrefix
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#now'
+                  class="">
+                  now
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#unix'
+                  class="">
+                  unix
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#invoke'
+                  class="">
+                  invoke
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#reinvoke'
+                  class="">
+                  reinvoke
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#send'
+                  class="">
+                  send
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#reply'
+                  class="">
+                  reply
+                  
+                </a>
+                
+                </li>
+              
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='https://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
+        </div>
+      </div>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
-<body>
-
-<div id="main">
-
-    <h1 class="page-title">Home</h1>
-
+  
+  <div class='clearfix'>
     
-
-
-
+    <h3 class='fl m0' id='utils'>
+      utils
+    </h3>
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
     
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/index.js#L11-L11'>
+      <span>js-cord/index.js</span>
+      </a>
+    
+  </div>
+  
 
+  <h1>js-cord</h1>
+<p>All properties should follow camelCase.
+The last word should be all uppercase if it is <code>ID</code>, <code>URL</code>
+... or another short abbreviation.</p>
+<p>E.g.: jumpURL, channelID, someOtherMethod</p>
 
+    <div class='pre p1 fill-light mt0'>utils</div>
+  
+  
 
+  
+  
+  
+  
+  
+  
 
+  
 
+  
 
+  
 
+  
 
+  
 
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='utilsissubclass'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>isSubclass(cls, checks)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/utils.js#L279-L282'>
+      <span>js-cord/utils.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Checks is a class is a subclass of the given class,
+or any if given an array of classes.</p>
+
+    <div class='pre p1 fill-light mt0'>isSubclass(cls: class, checks: (class | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;class>)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cls</span> <code class='quiet'>(class)</code>
+	    The class to compare with.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>checks</span> <code class='quiet'>((class | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;class>))</code>
+	    The class to compare to. Can also be an array of classes.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        If the class is indeed a subclass of the class(es).
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='utilsrange'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>range(start, stop, step)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/utils.js#L294-L304'>
+      <span>js-cord/utils.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Simulates the <code>range</code> method in Python.
+This returns a generator. You can turn it into an array via <code>[...range(...)]</code></p>
+<p>For example, range(2, 10, 2) will return a generator [ 2, 4, 6, 8 ], but not 10.</p>
+
+    <div class='pre p1 fill-light mt0'>range(start: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, stop: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, step: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>start</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    The number to start with. Defaults to 0.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>stop</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Represents when to stop generating.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>step</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>1</code>)</code>
+	    The increment per iteration.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='utilsenumerate'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>enumerate(gen, start)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/utils.js#L312-L317'>
+      <span>js-cord/utils.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Similar to Python's built-in <code>enumerate</code> method.</p>
+
+    <div class='pre p1 fill-light mt0'>enumerate(gen: generator, start: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>gen</span> <code class='quiet'>(generator)</code>
+	    The generator to use.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>start</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+            = <code>0</code>)</code>
+	    The starting number. Defaults to 0.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='utilsregexescape'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>regexEscape(literalString)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/utils.js#L324-L326'>
+      <span>js-cord/utils.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Escapes special regex characters from a pattern.</p>
+
+    <div class='pre p1 fill-light mt0'>regexEscape(literalString: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>literalString</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The string to escape.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        The resulting escaped characters.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
 </div>
 
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BasicReverseStringView.html">BasicReverseStringView</a></li><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#sanitizeConverter">sanitizeConverter</a></li><li><a href="global.html#utils">utils</a></li></ul>
-</nav>
+  
 
-<br class="clear">
+  
 
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu May 27 2021 20:34:12 GMT-0400 (Eastern Daylight Time)
-</footer>
+  
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='constructor'>
+      constructor
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/utils.js#L52-L63'>
+      <span>js-cord/utils.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Generates pages out of text.
+Inspired by discord.py's pagination system.</p>
+
+    <div class='pre p1 fill-light mt0'>constructor($0: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>$0</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+            = <code>{}</code>)</code>
+	    
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>$0.prefix</span> <code class='quiet'>any</code>
+  
+    (default <code>&#39;```&#39;</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>$0.suffix</span> <code class='quiet'>any</code>
+  
+    (default <code>&#39;```&#39;</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>$0.maxSize</span> <code class='quiet'>any</code>
+  
+    (default <code>2000</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>$0.delimiter</span> <code class='quiet'>any</code>
+  
+    (default <code>&#39;\n&#39;</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='constructor'>
+      constructor
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/utils.js#L127-L148'>
+      <span>js-cord/utils.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Paginator that supports force wrapping and multiple delimiters.
+This should be used over BasePaginator.</p>
+
+    <div class='pre p1 fill-light mt0'>constructor($0: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>$0</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+            = <code>{}</code>)</code>
+	    
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>$0.prefix</span> <code class='quiet'>any</code>
+  
+    (default <code>&#39;```&#39;</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>$0.suffix</span> <code class='quiet'>any</code>
+  
+    (default <code>&#39;```&#39;</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>$0.maxSize</span> <code class='quiet'>any</code>
+  
+    (default <code>2000</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>$0.delimiter</span> <code class='quiet'>any</code>
+  
+    (default <code>&#39;\n&#39;</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>$0.forceWrap</span> <code class='quiet'>any</code>
+  
+    (default <code>true</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>$0.includeWrapped</span> <code class='quiet'>any</code>
+  
+    (default <code>true</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='constructor'>
+      constructor
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L21-L55'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Represents a client connection to the Discord API and Gateway.</p>
+
+    <div class='pre p1 fill-light mt0'>constructor(options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?
+            = <code>{}</code>)</code>
+	    The options to use for the client.
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.allowedMentions</span> <code class='quiet'>any</code>
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.intents</span> <code class='quiet'>any</code>
+  
+    (default <code>Intents.default()</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.apiVersion</span> <code class='quiet'>any</code>
+  
+    (default <code>9</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.gatewayVersion</span> <code class='quiet'>any</code>
+  
+    (default <code>9</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='id'>
+      id
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L60-L62'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Returns this client's User ID.</p>
+
+    <div class='pre p1 fill-light mt0'>id</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='apiversion'>
+      apiVersion
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L67-L69'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Gets the requested API version the client will use.</p>
+
+    <div class='pre p1 fill-light mt0'>apiVersion</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='gatewayversion'>
+      gatewayVersion
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L74-L76'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Gets the requested gateway version the client will use.</p>
+
+    <div class='pre p1 fill-light mt0'>gatewayVersion</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='latency'>
+      latency
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L81-L85'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Returns the bot's latency in milliseconds.</p>
+
+    <div class='pre p1 fill-light mt0'>latency</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='start'>
+      start
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L105-L110'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Starts the bot.</p>
+
+    <div class='pre p1 fill-light mt0'>start(token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>token</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The token to use to login into the gateway.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getuser'>
+      getUser
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L121-L123'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Tries to get a user from the internal cache.</p>
+
+    <div class='pre p1 fill-light mt0'>getUser(id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): User?</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The id of the user to find.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>User?</code>:
+        The found user.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getguild'>
+      getGuild
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L130-L132'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Tries to get a channel from the internal cache.</p>
+
+    <div class='pre p1 fill-light mt0'>getGuild(id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): Guild?</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The id of the guild to find.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>Guild?</code>:
+        The found guild.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getchannel'>
+      getChannel
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L139-L141'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Tries to get a channel from the internal cache.</p>
+
+    <div class='pre p1 fill-light mt0'>getChannel(id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): Channel?</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The id of the channel to find.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>Channel?</code>:
+        The found channel.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getrole'>
+      getRole
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L148-L150'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Tries to get a role from the internal cache.</p>
+
+    <div class='pre p1 fill-light mt0'>getRole(id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): Role?</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The id of the role to find.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>Role?</code>:
+        The found role.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='users'>
+      users
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L155-L157'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Gets all of the users currently stored in the internal cache.</p>
+
+    <div class='pre p1 fill-light mt0'>users</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='channels'>
+      channels
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L162-L164'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Gets all of the channels currently stored in the internal cache.</p>
+
+    <div class='pre p1 fill-light mt0'>channels</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='guilds'>
+      guilds
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L169-L171'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Gets all of the guilds currently stored in the internal cache.</p>
+
+    <div class='pre p1 fill-light mt0'>guilds</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='roles'>
+      roles
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L176-L178'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Gets all of the roles currently stored in the internal cache.</p>
+
+    <div class='pre p1 fill-light mt0'>roles</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='fetchguild'>
+      fetchGuild
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L185-L190'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Fetches a guild via ID from the Discord API.</p>
+
+    <div class='pre p1 fill-light mt0'>fetchGuild(id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): Guild</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The ID of the guild to fetch.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>Guild</code>:
+        The guild object.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='createguild'>
+      createGuild
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L197-L202'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Creates a guild.</p>
+
+    <div class='pre p1 fill-light mt0'>createGuild(name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): Guild</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The name of the guild.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>Guild</code>:
+        The guild created.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='onslashcommand'>
+      onSlashCommand
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L216-L222'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Listens for when a slash command is invoked.</p>
+<p>Callback can take zero, one <code>(ctx: SlashContext)</code> parameter,
+or two <code>(ctx: SlashContext, options: Object)</code> parameters.</p>
+<p>You must supply a slash command or it's ID in this case.
+You can query slash commands by it's name via <code>Client#getSlashCommandNamed</code>.</p>
+
+    <div class='pre p1 fill-light mt0'>onSlashCommand(command: (SlashCommand | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), callback: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>command</span> <code class='quiet'>((SlashCommand | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    The slash command or it's ID to listen for.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>callback</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
+	    The callback of the command.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='createslashcommand'>
+      createSlashCommand
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/client/Client.js#L235-L265'>
+      <span>js-cord/client/Client.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Creates a global slash command.
+You can also create guild slash commands here, too.</p>
+
+    <div class='pre p1 fill-light mt0'>createSlashCommand(command: SlashCommand, guilds: (Guild? | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(Guild | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)>), callback: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?): SlashCommand</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>command</span> <code class='quiet'>(SlashCommand)</code>
+	    The slash command to create.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>guilds</span> <code class='quiet'>((Guild? | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(Guild | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)>))</code>
+	    The guild or array of guilds that this slash command will be created in. Leave blank for global.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>callback</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>?)</code>
+	    The callback for when this command is invoked.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>SlashCommand</code>:
+        The slash command created.
+
+      
+    
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Related</div>
+    
+      
+        <a href="%60Client#onSlashCommand%60">`Client#onSlashCommand`</a>
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='fields'>
+      fields
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/models/Embed.js#L300-L321'>
+      <span>js-cord/models/Embed.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Note: This only takes into account rich embeds.</p>
+
+    <div class='pre p1 fill-light mt0'>fields</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='constructor'>
+      constructor
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/models/SnowflakeSet.js#L6-L8'>
+      <span>js-cord/models/SnowflakeSet.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Represents a map of snowflakes to their DiscordObjects (ones that have parameter <code>id</code>).
+This ensures that only one copy of any snowflake is present in this map.</p>
+
+    <div class='pre p1 fill-light mt0'>constructor(args: ...any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>args</span> <code class='quiet'>(...any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='stop'>
+      stop
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/interactions/components/Button.js#L57-L60'>
+      <span>js-cord/interactions/components/Button.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Stops your button from being interacted with.
+In reality, this just sets it's callback to nothing.</p>
+
+    <div class='pre p1 fill-light mt0'>stop()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='adddefaultlisteners'>
+      addDefaultListeners
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/Bot.js#L62-L78'>
+      <span>js-cord/plugins/commands/Bot.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Adds the default listeners to the bot.</p>
+
+    <div class='pre p1 fill-light mt0'>addDefaultListeners()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getprefix'>
+      getPrefix
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/Bot.js#L85-L117'>
+      <span>js-cord/plugins/commands/Bot.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Parses a prefix from a message. (if found)</p>
+
+    <div class='pre p1 fill-light mt0'>getPrefix(message: Message): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>message</span> <code class='quiet'>(Message)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?></code>:
+        The prefix found in the message.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getcommand'>
+      getCommand
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/Bot.js#L124-L131'>
+      <span>js-cord/plugins/commands/Bot.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Gets a command by name.</p>
+
+    <div class='pre p1 fill-light mt0'>getCommand(query: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): Command</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>query</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The command query.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>Command</code>:
+        The command found from the search.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getcontext'>
+      getContext
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/Bot.js#L138-L170'>
+      <span>js-cord/plugins/commands/Bot.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Returns the parsed context of amessage.</p>
+
+    <div class='pre p1 fill-light mt0'>getContext(message: Message): Context</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>message</span> <code class='quiet'>(Message)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>Context</code>:
+        The parsed context of the message.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='invoke'>
+      invoke
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/Bot.js#L176-L179'>
+      <span>js-cord/plugins/commands/Bot.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Invokes a command from a Context object.</p>
+
+    <div class='pre p1 fill-light mt0'>invoke(ctx: Context)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctx</span> <code class='quiet'>(Context)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='command'>
+      command
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/Bot.js#L186-L197'>
+      <span>js-cord/plugins/commands/Bot.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Adds a command to the bot.</p>
+
+    <div class='pre p1 fill-light mt0'>command(options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, callback: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    The command options.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>callback</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
+	    The command callback.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getflagprefix'>
+      getFlagPrefix
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/Bot.js#L206-L208'>
+      <span>js-cord/plugins/commands/Bot.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Gets the bot's flag prefix.</p>
+
+    <div class='pre p1 fill-light mt0'>getFlagPrefix(message: Message): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>message</span> <code class='quiet'>(Message)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        The long flag prefix.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getshortflagprefix'>
+      getShortFlagPrefix
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/Bot.js#L215-L217'>
+      <span>js-cord/plugins/commands/Bot.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Gets the bot's short flag prefix.</p>
+
+    <div class='pre p1 fill-light mt0'>getShortFlagPrefix(message: Message): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>message</span> <code class='quiet'>(Message)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        The short flag prefix.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='constructor'>
+      constructor
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/View.js#L173-L177'>
+      <span>js-cord/plugins/commands/View.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>No support for quotes here,
+this was primarily made to get
+a command from a string.</p>
+
+    <div class='pre p1 fill-light mt0'>constructor(text: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>text</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='sanitizeconverter'>
+      sanitizeConverter
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L47-L106'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Transforms an object into a Converter class.</p>
+
+    <div class='pre p1 fill-light mt0'>sanitizeConverter(converter: any, __recur: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): Converter</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>converter</span> <code class='quiet'>(any)</code>
+	    The object to turn into a Converter.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>__recur</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>true</code>)</code>
+	    Whether to prevent unions in unions.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>Converter</code>:
+        The sanitized Converter class.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='_sanitizearguments'>
+      _sanitizeArguments
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L129-L179'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Sanitizes the arguments, converters, and flags.</p>
+
+    <div class='pre p1 fill-light mt0'>_sanitizeArguments()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='_loadoptions'>
+      _loadOptions
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L185-L191'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Loads the command options.</p>
+
+    <div class='pre p1 fill-light mt0'>_loadOptions(options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    The provided options.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='qualifiedname'>
+      qualifiedName
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L197-L201'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Returns the command's qualified name.</p>
+
+    <div class='pre p1 fill-light mt0'>qualifiedName</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='parents'>
+      parents
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L207-L219'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Returns The parent command if there is one.</p>
+
+    <div class='pre p1 fill-light mt0'>parents</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>Command?</code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='commands'>
+      commands
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L225-L229'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Gets all the subcommands of this command.</p>
+
+    <div class='pre p1 fill-light mt0'>commands</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>Command&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>></code>:
+        The list of Subcommands
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='command'>
+      command
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L237-L241'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Creates and adds a command object to the bot.</p>
+
+    <div class='pre p1 fill-light mt0'>command(options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, callback: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>): Command</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    The options to provide for the command.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>callback</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
+	    The command's callback function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>Command</code>:
+        The resulting command.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getsignature'>
+      getSignature
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L248-L277'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Returns the formatted signature of the command.</p>
+
+    <div class='pre p1 fill-light mt0'>getSignature(options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+            = <code>{}</code>)</code>
+	    The symbols to use while generating the signature.
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.required</span> <code class='quiet'>any</code>
+  
+    (default <code>&#39;&lt;&gt;&#39;</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.optional</span> <code class='quiet'>any</code>
+  
+    (default <code>&#39;[]&#39;</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.array</span> <code class='quiet'>any</code>
+  
+    (default <code>&#39;...&#39;</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.defaultIndicator</span> <code class='quiet'>any</code>
+  
+    (default <code>&#39;=&#39;</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.separator</span> <code class='quiet'>any</code>
+  
+    (default <code>&#39; &#39;</code>)
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        The signature of the command.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='signature'>
+      signature
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L283-L285'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Returns the signature of the command.</p>
+
+    <div class='pre p1 fill-light mt0'>signature</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        The signature of the command, which looks like a unix command signature.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='usage'>
+      usage
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L291-L293'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Returns the usage of the command.</p>
+
+    <div class='pre p1 fill-light mt0'>usage</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        The usage of command, which is the qualified name + the signaure
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getarguments'>
+      getArguments
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L308-L344'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Splits the content into two groups: arguments and flags.</p>
+
+    <div class='pre p1 fill-light mt0'>getArguments(ctx: Context, content: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctx</span> <code class='quiet'>(Context)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>content</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The content of the message.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>></code>:
+        The array of arguments and flags.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='_parsearguments'>
+      _parseArguments
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L352-L402'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Parse arguments out of a string.</p>
+
+    <div class='pre p1 fill-light mt0'>_parseArguments(ctx: Context, content: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctx</span> <code class='quiet'>(Context)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>content</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The content to parse arguments out of.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>></code>:
+        An object with argument name -> content.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='_parseflags'>
+      _parseFlags
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L429-L475'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Parse flags out of a string.</p>
+
+    <div class='pre p1 fill-light mt0'>_parseFlags(ctx: Context, content: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, flagPrefix: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, shortPrefix: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctx</span> <code class='quiet'>(Context)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>content</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The content of the message.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>flagPrefix</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The prefix for long flags. (default: --)
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>shortPrefix</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The prefix for short flags. (default: -)
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>></code>:
+        The parsed flags
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='invoke'>
+      invoke
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L483-L494'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Calls the command function.</p>
+
+    <div class='pre p1 fill-light mt0'>invoke(ctx: Context, args: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, flags: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctx</span> <code class='quiet'>(Context)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>args</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    The given arguments.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>flags</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    The given flags.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='content'>
+      content
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Command.js#L409-L419'>
+      <span>js-cord/plugins/commands/models/Command.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>On mobile, -- is usually replaced by an em dash. Here we reverse this.</p>
+
+    <div class='pre p1 fill-light mt0'>content(content: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>content</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The content to replace long dashes.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        The replaced content.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='convert'>
+      convert
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/converters/Converter.js#L9-L11'>
+      <span>js-cord/plugins/commands/models/converters/Converter.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Converts an argument to a specific class.</p>
+
+    <div class='pre p1 fill-light mt0'>convert(ctx: Context, argument: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ctx</span> <code class='quiet'>(Context)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>argument</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The argument provided by the user.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='constructor'>
+      constructor
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Context.js#L7-L20'>
+      <span>js-cord/plugins/commands/models/Context.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Context constructor.</p>
+
+    <div class='pre p1 fill-light mt0'>constructor(bot: any, message: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>bot</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>message</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='cleanprefix'>
+      cleanPrefix
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Context.js#L27-L32'>
+      <span>js-cord/plugins/commands/models/Context.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>The prefix used to invoke the context, escaping mentions.
+For example &#x3C;@12345678> becomes @User</p>
+
+    <div class='pre p1 fill-light mt0'>cleanPrefix</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='now'>
+      now
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Context.js#L38-L40'>
+      <span>js-cord/plugins/commands/models/Context.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>The time the message to invoke the context was created at.</p>
+
+    <div class='pre p1 fill-light mt0'>now</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a></code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='unix'>
+      unix
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Context.js#L46-L48'>
+      <span>js-cord/plugins/commands/models/Context.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>The unix time the message to invoke the context was created at.</p>
+
+    <div class='pre p1 fill-light mt0'>unix</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='invoke'>
+      invoke
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Context.js#L57-L59'>
+      <span>js-cord/plugins/commands/models/Context.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Invokes a command.</p>
+
+    <div class='pre p1 fill-light mt0'>invoke(command: command, args: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, flags: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>command</span> <code class='quiet'>(command)</code>
+	    The command to invoke.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>args</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    The arguments to provide.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>flags</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    The flags to provide.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='reinvoke'>
+      reinvoke
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Context.js#L65-L67'>
+      <span>js-cord/plugins/commands/models/Context.js</span>
+      </a>
+    
+  </div>
+  
+
+  
+    <div class='pre p1 fill-light mt0'>reinvoke()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='send'>
+      send
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Context.js#L76-L78'>
+      <span>js-cord/plugins/commands/models/Context.js</span>
+      </a>
+    
+  </div>
+  
+
+  
+    <div class='pre p1 fill-light mt0'>send(content: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;Message></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>content</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The content to send.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    The options to provide.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;Message></code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='reply'>
+      reply
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/jay3332/js-cord/blob/5be97bcff9ffb66f7a04357db8224e2859216509/js-cord/plugins/commands/models/Context.js#L86-L88'>
+      <span>js-cord/plugins/commands/models/Context.js</span>
+      </a>
+    
+  </div>
+  
+
+  
+    <div class='pre p1 fill-light mt0'>reply(content: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;Message></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>content</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The content to reply with.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    The options to provide.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;Message></code>:
+        
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+      </div>
+    </div>
+  <script src='assets/anchor.js'></script>
+  <script src='assets/split.js'></script>
+  <script src='assets/site.js'></script>
 </body>
 </html>
