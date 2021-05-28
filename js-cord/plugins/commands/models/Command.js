@@ -38,12 +38,6 @@ const converterMapping = {
     user: require('./converters/UserConverter')
 }
 
-/**
- * Transforms an object into a Converter class.
- * @param {*} converter The object to turn into a Converter.
- * @param {boolean} __recur Whether to prevent unions in unions.
- * @returns {Converter} The sanitized Converter class.
- */
 function sanitizeConverter(converter, __recur = true) {
     if (typeof converter === 'function') {
         const _conv = class extends Converter {
@@ -151,7 +145,7 @@ module.exports = class Command {
          * This will only be present if the command is a subcommand.
          */
         this.parent = parent;
-        
+
         this._sanitizeArguments();
         this._loadOptions(options);
     }

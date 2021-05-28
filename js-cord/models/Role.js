@@ -13,6 +13,7 @@ module.exports = class Role extends DiscordObject {
 
         /**
          * The guild that has this role.
+         * @type {Guild}
          */
         this.guild = guild;
 
@@ -26,27 +27,27 @@ module.exports = class Role extends DiscordObject {
         this.name = data.name;
 
         /**
-         * @type {Color}
          * The color of the role.
+         * @type {Color}
          */
         this.color = new Color(data.color);
 
         /**
-         * @type {boolean}
          * Whether or not the role is hoisted or not.
+         * @type {boolean}
          */
         this.hoist = data.hoist;
 
         /**
-         * @type {number}
          * The position of the role.
+         * @type {number}
          */
         this.position = data.position;
         
         if (data.permissions)
             /**
-             * @type {Permissions}
              * The permissions of the role.
+             * @type {Permissions}
              */
             this.permissions = new Permissions(BigInt(data.permissions));
 
@@ -57,26 +58,26 @@ module.exports = class Role extends DiscordObject {
         this.managed = data.managed;
 
         /**
-         * @type {boolean}
          * Whether or not the role is mentionable.
+         * @type {boolean}
          */
         this.mentionable = data.mentionable;
 
         /**
-         * @type {boolean}
          * Whether or not the role is the guild's nitro boosting role.
+         * @type {boolean}
          */
         this.premium = data.tags?.premium_subsciber || false;
 
         /**
-         * @type {?string}
          * The ID of the bot that represents this role. {@link undefined} if this isn't a bot role.
+         * @type {?string}
          */
         this.botID = data.tags?.bot_id;
 
         /**
-         * @type {?string}
          * The ID of the integration that manages this role. {@link undefined} if no integration manages this role.
+         * @type {?string}
          */
         this.integrationID = data.tags?.integration_id;
 

@@ -6,14 +6,14 @@ const { parseSnowflake } = require('../utils');
 module.exports = class DiscordObject {
     constructor(id) {
         /**
-         * @type {Date}
          * The date and time that this object was created.
+         * @type {Date}
          */
         this.createdAt = parseSnowflake(id);
 
         /**
-         * @type {string}
          * The ID of this object.
+         * @type {string}
          */
         this.id = id;
     }

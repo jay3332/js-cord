@@ -37,14 +37,14 @@ module.exports = class Member extends User {
             this.user = new User(this.client, data.user);
         }
         /**
-         * @type {?string} 
          * The nickname of the member, if any.
+         * @type {?string} 
          */
         this.nick = data.nick;
         
         /**
-         * @type {Date}
          * The date and time the member joined at.
+         * @type {Date}
          */
         this.joinedAt = new Date(Date.parse(data.joinedAt));
         this.deafened = data.deaf;
