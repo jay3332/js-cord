@@ -4,14 +4,25 @@ module.exports = class Component {
         this.id = customID;
     }
 
+    /**
+     * Returns the id of the component
+     * @returns {string}
+     */
     get customID() {
         return this.id;
     }
-
+    /**
+     * Make a component from an `Object`
+     * @param {Object} data The raw Object
+     * @returns {Component} The component made from the raw data.
+     * 
+     */
     static fromData(data) {
         return new this(data.type, data.custom_id);
     }
-
+    /**
+     * @returns {JSON} Returns a JSON object with the type and custom_id keys
+     */
     toJSON() {
         return {
             type: this.type,
