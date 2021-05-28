@@ -1,4 +1,3 @@
-//const { Log, NoLog } = require('../loggers');
 const { sum } = require('../utils');
 const { InvalidToken } = require('../errors/Errors');
 const Intents = require('../models/Intents');

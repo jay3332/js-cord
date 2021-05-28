@@ -47,7 +47,6 @@ module.exports = {
     ActionRow: require('./interactions/components/ActionRow'),
     Button: require('./interactions/components/Button'),
 
-    loggers: require('./loggers'),
     constants: require('./constants'),
     enums,
     utils,
