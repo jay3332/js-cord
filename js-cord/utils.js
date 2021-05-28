@@ -35,6 +35,12 @@ class Markdown {
 }
 
 
+/**
+ * Emulates Python's `sum` function.
+ * @param {Array<any>} array The array of items to sum. 
+ * @param {?function} key The key to use when calculating the sum. 
+ * @returns {any} The sum of the array.
+ */
 function sum(array, key) {
     key = key || (i => i);
     return array.reduce(
@@ -43,12 +49,11 @@ function sum(array, key) {
 }
 
 
+/**
+ * Generates pages out of text.
+ * Inspired by discord.py's pagination system.
+ */
 class BasePaginator {
-    /**
-     * Generates pages out of text.
-     * Inspired by discord.py's pagination system.
-     */
-
     constructor({
         prefix = '```',
         suffix = '```',
@@ -118,12 +123,12 @@ class BasePaginator {
     }
 }
 
-
+/**
+ * Paginator that supports force wrapping and multiple delimiters.
+ * This should be used over BasePaginator.
+ * @extends BasePaginator
+ */
 class Paginator extends BasePaginator {
-    /**
-     * Paginator that supports force wrapping and multiple delimiters.
-     * This should be used over BasePaginator.
-     */
     constructor({
         prefix = '```',
         suffix = '```',
@@ -189,21 +194,41 @@ class Paginator extends BasePaginator {
     }
 }
 
-
+/**
+ * General utility functions and classes.
+ */
 module.exports = {
     BasePaginator,
     Paginator,
 
     sum,
+
+    /**
+     * Returns a promise that sleeps for the requested amount of time.
+     * @param {number} milliseconds The amount of milliseconds to sleep for.
+     * @return {Promise}
+     */
     sleep: async (milliseconds) => {
         await new Promise(r => setTimeout(r, milliseconds));
     },
-    
+
+    /**
+     * Generates a random number that has the given amount of bits.
+     * @param {number} bits The amount of bits the number will have.
+     * @returns {bigint} The generated number.
+     */
     urandom: bits => {
         const b = Array.from({ length: bits }, () => Math.round(Math.random()).toString()).join('');
         return BigInt(b, 2);
     },
 
+    /**
+     * If the given function returns a {@link Promise}, return it. 
+     * Else, turn it into one and return it.
+     * @param {function} func The function to call.
+     * @param  {...any} args The arguments to pass into the function. 
+     * @returns {Promise<any>} 
+     */
     maybePromise: async (func, ...args) => {
         let result = func(...args);
         if (result instanceof Promise)
@@ -211,6 +236,11 @@ module.exports = {
         return result;
     },
 
+    /**
+     * Parses an emoji string and returns the parsed object.
+     * @param {string} emoji The emoji string to use. E.g. '<:blobpain:739614945045643447>'
+     * @returns {object} The object with schema { name: string, id: ?string, animated, boolean }
+     */
     parseEmoji: emoji => {
         const re = /<(?<animated>a?):(?<name>[a-zA-Z0-9_]{2,32}):(?<id>[0-9]{17,})>/;
         let groups = re.exec(emoji).groups;
@@ -221,6 +251,11 @@ module.exports = {
         return { name: emoji };
     },
 
+    /**
+     * Retrieves when a snowflake was created at.
+     * @param {string} snowflake The snowflake to use.
+     * @returns {Date} The date that represents the snowflake.
+     */
     parseSnowflake: (snowflake) => {
         const epoch = 1420070400000;
         let binary = '';
@@ -265,6 +300,13 @@ module.exports = {
         return text;
     },
 
+    /**
+     * indexOf, but for objects.
+     * Provide a value, and this method will return it's key.
+     * @param {object} object The object to use.
+     * @param {any} value The value of the key.
+     * @returns {any} The found key of the object.
+     */
     index: (object, value) => {
         return Object.keys(object).find(k => object[k] === value);
     },
@@ -325,6 +367,11 @@ module.exports = {
         return literalString.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&');
     },
 
+    /**
+     * Gets the current process time in milliseconds.
+     * This should be used over `Date#getTime`.
+     * @type {number}
+     */
     get time() {
         return parseFloat(process.hrtime().join('.')) * 1000
     }
