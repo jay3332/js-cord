@@ -8,7 +8,7 @@ module.exports = class User extends DiscordObject {
         this.rawData = data;
         if (data) this.loadData(data);
     }
-    
+
     loadData(data) {
         this.name = data.username;
         this.discriminator = data.discriminator;

@@ -11,13 +11,14 @@ const Guild = require('../models/Guild');
 
 
 module.exports = class Client extends Emitter {
-    #apiVersion;
-    #gatewayVersion;
-
     /**
      * Represents a client connection to the Discord API and Gateway.
      * @param {object?} options The options to use for the client. 
      */
+
+    #apiVersion;
+    #gatewayVersion;
+
     constructor({ 
         allowedMentions,
         intents = Intents.default(), 
@@ -26,9 +27,9 @@ module.exports = class Client extends Emitter {
     ) {
         super();
 
-        // if (!logger instanceof Log) 
-        //     throw new TypeError('Invalid type for option "logger"');
-
+        /**
+         * Represents the internal cache of the client.
+         */
         this.cache = {
             guilds: new SnowflakeSet(),
             channels: new SnowflakeSet(),
@@ -41,13 +42,37 @@ module.exports = class Client extends Emitter {
 
         this._slash = [];
         this._components = [];
+
+        /**
+         * The default allowed mentions to use whenever the client sends a message.
+         */
         this.allowedMentions = allowedMentions;
+        
+        /**
+         * The intents to use when connecting to the gateway.
+         */
         this.intents = intents;
 
+        /**
+         * Whether or not the client has made at least one heartbeat with the websocket yet.
+         */
         this.loggedIn = false;
+
         this.logger = { log: (..._) => {} };
+
+        /**
+         * The HTTPClient the client uses to make HTTP requests.
+         */
         this.http = undefined;
+
+        /**
+         * The websocket the client uses to interact with the gateway.
+         */
         this.ws = undefined;
+
+        /**
+         * The client's {@link ClientUser} object. 
+         */
         this.user = undefined;
 
         this.#apiVersion = apiVersion;
@@ -109,6 +134,10 @@ module.exports = class Client extends Emitter {
         await this.ws.start();
     }
 
+    /**
+     * Logs into Discord and starts the bot.
+     * @param {string} token The authentication token given by Discord.
+     */
     login(token) {
         this.start(token).then();
     }
@@ -225,7 +254,7 @@ module.exports = class Client extends Emitter {
      * Creates a global slash command.
      * You can also create guild slash commands here, too.
      * 
-     * @see {@link `Client#onSlashCommand`}
+     * @see {@link Client#onSlashCommand}
      * @param {SlashCommand} command The slash command to create.
      * @param {?Guild | string | Array<Guild | string>} guilds 
      * The guild or array of guilds that this slash command will be created in. Leave blank for global.
