@@ -34,16 +34,10 @@ module.exports = class Button extends Component {
             ? emoji.toJSON() : emoji;
     }
 
-    /**
-     * Returns the emoji if any
-     * @returns {?PartialEmoji}
-     */
     get emoji() {
         return new PartialEmoji(this._emoji);
     }
-    /**
-    * @returns {JSON} Returns a JSON object with the keys type, label, style, emoji, custom_id, url, and disabled
-    */
+
     toJSON() {
         return {
             type: this.type,
