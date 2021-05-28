@@ -1,4 +1,4 @@
-const { Components } = discord = require('../js-cord');
+const discord = require('../js-cord');
 const client = new discord.Client({ intents: discord.Intents.all() });
 
 let old = 0;
@@ -9,18 +9,20 @@ let instanceRunning = false;
 client.on('message', async (msg) => {
     if (msg.content === 'buttons, please') {
         if (instanceRunning) {
-            return await ctx.send('Instance already running.')
+            return await msg.channel.send('Instance already running.')
         }
 
         instanceRunning = true;
-        let c = new Components()
+        let c = new discord.Components()
             .addButton({ label: 'Click me!' }, async (interaction) => {
                 score++; 
                 if (!clickers[interaction.author.id])
                     clickers[interaction.author.id] = 0;
                 
                 clickers[interaction.author.id]++;
-                await interaction.respond('👍', { ephemeral: true })
+
+                // We defer here since we're going to edit in at most, 2 seconds
+                await interaction.respond({ edit: true, defer: true });
             });
 
         let m = await msg.channel.send('Click this button', { components: c });
