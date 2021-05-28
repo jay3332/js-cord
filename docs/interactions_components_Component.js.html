@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: models/SnowflakeSet.js</title>
+    <title>JSDoc: Source: interactions/components/Component.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: models/SnowflakeSet.js</h1>
+    <h1 class="page-title">Source: interactions/components/Component.js</h1>
 
     
 
@@ -26,34 +26,35 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>module.exports = class SnowflakeSet extends Map {
+            <pre class="prettyprint source linenums"><code>module.exports = class Component {
+    constructor(type, customID) {
+        this.type = type;
+        this.id = customID;
+    }
+
     /**
-     * Represents a map of snowflakes to their DiscordObjects (ones that have parameter `id`).
-     * This ensures that only one copy of any snowflake is present in this map.
+     * Returns the id of the component
+     * @returns {string}
      */
-    constructor(...args) {
-        super(...args);
+    get customID() {
+        return this.id;
     }
-
-    push(...objects) {
-        for (const object of objects) {
-            this.set(object.id, object);
-        }
+    /**
+     * Make a component from an `JSON`
+     * @param {JSON} data The raw Object
+     * @returns {Component} The component made from the raw data.
+     * 
+     */
+    static fromJSON(data) {
+        return new this(data.type, data.custom_id);
     }
-
-    filter(predicate) {
-        let passed = [];
-        for (const value of this.values()) {
-            if (predicate(value))
-                passed.push(value);
-        }
-        return passed
-    }
-
-    find(predicate) {
-        for (const value of this.values()) {
-            if (predicate(value))
-                return value;
+    /**
+     * @returns {JSON} Returns a JSON object with the type and custom_id keys
+     */
+    toJSON() {
+        return {
+            type: this.type,
+            custom_id: this.id
         }
     }
 }</code></pre>
