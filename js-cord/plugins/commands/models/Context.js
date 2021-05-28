@@ -21,7 +21,7 @@ module.exports = class Context {
     
     /**
      * The prefix used to invoke the context, escaping mentions.
-     * For example <@12345678> becomes @User#1234
+     * For example <@12345678> becomes @User
      * @returns {string}
      */
     get cleanPrefix() {
