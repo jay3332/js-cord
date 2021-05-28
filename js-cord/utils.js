@@ -34,13 +34,6 @@ class Markdown {
     }
 }
 
-
-/**
- * Emulates Python's `sum` function.
- * @param {Array<any>} array The array of items to sum. 
- * @param {?function} key The key to use when calculating the sum. 
- * @returns {any} The sum of the array.
- */
 function sum(array, key) {
     key = key || (i => i);
     return array.reduce(
@@ -48,11 +41,6 @@ function sum(array, key) {
     );
 }
 
-
-/**
- * Generates pages out of text.
- * Inspired by discord.py's pagination system.
- */
 class BasePaginator {
     constructor({
         prefix = '```',
@@ -123,11 +111,6 @@ class BasePaginator {
     }
 }
 
-/**
- * Paginator that supports force wrapping and multiple delimiters.
- * This should be used over BasePaginator.
- * @extends BasePaginator
- */
 class Paginator extends BasePaginator {
     constructor({
         prefix = '```',
@@ -198,9 +181,25 @@ class Paginator extends BasePaginator {
  * General utility functions and classes.
  */
 module.exports = {
+    /**
+     * Generates pages out of text.
+     * Inspired by discord.py's pagination system.
+     */
     BasePaginator,
+
+    /**
+     * Paginator that supports force wrapping and multiple delimiters.
+     * This should be used over BasePaginator.
+     * @extends BasePaginator
+     */
     Paginator,
 
+    /**
+     * Emulates Python's `sum` function.
+     * @param {Array<any>} array The array of items to sum. 
+     * @param {?function} key The key to use when calculating the sum. 
+     * @returns {any} The sum of the array.
+     */
     sum,
 
     /**

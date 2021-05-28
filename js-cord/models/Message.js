@@ -3,6 +3,9 @@ const MessageBuilder = require('./MessageBuilder');
 const User = require('./User');
 const Member = require('./Member');
 
+/**
+ * Represents a Discord message.
+ */
 module.exports = class Message extends DiscordObject {
     constructor(client, data) {
         super(data.id);
