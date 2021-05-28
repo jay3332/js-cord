@@ -39,10 +39,13 @@ module.exports = {
     TextChannel: require('./models/TextChannel'),
     User: require('./models/User'),
 
-    Components: require('./components/Components'),
-    Component: require('./components/Component'),
-    ActionRow: require('./components/ActionRow'),
-    Button: require('./components/Button'),
+    SlashCommand: require('./interactions/slash/SlashCommand'),
+    SlashCommandOption: require('./interactions/slash/SlashCommandOption'),
+    SlashContext: require('./interactions/slash/SlashContext'),
+    Components: require('./interactions/components/Components'),
+    Component: require('./interactions/components/Component'),
+    ActionRow: require('./interactions/components/ActionRow'),
+    Button: require('./interactions/components/Button'),
 
     loggers: require('./loggers'),
     constants: require('./constants'),
@@ -60,6 +63,7 @@ module.exports = {
     InteractionResponseType: enums.InteractionResponseType,
     MessageType: enums.MessageType,
     MessageActivityType: enums.MessageActivityType,
+    SlashCommandOptionType: enums.SlashCommandOptionType,
     StickerFormatType: enums.StickerFormatType,
 
     plugins: {

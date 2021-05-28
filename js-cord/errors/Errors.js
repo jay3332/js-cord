@@ -44,6 +44,7 @@ module.exports = {
             const statusText = response.statusText;
             const errors = getErrors(json.errors || json);
             super(`${status} ${statusText}: ${errors.join("\n")}`);
+            
             this.json = json;
             this.status = status;
             this.statusText = statusText;

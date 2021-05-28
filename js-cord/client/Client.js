@@ -2,6 +2,7 @@
 const { sum } = require('../utils');
 const { InvalidToken } = require('../errors/Errors');
 const Intents = require('../models/Intents');
+const SlashCommand = require('../interactions/slash/SlashCommand');
 const SnowflakeSet = require('../models/SnowflakeSet');
 const HTTPClient = require('../core/HTTPClient');
 const Websocket = require('../core/Websocket');
@@ -34,9 +35,11 @@ module.exports = class Client extends Emitter {
             users: new SnowflakeSet(),
             messages: new SnowflakeSet(),
             emojis: new SnowflakeSet(),
-            roles: new SnowflakeSet()
+            roles: new SnowflakeSet(),
+            commands: new SnowflakeSet()
         }
 
+        this._slash = [];
         this._components = [];
         this.allowedMentions = allowedMentions;
         this.intents = intents;
@@ -196,5 +199,42 @@ module.exports = class Client extends Emitter {
         const guild = new Guild(this, data);
         this.cache.guilds.push(guild);
         return guild;
+    }
+
+    /**
+     * Listens for when a slash command is invoked.
+     * 
+     * Callback can take zero, one `(ctx: SlashContext)` parameter, 
+     * or two `(ctx: SlashContext, options: Object)` parameters.
+     * 
+     * You must supply a slash command or it's ID in this case.
+     * You can query slash commands by it's name via `Client#getSlashCommandNamed`.
+     * 
+     * @param {SlashCommand | string} command The slash command or it's ID to listen for. 
+     * @param {function} callback The callback of the command.
+     */
+    onSlashCommand(command, callback) {
+        if (typeof command === 'string') {
+            command = { id: command };
+        }
+        const id = command.id;
+        this._slash.push({ id: id, callback: callback });
+    }
+
+    /**
+     * Creates a global slash command.
+     * @see {@link `Client#onSlashCommand`}
+     * @param {SlashCommand} command The slash command to create.
+     * @param {function?} callback The callback for when this command is invoked. 
+     * @returns {SlashCommand} The slash command created.
+     */
+    async createSlashCommand(command, callback) {
+        const payload = command.toJSON();
+        const data = await this.http.createGlobalSlashCommand(payload);
+        command = SlashCommand.fromJSON(data);
+        
+        this.cache.commands.push(command);
+        if (callback) this.onSlashCommand(command, callback);
+        return command;
     }
 }

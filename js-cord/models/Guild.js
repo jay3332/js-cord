@@ -1,4 +1,5 @@
 const { ChannelType } = require('../enums');
+const SlashCommand = require('../interactions/slash/SlashCommand');
 const DiscordObject = require('./DiscordObject');
 const GuildChannel = require('./GuildChannel');
 const TextChannel = require('./TextChannel');
@@ -95,5 +96,15 @@ module.exports = class Guild extends DiscordObject {
 
     getRole(id) {
         return this.roles.find(role => role.id == id);
+    }
+
+    async createSlashCommand(command, callback) {
+        const payload = command.toJSON();
+        const data = await this.client.http.createGuildSlashCommand(this.id, payload);
+        command = SlashCommand.fromJSON(data);
+        
+        this.client.cache.commands.push(command);
+        if (callback) this.client.onSlashCommand(command, callback);
+        return command;
     }
 }

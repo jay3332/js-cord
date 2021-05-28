@@ -8,7 +8,7 @@ module.exports = class Component {
         return this.id;
     }
 
-    static fromData(data) {
+    static fromJSON(data) {
         return new this(data.type, data.custom_id);
     }
 

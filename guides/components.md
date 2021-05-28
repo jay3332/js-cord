@@ -142,4 +142,14 @@ Like the `edit` option, set `ephemeral` to `true`, like so:
 await interaction.respond(`${interaction.author.name} clicked the button.`, { ephemeral: true });
 ```
 
-<!-- ## Deferring responses [do later] -->
+### Deferring responses
+If your task takes a long time, you can defer your response, then respond later.  
+
+Like the other options, set the `defer` option to `true`:
+```js
+await interaction.respond({ defer: true });
+
+setTimeout(() => {
+    interaction.respond(`${interaction.author.name} clicked the button.`);
+}, 2000);
+```
