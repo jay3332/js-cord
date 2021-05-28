@@ -99,47 +99,55 @@ module.exports = class Client extends Emitter {
 
     /**
      * Tries to get a user from the internal cache.
-     * @param {number} id The id of the user to find.
+     * @param {string} id The id of the user to find.
      * @returns {?User} The found user.
      */
     getUser(id) {
         return this.cache.users.get(id);
     }
+
     /**
      * Tries to get a channel from the internal cache.
-     * @param {number} id The id of the guild to find.
+     * @param {string} id The id of the guild to find.
      * @returns {?Guild} The found guild.
      */
+
     getGuild(id) {
         return this.cache.guilds.get(id);
     }
+
     /**
      * Tries to get a channel from the internal cache.
-     * @param {number} id The id of the channel to find.
+     * @param {string} id The id of the channel to find.
      * @returns {?Channel} The found channel.
      */
     getChannel(id) {
         return this.cache.channels.get(id);
     }
 
+    /**
+     * Tries to get a role from the internal cache.
+     * @param {string} id The id of the role to find.
+     * @returns {?Role} The found role.
+     */
     getRole(id) {
         return this.cache.roles.get(id);
     }
 
     get users() {
-        return this.cache.users.values();
+        return [...this.cache.users.values()];
     }
 
     get channels() {
-        return this.cache.channels.values();
+        return [...this.cache.channels.values()];
     }
 
     get guilds() {
-        return this.cache.guilds.values();
+        return [...this.cache.guilds.values()];
     }
 
     get roles() {
-        return this.cache.roles.values();
+        return [...this.cache.roles.values()];
     }
 
     async fetchGuild(id) {
