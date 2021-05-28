@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: models/SnowflakeSet.js</title>
+    <title>JSDoc: Source: interactions/components/ActionRow.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: models/SnowflakeSet.js</h1>
+    <h1 class="page-title">Source: interactions/components/ActionRow.js</h1>
 
     
 
@@ -26,35 +26,32 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>module.exports = class SnowflakeSet extends Map {
+            <pre class="prettyprint source linenums"><code>const Component = require('./Component');
+
+module.exports = class ActionRow extends Component {
+    constructor(components = []) {
+        super(1);
+        this.components = components;
+    }
+
     /**
-     * Represents a map of snowflakes to their DiscordObjects (ones that have parameter `id`).
-     * This ensures that only one copy of any snowflake is present in this map.
+     * Add an component to the component
+     * @param {Component} component 
      */
-    constructor(...args) {
-        super(...args);
+    addComponent(component) {
+        this.components.push(component);
     }
 
-    push(...objects) {
-        for (const object of objects) {
-            this.set(object.id, object);
-        }
+    toJSON() {
+        const arr = this.components.map(c => c.toJSON());
+        return { type: this.type, components: arr };
     }
-
-    filter(predicate) {
-        let passed = [];
-        for (const value of this.values()) {
-            if (predicate(value))
-                passed.push(value);
-        }
-        return passed
-    }
-
-    find(predicate) {
-        for (const value of this.values()) {
-            if (predicate(value))
-                return value;
-        }
+    /**
+     * Return the length of the row
+     * @returns {number} 
+     */
+    get length() {
+        return this.components.length
     }
 }</code></pre>
         </article>
