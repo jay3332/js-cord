@@ -3,6 +3,11 @@
  * This contains things such as the message, channel, and command the author invoked.
  */
 module.exports = class Context {
+    /**
+     * Context constructor.
+     * @param {*} bot
+     * @param {Message} message
+     */
     constructor(bot, message) {
         this.bot = bot;
         this.message = message;
@@ -32,7 +37,7 @@ module.exports = class Context {
     
     /**
      * The time the message to invoke the context was created at.
-     * @returns {Date}
+     * @type {Date}
      */
     get now() {
         return this.message.createdAt;
@@ -40,7 +45,7 @@ module.exports = class Context {
 
     /**
      * The unix time the message to invoke the context was created at.
-     * @returns {Number} 
+     * @type {number} 
      */
     get unix() {
         return this.message.createdAt.getTime()
@@ -58,16 +63,16 @@ module.exports = class Context {
     }
 
     /**
-     * @async
      * Reinvokes the command provided from the original message.
+     * @async
      */
     async reinvoke() {
         return await this.invoke(this, this.args, this.flags);
     }
 
     /**
-     * @async
      * Sends a message to the channel.
+     * @async
      * @param {string} content The content to send.
      * @param {Object} options The options to provide.
      * @returns {Promise<Message>}
@@ -77,6 +82,7 @@ module.exports = class Context {
     }
 
     /**
+     * Sends an inline reply to the invoked message.
      * @async
      * @param {string} content The content to reply with.
      * @param {Object} options The options to provide.

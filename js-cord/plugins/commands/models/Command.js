@@ -321,6 +321,7 @@ module.exports = class Command {
 
     /**
      * Splits the content into two groups: arguments and flags.
+     * @async
      * @param {Context} ctx
      * @param {string} content The content of the message.
      * @returns {Promise<Array>} The array of arguments and flags.
@@ -365,6 +366,7 @@ module.exports = class Command {
 
     /**
      * Parse arguments out of a string.
+     * @async
      * @param {Context} ctx
      * @param {string} content The content to parse arguments out of.
      * @returns {Promise<Object>} An object with argument name -> content.
@@ -440,6 +442,7 @@ module.exports = class Command {
 
     /**
      * Parse flags out of a string.
+     * @async
      * @param {Context} ctx
      * @param {string} content The content of the message.
      * @param {string} flagPrefix The prefix for long flags. (default: --)
@@ -496,6 +499,7 @@ module.exports = class Command {
 
     /**
      * Calls the command function.
+     * @async
      * @param {Context} ctx
      * @param {Object} args The given arguments.
      * @param {Object} flags The given flags.
