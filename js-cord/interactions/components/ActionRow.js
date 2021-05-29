@@ -9,7 +9,7 @@ module.exports = class ActionRow extends Component {
         
         /**
          * An array of components this row has.
-         * @type {Array<Component>} 
+         * @type {Component[]} 
          */
         this.components = components;
     }
@@ -24,7 +24,7 @@ module.exports = class ActionRow extends Component {
     }
 
     /**
-     * Turns this row into raw JSON data to be sent to Discord.
+     * A JSON object representing this row.
      * @returns {object} The data to send to Discord.
      */
     toJSON() {
@@ -34,7 +34,7 @@ module.exports = class ActionRow extends Component {
 
     /**
      * Return the number of components this row has.
-     * @returns {number} The amount of components.
+     * @type {number} The amount of components.
      */
     get length() {
         return this.components.length

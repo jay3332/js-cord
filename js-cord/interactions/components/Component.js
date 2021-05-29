@@ -19,21 +19,25 @@ module.exports = class Component {
 
     /**
      * An alias for {@link Component#id}.
+     * @type {string}
      */
     get customID() {
         return this.id;
     }
+
     /**
      * Turns raw Discord data into a {@link Component}.
+     * @static
      * @param {object} data The raw JSON data.
      * @returns {Component} The component made from the raw data.
-     * 
      */
     static fromJSON(data) {
         return new this(data.type, data.custom_id);
     }
+
     /**
-     * @returns {JSON} Returns a JSON object with the type and custom_id keys
+     * A JSON object representing this component. (type and custom_id)
+     * @returns {Object} A JSON object with the type and custom_id keys
      */
     toJSON() {
         return {
