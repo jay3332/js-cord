@@ -1,5 +1,9 @@
 const colorsys = require('colorsys');
 
+/**
+ * Represents a color.
+ * @param {?number} value The decimal representation of this color.
+ */
 module.exports = class Color {
     constructor(value) {
         this.value = value;

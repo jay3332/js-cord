@@ -2,6 +2,14 @@ const Embed = require('./Embed');
 const { InteractionResponseType } = require('../enums');
 
 
+/**
+ * Builds a raw message object out of the given content and options.
+ * @param {any} destination The destination of the message.
+ * @param {?string} content The contents of the message.
+ * @param {?object} options The message options, such as embeds and files.
+ * @param {?string} type The type of message to send.
+ * @param {...any} extra Extra data to use when building the message.
+ */
 module.exports = class MessageBuilder {
     constructor(destination, content, options = {}, type = 'send', ...extra) {
         if (typeof content === 'object') {
@@ -12,15 +20,53 @@ module.exports = class MessageBuilder {
 
         this.extra = extra;
         this.client = destination.client;
+
+        /**
+         * The ID of the destination.
+         * @type {string}
+         */
         this.destinationID = destination.id;
+
+        /**
+         * The ID of the reference of the message, if any.
+         * @type {?string}
+         */
         this.referenceID = options.reference?.id;
+
+        /**
+         * The options for sending this message.
+         * @type {object}
+         */
         this.options = options;
+
+        /**
+         * The extra contextual data for sending this message.
+         * @type {object}
+         */
         this.context = {};
+
+        /**
+         * The actual raw payload to use when requesting to Discord.
+         * @type {object}
+         */
         this.payload = {};
+
+        /**
+         * The files to attach to the message.
+         * @type {Array<any>}
+         */
         this.files = [];
+
+        /**
+         * The type of the message, provided in the constructor.
+         * @type {string}
+         */
         this.type = type;
     }
 
+    /**
+     * Actually builds the message.
+     */
     build() {
         this.resolveBasic();
         this.resolveContent();
@@ -130,6 +176,10 @@ module.exports = class MessageBuilder {
         return this
     }
 
+    /**
+     * Sends the built payload to Discord.
+     * @returns {?Message} The message, if successfully sent.
+     */
     async send() {
         let message;
         const Message = require('./Message');

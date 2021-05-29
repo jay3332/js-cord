@@ -53,6 +53,12 @@ module.exports = class Message extends DiscordObject {
          * @type {?boolean}
          */
         this.pinned = data.pinned;
+
+        /**
+         * The type enumeration of the message.
+         * @see enums.MessageType
+         * @type {number}
+         */
         this.type = data.type;
 
         if (data.edited_timestamp)

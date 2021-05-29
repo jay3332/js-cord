@@ -1,6 +1,12 @@
 const Color = require('./Color');
 const File = require('./File');
 
+
+/**
+ * Represents embedded content of a Discord message.
+ * You can also construct this class to send your own embeds.
+ * @param {?object} data The raw JSON data, usually from Discord, to construct this embed with.
+ */
 module.exports = class Embed {
     constructor(data) {
         this.type = 'rich';
