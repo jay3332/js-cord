@@ -15,16 +15,31 @@ module.exports = class SlashCommand {
         this.defaultPerimssion = options.defaultPermission;
     }
 
+    /**
+     * Sets the name of the slash command.
+     * @param {string} name The slash command name.
+     * @returns {SlashCommand}
+     */
     setName(name) {
         this.name = name;
         return this;
     }
 
+    /**
+     * Sets the description of the slash command.
+     * @param {string} description The slash command description.
+     * @returns {SlashCommand}
+     */
     setDescription(description) {
         this.description = description;
         return this;
     }
 
+    /**
+     * Adds an option to the slash command.
+     * @param {Object} option The option to add to the slash command.
+     * @returns {SlashCommand}
+     */
     addOption(option) {
         if (typeof option === 'object') {
             option = new SlashCommandOption(option);
@@ -33,6 +48,12 @@ module.exports = class SlashCommand {
         return this;
     }
 
+    /**
+     * Creates a slash command object from JSON.
+     * @static
+     * @param {Object} options The JSON object to provide.
+     * @returns {SlashCommand}
+     */
     static fromJSON({
         id,
         application_id,
@@ -52,6 +73,10 @@ module.exports = class SlashCommand {
         return cmd;
     }
 
+    /**
+     * Returns a JSON object representing this slash command.
+     * @returns {Object}
+     */
     toJSON() {
         return {
             name: this.name,

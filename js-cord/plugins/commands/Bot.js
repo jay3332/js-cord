@@ -50,6 +50,7 @@ module.exports = class Bot extends Client {
         this.prefix = opts.prefix;
         this.prefixCaseInsensitive = opts.prefixCaseInsensitive;
         this.commandsCaseInsensitive = opts.commandsCaseInsensitive;
+        this.stripAfterPrefix = opt.stripAfterPrefix;
         this.description = opts.description;
         this.helpCommand = opts.helpCommand;
         this.flagPrefix = opts.flagPrefix;
@@ -79,6 +80,7 @@ module.exports = class Bot extends Client {
 
     /**
      * Parses a prefix from a message. (if found)
+     * @async
      * @param {Message} message
      * @returns {Promise<?string>} The prefix found in the message.
      */
@@ -112,8 +114,6 @@ module.exports = class Bot extends Client {
             if (content.startsWith(pf))
                 return pf;
         }
-        
-        /* to-do: stripAfterPrefix option */
     }
 
     /**
@@ -131,7 +131,8 @@ module.exports = class Bot extends Client {
     }
 
     /**
-     * Returns the parsed context of amessage.
+     * Returns the parsed context of a message.
+     * @async
      * @param {Message} message
      * @returns {Context} The parsed context of the message.
      */
@@ -143,6 +144,7 @@ module.exports = class Bot extends Client {
         // Some commands have spaces in them, so we will 
         // do a reverse string view. Not to mention subcommands.
         let query = message.content.slice(ctx.prefix.length);
+        if (this.stripAfterPrefix) query = query.trim();
         let view = new BasicReverseStringView(query);
         let foundCommand, word;
 
@@ -171,6 +173,7 @@ module.exports = class Bot extends Client {
 
     /**
      * Invokes a command from a Context object.
+     * @async
      * @param {Context} ctx
      */
     async invoke(ctx) {
@@ -200,6 +203,7 @@ module.exports = class Bot extends Client {
 
     /**
      * Gets the bot's flag prefix.
+     * @async
      * @param {Message} message
      * @returns {string} The long flag prefix.
      */
@@ -209,6 +213,7 @@ module.exports = class Bot extends Client {
     
     /**
      * Gets the bot's short flag prefix.
+     * @async
      * @param {Message} message
      * @returns {string} The short flag prefix.
      */

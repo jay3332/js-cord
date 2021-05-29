@@ -22,24 +22,39 @@ module.exports = class SlashCommandOption {
             ? options : options.map(o => new this.constructor(o));
     }
 
+    /**
+     * Adds a choice for the user to pick.
+     * @param {string} name The choice name shown to the user.
+     * @param {string} value The choice value given to the bot.
+     * @returns {SlashCommandOption}
+     */
     addChoice(name, value) {
         if (typeof name === 'object') {
-             value = name.value;
-             name = name.name;
+            value = name.value;
+            name = name.name;
         }
 
         this.choices.push({ name: name, value: value });
-        return this
+        return this;
     }
 
+    /**
+     * Adds an option.
+     * @param {Object} option The option to add.
+     * @returns {SlashCommandOption}
+     */
     addOption(option) {
         if (typeof option === 'object') {
             option = new this.constructor(option);
         }
         this.options.push(option);
-        return this
+        return this;
     }
 
+    /**
+     * Returns a JSON object representing this slash command option.
+     * @returns {Object}
+     */
     toJSON() {
         return {
             type: this.type ?? 3,
@@ -55,6 +70,10 @@ module.exports = class SlashCommandOption {
         }
     }
 
+    /**
+     * If the option is optional.
+     * @type {boolean}
+     */
     get optional() {
         return !this.required;
     }
