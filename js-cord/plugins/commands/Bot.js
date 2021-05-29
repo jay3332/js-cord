@@ -148,7 +148,7 @@ module.exports = class Bot extends Client {
         // Some commands have spaces in them, so we will 
         // do a reverse string view. Not to mention subcommands.
         let query = message.content.slice(ctx.prefix.length);
-        if (this.stripAfterPrefix) query = query.trim();
+        if (this.stripAfterPrefix) query = query.trimStart();
         let view = new BasicReverseStringView(query);
         let foundCommand, word;
 
