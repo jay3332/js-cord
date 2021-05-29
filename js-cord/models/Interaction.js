@@ -5,6 +5,10 @@ const Member = require('./Member');
 const User = require('./User');
 const Role = require('./Role');
 
+/**
+ * Represents an interaction with a user.
+ * This is sent when a slash command is invoked, or a component was pressed.
+ */
 module.exports = class Interaction extends DiscordObject {
     constructor(client, data) {
         super(data.id);
