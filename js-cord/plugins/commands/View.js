@@ -30,20 +30,56 @@ let extendedQuotes = {
     "〈": "〉"
 }
 
+/**
+ * A utility class that helps parse words out of a string.
+ */
 class StringView {
     constructor(text, quotes = defaultQuotes) {
         text = text || '';
+
+        /**
+         * The text buffer of the view.
+         * @type {string}
+         */
         this.text = text;
+
+        /**
+         * The quote mapping of the view.
+         * @type {object}
+         */
         this.quotes = quotes;
+
+        /**
+         * The current index the view is on.
+         * @type {number}
+         */
         this.index = 0;
+
+        /**
+         * The previous character parsed.
+         * @type {?string}
+         */
         this.previous = null;
+        
+        /**
+         * The length of the text. 
+         * @type {number}
+         */
         this.end = text.length
     }
 
+    /**
+     * Whether or not the view has finished parsing the string.
+     * @type {boolean}
+     */
     get eof() {
         return this.index >= this.end
     }
 
+    /**
+     * The current character at the view's index.
+     * @type {?string}
+     */
     get buffer() {
         return this.eof ? null : this.text[this.index]
     }
@@ -55,16 +91,27 @@ class StringView {
         ];
     }
 
+    /**
+     * Reads one single character and returns it.
+     * @returns {?string} The read character.
+     */
     getChar() {
         let result = this.text[this.index + 1];
         this.previous = this.index++;
         return result;
     }
 
+    /**
+     * Rolls back to the previous index.
+     */
     rollback() {
         this.index = this.previous;
     }
 
+    /**
+     * Reads the text until the end and returns the read characters.
+     * @returns {string} The rest of the text.
+     */
     getRest() {
         let result = this.text.slice(this.index);
         this.previous = this.index;
@@ -76,6 +123,10 @@ class StringView {
         return text.split('').every(char => ' \t\n\r'.includes(char))
     }
 
+    /**
+     * Reads until the next character is not a whitespace.
+     * @returns {boolean} Whether or not a space was skipped.
+     */
     skipSpace() {
         let current;
         let position = 0;
@@ -156,6 +207,11 @@ class StringView {
         }
     }
 
+    /**
+     * Reads the next word, or words in quotes, and returns it.
+     * @param {object} options The options for parsing. 
+     * @returns The parsed word.
+     */
     getWord({ skipSpace = false } = {}) {
         let result = this._getWord();
         if (skipSpace) this.skipSpace();
@@ -164,12 +220,14 @@ class StringView {
 }
 
 
+/**
+ * Represents a reversed {@link StringView}.
+ * 
+ * No support for quotes here, 
+ * this was primarily made to get
+ * a command from a string.
+ */
 class BasicReverseStringView {
-    /**
-     * No support for quotes here, 
-     * this was primarily made to get
-     * a command from a string.
-     */
     constructor(text) {
         this.text = text;
         this.index = text.length;

@@ -1,13 +1,3 @@
-/**
- * js-cord
- * =======
- * All properties should follow camelCase.
- * The last word should be all uppercase if it is `ID`, `URL` 
- *                          ... or another short abbreviation.
- * 
- * E.g.: jumpURL, channelID, someOtherMethod
- */
-
 const utils = require('./utils');
 const enums = require('./enums');
 const Color = require('./models/Color');
@@ -47,7 +37,6 @@ module.exports = {
     ActionRow: require('./interactions/components/ActionRow'),
     Button: require('./interactions/components/Button'),
 
-    loggers: require('./loggers'),
     constants: require('./constants'),
     enums,
     utils,

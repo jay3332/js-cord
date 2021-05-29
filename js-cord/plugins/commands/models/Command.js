@@ -38,12 +38,6 @@ const converterMapping = {
     user: require('./converters/UserConverter')
 }
 
-/**
- * Transforms an object into a Converter class.
- * @param {*} converter The object to turn into a Converter.
- * @param {boolean} __recur Whether to prevent unions in unions.
- * @returns {Converter} The sanitized Converter class.
- */
 function sanitizeConverter(converter, __recur = true) {
     if (typeof converter === 'function') {
         const _conv = class extends Converter {
@@ -106,26 +100,56 @@ function sanitizeConverter(converter, __recur = true) {
 }
 
 
+/**
+ * Represents a bot command.
+ */
 module.exports = class Command {
     constructor(
         bot, name, aliases = [], cooldowns = [], checks = [], 
         args = [], flags = [], parent = null, options = {}
     ) {
         this._bot = bot;
+        
+        /**
+         * The name of the command.
+         */
         this.name = name;
+
+        /**
+         * The aliases this command has.
+         */
         this.aliases = aliases;
+
+        /**
+         * The cooldowns this command has.
+         */
         this.cooldowns = cooldowns;
+
+        /**
+         * The checks of this command.
+         */
         this.checks = checks;
+
+        /**
+         * The arguments of this command.
+         */
         this.args = args;
+
+        /**
+         * The flags of this command.
+         */
         this.flags = flags;
+        
+        /**
+         * The parent command of this command.
+         * This will only be present if the command is a subcommand.
+         */
         this.parent = parent;
+
         this._sanitizeArguments();
         this._loadOptions(options);
     }
 
-    /**
-     * Sanitizes the arguments, converters, and flags.
-     */
     _sanitizeArguments() {
         for (let arg of this.args) {
             // The `optional` option will be primarily used.
@@ -178,10 +202,6 @@ module.exports = class Command {
         }
     }
 
-    /**
-     * Loads the command options.
-     * @param {Object} options The provided options.
-     */
     _loadOptions(options) {
         for (let [ option, value ] of Object.entries(options)) {
             if (!Object.keys(this).includes(option)) {

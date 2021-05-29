@@ -1,19 +1,31 @@
+/**
+ * The base class that represents a Discord message component.
+ */
 module.exports = class Component {
     constructor(type, customID) {
+        /**
+         * The type of this component.
+         * @see enums.ComponentType
+         * @type {number}
+         */
         this.type = type;
+
+        /**
+         * The custom ID of this component.
+         * @type {string}
+         */
         this.id = customID;
     }
 
     /**
-     * Returns the id of the component
-     * @returns {string}
+     * An alias for {@link Component#id}.
      */
     get customID() {
         return this.id;
     }
     /**
-     * Make a component from an `JSON`
-     * @param {JSON} data The raw Object
+     * Turns raw Discord data into a {@link Component}.
+     * @param {object} data The raw JSON data.
      * @returns {Component} The component made from the raw data.
      * 
      */

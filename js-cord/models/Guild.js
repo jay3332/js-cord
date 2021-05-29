@@ -7,6 +7,10 @@ const Role = require('./Role');
 const Member = require('./Member');
 const Asset = require('./Asset');
 
+/**
+ * Represents a Discord server. 
+ * In Discord's API, servers are referred to as "guilds".
+ */
 module.exports = class Guild extends DiscordObject {
     constructor(client, data) {
         super(data.id);
@@ -16,10 +20,49 @@ module.exports = class Guild extends DiscordObject {
     }
 
     loadData(data) {
+        /**
+         * The name of this guild.
+         * @type {string}
+         */
         this.name = data.name;
+        
+        /**
+         * The default voice region of this guild.
+         * @type {string}
+         */
         this.region = data.region;
+
+        /**
+         * The asset that represents this guild's icon.
+         * @type {Asset}
+         */
         this.icon = new Asset(`icons/${data.id}`, data.icon);
+        
+        /**
+         * The asset that represents this guild's splash image.
+         * @type {Asset}
+         */
         this.splash = new Asset(`splashes/${data.id}`, data.splash);
+
+        /**
+         * An array of members that are in the guild.
+         * @type {Array<Member>}
+         */
+        this.members = [];
+
+        /**
+         * An array of the guild's channels.
+         * @type {Array<Channel>}
+         */
+        this.channel = [];
+
+        /**
+         * An array of the guild's roles.
+         * @type {Array<Role>}
+         */
+        this.roles = [];
+
+        // TODO: Turn these into SnowflakeSet's
         
         if (data.members) this.members = data.members.map(member => {
             if (!member) return;
@@ -60,6 +103,9 @@ module.exports = class Guild extends DiscordObject {
             this.me = new Member(this.client, data.me); 
     }
 
+    /**
+     * Fetches members from Discord and fills the cache.
+     */
     async fillMembers() {
         const http = this.client.http;
         const data = await http.getMembers(this.id);
@@ -77,10 +123,21 @@ module.exports = class Guild extends DiscordObject {
             .filter(member => member);
     }
 
+    /**
+     * Gets a member by it's ID using the internal cache.
+     * @param {string} id The ID of the member.
+     * @returns {?Member} The found member, if any.
+     */
     getMember(id) {
         return this.members.find(member => member.id == id);
     }
 
+    /**
+     * Gets a member by it's name using the internal cache.
+     * @param {string} query The name or nickname of the member.
+     * @param {object} options The options for querying.
+     * @returns {?Member} The found member, if any.
+     */
     getMemberNamed(query, { caseInsensitive = false } = {}) {
         // If a discriminator was provided, use it too
         const _ = caseInsensitive 
@@ -94,10 +151,21 @@ module.exports = class Guild extends DiscordObject {
         return this.members.find(member => _(member.name) === query || _(member.nick) === query);
     }
 
+    /**
+     * Gets a role by it's ID using the internal cache.
+     * @param {string} id The ID of the role.
+     * @returns {?Role} The found role, if any.
+     */
     getRole(id) {
         return this.roles.find(role => role.id == id);
     }
 
+    /**
+     * Creates a slash command in this guild.
+     * @param {SlashCommand} command The command to create.
+     * @param {?function} callback The temporary callback for when the command is invoked.
+     * @returns {?SlashCommand} The created slash command, if successful.
+     */
     async createSlashCommand(command, callback) {
         const payload = command.toJSON();
         const data = await this.client.http.createGuildSlashCommand(this.id, payload);

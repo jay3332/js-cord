@@ -7,6 +7,7 @@
         "example": "guides"
     },
     "dependencies": {
+        "@babel/preset-env": "^7.14.4",
         "argparse": "^1.0.0",
         "colorsys": "^1.0.0",
         "node-fetch": "^2.6.1",
@@ -19,11 +20,26 @@
         "type": "git",
         "url": "git+https://github.com/jay3332/js-cord.git"
     },
-    "keywords": [],
-    "author": "",
+    "keywords": [
+        "discord",
+        "discord-api",
+        "api",
+        "bot",
+        "client",
+        "discordapp",
+        "js-cord",
+        "jscord"
+    ],
+    "author": "jay3332",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/jay3332/js-cord/issues"
     },
-    "homepage": "https://github.com/jay3332/js-cord#readme"
+    "homepage": "https://github.com/jay3332/js-cord#readme",
+    "babel": {
+        "presets": [
+            "@babel/preset-env"
+        ]
+    },
+    "runkitExampleFile": "./examples/ping-pong.js"
 }

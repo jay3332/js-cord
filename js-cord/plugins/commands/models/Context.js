@@ -1,3 +1,7 @@
+/**
+ * Represents the context of a command. 
+ * This contains things such as the message, channel, and command the author invoked.
+ */
 module.exports = class Context {
     /**
      * Context constructor.
@@ -21,7 +25,7 @@ module.exports = class Context {
     
     /**
      * The prefix used to invoke the context, escaping mentions.
-     * For example <@12345678> becomes @User#1234
+     * For example <@12345678> becomes @User
      * @returns {string}
      */
     get cleanPrefix() {
