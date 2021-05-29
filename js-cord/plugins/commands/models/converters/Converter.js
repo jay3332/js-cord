@@ -1,5 +1,8 @@
 const { NotImplementedError } = require("../../Errors")
 
+/**
+ * The base converter class for the commands plugin.
+ */
 module.exports = class Converter {
     /**
      * Converts an argument to a specific class.

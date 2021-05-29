@@ -1,6 +1,11 @@
 const { parseSnowflake } = require('../../utils');
 const SlashCommandOption = require('./SlashCommandOption');
 
+/**
+ * Represents a slash command.
+ * @param {string} name The name of the slash command.
+ * @param {?object} options The options to use when creating the command. 
+ */
 module.exports = class SlashCommand {
     constructor(name, options = {}) {
         if (typeof name === 'object') {

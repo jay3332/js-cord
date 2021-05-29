@@ -1,5 +1,8 @@
 const { SlashCommandOptionType } = require('../../enums');
 
+/**
+ * Represents a slash command option.
+ */
 module.exports = class SlashCommandOption {
     constructor({
         type,

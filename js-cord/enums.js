@@ -1,3 +1,6 @@
+/**
+ * Discord enumerations.
+ */
 module.exports = {
     ChannelType: {
         text: 0,

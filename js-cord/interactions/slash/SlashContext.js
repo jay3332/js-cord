@@ -1,3 +1,6 @@
+/**
+ * Represents the context for a slash command interaction.
+ */
 module.exports = class SlashContext {
     constructor(interaction, command) {
         this.interaction = interaction;
