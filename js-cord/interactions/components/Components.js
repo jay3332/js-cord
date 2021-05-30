@@ -41,24 +41,13 @@ module.exports = class Components {
 
     /**
      * Adds a component while automatically wrapping.
-     * 
-     * @example
-     * Because this auto-wraps, this allows you to do things like
-     * ```js
-     * for (let i = 0; i < 25; i++) {
-     *     components.addComponent(...);
-     *     // Because this auto-wraps, 
-     *     // we don't have to worry about rows.
-     * } 
-     * ```
-     * 
      * @param {Component} component The component to add.
      */
     addComponent(component) {
         if (!this._buffer) {
             this.addRow();
-        } else if (this._buffer.length >= 5) {
-            this.addRow();  // Max component length is 5
+        } else if (!this._buffer.canAdd(component)) {
+            this.addRow();
         }
 
         this._buffer.addComponent(component);

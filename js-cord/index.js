@@ -47,6 +47,8 @@ module.exports = {
     Component: require('./interactions/components/Component'),
     ActionRow: require('./interactions/components/ActionRow'),
     Button: require('./interactions/components/Button'),
+    Dropdown: require('./interactions/components/Dropdown'),
+    DropdownOption: require('./interactions/components/DropdownOption'),
 
     /**
      * Parent utilities

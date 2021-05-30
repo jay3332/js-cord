@@ -118,7 +118,7 @@ module.exports = class MessageBuilder {
 
         if (this.options.components) {
             this.payload.components = this.options.components.toJSON();
-            this.options.components.components.forEach(component => {
+            this.options.components._components.forEach(component => {
                 // This is an action row.
                 const components = component.components;
                 // Only store components with a callback

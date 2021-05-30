@@ -123,6 +123,7 @@ module.exports = class Interaction extends DiscordObject {
 
         if (data.message) {
             const obj = new Message(this.client, data.message);
+            if (this.channel && !obj.channel) obj.channel = this.channel;
             this.client.cache.messages.push(obj);
 
             /**
