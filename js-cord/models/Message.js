@@ -105,7 +105,7 @@ module.exports = class Message extends DiscordObject {
      * @param {object} options The options to pass into the {@link MessageBuilder}.
      * @returns {Message} The sent {@link Message}.
      */
-    async reply(content, options) {
+    async reply(content, options = {}) {
         options.reference = this.id;
         return await this.channel.send(content, options);
     }
