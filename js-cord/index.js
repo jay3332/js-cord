@@ -1,5 +1,6 @@
 const utils = require('./utils');
 const enums = require('./enums');
+const Errors = require('./errors/Errors');
 const Color = require('./models/Color');
 
 /**
@@ -53,6 +54,7 @@ module.exports = {
     /**
      * Parent utilities
      */
+    Queue: require('./core/Queue'),
     constants: require('./constants'),
     enums,
     utils,
@@ -85,5 +87,10 @@ module.exports = {
          * Commands plugin
          */
         commands: require('./plugins/commands')
-    }
+    },
+
+    /**
+     * Errors
+     */
+    errors: Errors
 }

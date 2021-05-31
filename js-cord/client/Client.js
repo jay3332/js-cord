@@ -23,6 +23,7 @@ module.exports = class Client extends Emitter {
         gatewayVersion = 9 } = {}
     ) {
         super();
+        Object.defineProperty(this, 'token', { writable: true });
 
         /**
          * Represents the internal cache of the client.

@@ -102,13 +102,6 @@ module.exports = class MessageBuilder {
             }
         }
 
-        if (this.options.type && this.type === 'interaction') {
-            this.context.type = this.options.type;
-        } else {
-            // If no type was provided just make it send a new message
-            this.context.type === InteractionResponseType.channelMessage;
-        }
-
         let mentions;
         if (mentions = (this.options.allowedMentions || this.client.allowedMentions)) {
             if (mentions.replies) mentions.replied_user = mentions.replies;
@@ -126,7 +119,7 @@ module.exports = class MessageBuilder {
             })
         }
 
-        return this
+        return this;
     }
     
     resolveContent() {
@@ -138,7 +131,7 @@ module.exports = class MessageBuilder {
         }
 
         this.payload.content = content;
-        return this
+        return this;
     }
 
     resolveEmbeds() {
@@ -146,9 +139,8 @@ module.exports = class MessageBuilder {
             return;
 
         if (this.type === 'webhook') {
-            if (this.options.embed) {
+            if (this.options.embed)
                 this.options.embeds = [this.options.embed];
-            }
             if (this.options.embeds.some(embed => !embed instanceof Embed))
                 throw new TypeError('Embeds must be an Embed object.');
             this.options.embeds.forEach(embed => {
@@ -160,7 +152,7 @@ module.exports = class MessageBuilder {
                 }
             })
             this.payload.embeds = this.options.embeds.map(embed => embed.toJSON());
-            return
+            return;
         }
 
         if (!this.options.embed instanceof Embed) 
@@ -173,11 +165,12 @@ module.exports = class MessageBuilder {
             delete this.options.embed.files;
         }
         this.payload.embed = this.options.embed.toJSON();
-        return this
+        return this;
     }
 
     /**
      * Sends the built payload to Discord.
+     * @async
      * @returns {?Message} The message, if successfully sent.
      */
     async send() {

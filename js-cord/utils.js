@@ -373,5 +373,29 @@ module.exports = {
      */
     get time() {
         return parseFloat(process.hrtime().join('.')) * 1000
+    },
+
+    timeoutPromise(timeout, callback, error) {
+        error = error ||
+            (t => new Error(`Promise timed out after ${t} milliseconds.`));
+
+        if (timeout <= -1) return new Promise(callback); 
+
+        return new Promise((resolve, reject) => {
+            const timer = setTimeout(() => {
+                reject(error(timeout));
+            }, timeout);
+    
+            callback(
+                value => {
+                    clearTimeout(timer);
+                    resolve(value);
+                },
+                error => {
+                    clearTimeout(timer);
+                    reject(error);
+                }
+            );
+        });
     }
 }
