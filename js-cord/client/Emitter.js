@@ -86,7 +86,16 @@ module.exports = class Emitter {
             .filter(listener => (!listener._count) || (typeof listener._count === 'number' && listener._count > 0));
     }
 
-    async *collect(event, { timeout, check, limit } = {}) {
+    /**
+     * Collects the payloads of events that are emitted.
+     * @param {?object} options The options to use when collecting.
+     * @param {?number} options.limit The maximum amount of events to collect.
+     * @param {?number} options.timeout The amount of time in milliseconds to collect for. 
+     * @param {?function} options.check The check function for each event collected.
+     * @param {?boolean} options.suppress Whether or not to suppress timeout errors. 
+     * @yields {any} The event emitted.
+     */
+    async *collect(event, { timeout, check, limit, suppress = true } = {}) {
         const stopAt = timeout ? (Date.now() + timeout) : null;
         let collected = 0;
 
@@ -98,15 +107,9 @@ module.exports = class Emitter {
             return false;
         }
 
-        if (timeout) {
-            setTimeout(() => {
-                throw new TimeoutError(`Collector timed out after ${timeout/1000} seconds.`);
-            }, timeout);
-        }
-
         while (true) {
             try {
-                yield await (timeoutPromise((
+                yield await timeoutPromise((
                     stopAt ? (
                         Math.max(0, stopAt - Date.now())
                     ) : -1 
@@ -129,11 +132,26 @@ module.exports = class Emitter {
                     }; 
         
                     this.listen(event, collect);
-                }, t => new TimeoutError(`Collector timed out after ${t/1000} seconds.`))
-                    .catch(err => { throw err }));
+                }, () => new TimeoutError(`Collector timed out after ${timeout/1000} seconds.`));
             } catch (exc) {
+                if (exc instanceof TimeoutError && suppress)
+                    throw exc;
                 break;
             }
+        }
+    }
+
+    /**
+     * Waits for an event to be emitted, then returns the payload.
+     * @param {string} event The event to wait for to emit.
+     * @param {?object} options The options to use when waiting.
+     * @param {?function} options.check The check function for the event.
+     * @param {?number} options.timeout The maximum amount of time to wait for the event to be emitted.
+     * @returns {any} The event payload.
+     */
+    async waitFor(event, { check, timeout } = {}) {
+        for await (let item of this.collect(event, { limit: 1, suppress: false, check, timeout })) {
+            return item;
         }
     }
 }
