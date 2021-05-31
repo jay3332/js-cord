@@ -88,6 +88,7 @@ module.exports = class Emitter {
 
     /**
      * Collects the payloads of events that are emitted.
+     * @param {string} event The event to listen for.
      * @param {?object} options The options to use when collecting.
      * @param {?number} options.limit The maximum amount of events to collect.
      * @param {?number} options.timeout The amount of time in milliseconds to collect for. 
