@@ -21,7 +21,7 @@ module.exports = class Asset {
     } 
 
     toString() {
-        return this.url
+        return this.url;
     }
 
     /**
@@ -41,14 +41,14 @@ module.exports = class Asset {
      * ```
      */
     get defaultFormat() {
-        return this.animated ? 'gif' : 'png'
+        return this.animated ? 'gif' : 'png';
     }
 
     /**
      * The URL of this asset.
      */
     get url() {
-        return this.urlAs()
+        return this.urlAs();
     }
 
     #assertFormat(format) {

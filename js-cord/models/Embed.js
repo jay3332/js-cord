@@ -5,7 +5,10 @@ const File = require('./File');
 /**
  * Represents embedded content of a Discord message.
  * You can also construct this class to send your own embeds.
- * @param {?object} data The raw JSON data, usually from Discord, to construct this embed with.
+ * 
+ * Use `attachment://filename.extension` to send an instance of a {@link File}, for example `attachment://image.png`.
+ * Only usable in thumbnail, image, and author/footer icons.
+ * @param {?Object} data The raw JSON data, usually from Discord, to construct this embed with.
  */
 module.exports = class Embed {
     constructor(data) {
@@ -99,29 +102,55 @@ module.exports = class Embed {
         return this.color;
     }
 
+    /**
+     * Sets the embed title.
+     * @param {string} title The embed's new title.
+     * @param {?string} url The embed title's new hyperlink.
+     * @returns {Embed}
+     */
     setTitle(title, url) {
         this.title = title;
         if (url) this.url = url;
-        return this
+        return this;
     } 
 
+    /**
+     * Sets the embed description.
+     * @param {string} description The embed's new description.
+     * @returns {Embed}
+     */
     setDescription(description) {
         this.description = description;
-        return this
+        return this;
     }
 
+    /**
+     * Appends a string with a new line to the existing description.
+     * @param {string} description The string to append.
+     * @returns {Embed}
+     */
     appendDescription(description) {
         if (!this.description) 
             this.description = '';
         this.description += '\n' + description;
-        return this
+        return this;
     }
 
+    /**
+     * An alias for the second parameter of {@link Embed#setTitle}.
+     * @param {string} url The embed title's new hyperlink.
+     * @returns {Embed}
+     */
     setURL(url) {
         this.url = url;
-        return this
+        return this;
     }
 
+    /**
+     * Sets the embed color.
+     * @param {number | string | Color} color The embed's new color.
+     * @returns {Embed}
+     */
     setColor(color) {
         if (typeof color === 'number')
             color = new Color(color);
@@ -135,19 +164,29 @@ module.exports = class Embed {
         }
 
         this.color = color;
-        return this
+        return this;
     }
 
+    /**
+     * Sets the embed color.
+     * @param {number | string | Color} color The embed's new color.
+     * @returns {Embed}
+     */
     setColour(colour) {
         return this.setColor(colour);
     }
 
+    /**
+     * Sets the embed timestamp.
+     * @param {?Date | ?Number} timestamp The embed's new timestamp.
+     * @returns {Embed}
+     */
     setTimestamp(timestamp) {
         timestamp = timestamp || new Date(Date.now());
         if (typeof timestamp === 'number')
             timestamp = new Date(timestamp);
         this.timestamp = timestamp;
-        return this
+        return this;
     }
 
     #craftField(name, value, inline = true) {
@@ -161,60 +200,126 @@ module.exports = class Embed {
             name: name,
             value: value,
             inline: inline
-        }
+        };
     } 
 
+    /**
+     * Adds a field to the embed.
+     * @param {string} name The embed field name.
+     * @param {string} value The content of the field.
+     * @param {boolean} inline Whether the field should be inline.
+     * @returns {Embed}
+     */
     addField(name, value, inline) {
         this.fields.push(this.#craftField(name, value, inline));
-        return this
+        return this;
     }
 
+    /**
+     * Removes a field from the embed.
+     * @param {number} index The index of the field to remove.
+     * @returns {Embed}
+     */
     removeField(index) {
         this.fields.splice(index, 1);
-        return this
+        return this;
     }
 
+    /**
+     * Sets a field at a specific index.
+     * @param {number} index The index for the field.
+     * @param {string} name The embed field name.
+     * @param {string} value The content of the field.
+     * @param {boolean} inline Whether the field should be inline.
+     * @returns {Embed}
+     */
     setField(index, name, value, inline) {
         this.fields[index] = this.#craftField(name, value, inline);
-        return this
+        return this;
     }
 
+    /**
+     * Splices a field. See [Array.prototype.splice]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice}.
+     * @param {number} index The index to start splicing at.
+     * @param {number} remove The amount of fields to replace.
+     * @param {string} name The embed field name.
+     * @param {string} value The content of the field.
+     * @param {boolean} inline Whether the field should be inline.
+     * @returns {Embed}
+     */
     spliceField(index, remove, name, value, inline) {
         this.fields.splice(index, remove, this.#craftField(name, value, inline));
-        return this
+        return this;
     }
 
+    /**
+     * Inserts a field at an index.
+     * @param {number} index The index to insert a field at.
+     * @param {string} name The embed field name.
+     * @param {string} value The content of the field.
+     * @param {boolean} inline Whether the field should be inline.
+     * @returns {Embed}
+     */
     insertField(index, name, value, inline) {
         this.fields.splice(index, 0, this.#craftField(name, value, inline));
-        return this
+        return this;
     }
 
+    /**
+     * Resets the embed fields, essentially setting the fields to an empty array.
+     * @returns {Embed}
+     */
     clearFields() {
         this.fields = [];
-        return this
+        return this;
     }
     
+    /**
+     * Removes the last field from the embed.
+     * @returns {Embed}
+     */
     popField() {
-        return this.fields.pop();
+        this.fields.pop();
+        return this;
     }
 
+    /**
+     * Removes the first field from the embed.
+     * @returns {Embed}
+     */
     shiftField() {
         this.fields.shift();
-        return this
+        return this;
     }
 
+    /**
+     * Swaps 2 fields' positions.
+     * @param {number} index An index of a field.
+     * @param {number} otherIndex Another index of a field.
+     * @returns {Embed}
+     */
     swapField(index, otherIndex) {
         [this.fields[index], this.fields[otherIndex]] = [this.fields[otherIndex], this.fields[index]];
-        return this
+        return this;
     }
 
+    /**
+     * Finds an embed fields by field name/title.
+     * @param {string} name The field name.
+     * @returns {Object}
+     */
     findField(name) {
         return this.fields.find(field => field.name == name);
     }
 
+    /**
+     * Completely overwrites the embed's fields with new ones.
+     * @param {Object[]} fields The new fields for the embed.
+     * @returns {Embed}
+     */
     setFields(fields) {
         this.fields = fields;
-        return this
+        return this;
     }
 
     #buildFooter(text, iconURL) {
@@ -226,6 +331,12 @@ module.exports = class Embed {
         return [text, iconURL]
     }
 
+    /**
+     * Sets the embed's footer.
+     * @param {string} text The footer's text.
+     * @param {string} iconURL The URL of the footer icon.
+     * @returns {Embed}
+     */
     setFooter(text, iconURL) {
         [ text, iconURL ] = this.#buildFooter(text, iconURL);
 
@@ -233,13 +344,23 @@ module.exports = class Embed {
             text: text || this.footer.text,
             iconURL: iconURL || this.footer.iconURL
         }
-        return this
+        return this;
     }
 
+    /**
+     * Sets the embed's footer text.
+     * @param {string} text The footer's text.
+     * @returns {Embed}
+     */
     setFooterText(text) {
         return this.setFooter(text);
     }
 
+    /**
+     * Sets the footer icon's URL.
+     * @param {string} iconURL The footer icon's URL.
+     * @returns {Embed}
+     */
     setFooterIconURL(iconURL) {
         return this.setFooter(undefined, iconURL);
     } 
@@ -257,6 +378,13 @@ module.exports = class Embed {
         return [ name, iconURL, url ]
     }
 
+    /**
+     * Sets the author field of the embed.
+     * @param {string} name The author field's name.
+     * @param {string} iconURL The author field's icon URL.
+     * @param {string} url The author field's hyperlink.
+     * @returns {Embed}
+     */
     setAuthor(name, iconURL, url) {
         [ name, iconURL, url ] = this.#buildAuthor(name, iconURL, url);
 
@@ -265,39 +393,68 @@ module.exports = class Embed {
             iconURL: iconURL || this.author.iconURL,
             url: url || this.author.url
         }
-        return this
+        return this;
     }
 
+    /**
+     * Sets the name of the embed's author field.
+     * @param {string} name The author field's name.
+     * @returns {Embed}
+     */
     setAuthorName(name) {
         return this.setAuthor(name);
     }
 
+    /**
+     * Sets the embed author's icon.
+     * @param {string} iconURL The author field's icon.
+     * @returns {Embed}
+     */
     setAuthorIconURL(iconURL) {
         return this.setAuthor(undefined, iconURL);
     }
 
+    /**
+     * Sets the embed author's hyperlink.
+     * @param {string} url The author field's hyperlink.
+     * @returns {Embed}
+     */
     setAuthorURL(url) {
         return this.setAuthor(undefined, undefined, url);
     }
 
+    /**
+     * Sets the embed thumbnail.
+     * @param {string} url The thumbnail URL.
+     * @returns {Embed}
+     */
     setThumbnail(url) {
         if (url instanceof File) {
             this.files.push(url);
             url = `attachment://${url.filename}`
         }
         this.thumbnail.url = url;
-        return this
+        return this;
     }
 
+    /**
+     * Sets the embed image.
+     * @param {string} url The image URL.
+     * @returns {Embed}
+     */
     setImage(url) {
         if (url instanceof File) {
             this.files.push(url);
             url = `attachment://${url.filename}`
         }
         this.image.url = url;
-        return this
+        return this;
     }
 
+    /**
+     * Returns the JSON representation of this embed.
+     * @returns {Object}
+     */
     toJSON() {
         /**
          * Note: This only takes into account rich embeds.
