@@ -117,6 +117,34 @@ module.exports = class HTTPClient {
         return await this.request(this.route('PATCH', route), payload);
     }
 
+    async deleteMessage(destinationID, messageID) {
+        const route = `/channels/${destinationID}/messages/${messageID}`;
+        return await this.request(this.route('DELETE', route));
+    }
+
+    _encodeEmoji(data) {
+        if (!data.id) {
+            return encodeURI(data.name); 
+        }
+        return encodeURI(data.name + ':' + data.id);
+    }
+
+    async addReaction(destinationID, messageID, emoji) {
+        const route = `/channels/${destinationID}/messages/${messageID}/reactions/${this._encodeEmoji(emoji)}/@me`;
+        return await this.request(this.route('PUT', route));
+    }
+
+    async getReactionUsers(destinationID, messageID, emoji, { limit, after } = {}) {
+        let params = {}
+        if (limit) params.limit = limit;
+        if (after) params.after = after;
+        params = Object.keys(params).length
+            ? '?' + new URLSearchParams(params).toString() : '';
+
+        const route = `/channels/${destinationID}/messages/${messageID}/reactions/${this._encodeEmoji(emoji)}`;
+        return await this.request(this.route('GET', route + params));
+    }
+
     async getGuild(guildID) {
         return await this.request(this.route('GET', `/guilds/${guildID}`));
     }

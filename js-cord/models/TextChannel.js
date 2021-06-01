@@ -51,4 +51,21 @@ module.exports = class TextChannel extends GuildChannel {
         let builder = new MessageBuilder(this, content, options, 'send');
         return await builder.build().send();
     }
+
+    async *collectMessages({ limit, timeout, check } = {}) {
+        check = check || (() => true);
+        const actual = (message) => {
+            return check(message) && message.channel.id === this.id; 
+        }
+
+        for await (let message of this.client.collect('message', { limit, timeout, actual })) {
+            yield message;
+        }
+    }
+
+    async waitForMessage({ timeout, check } = {}) {
+        for await (let message of this.collectMessages({ limit: 1, timeout, check })) {
+            return message;
+        }
+    }
 }

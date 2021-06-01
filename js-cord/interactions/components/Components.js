@@ -1,30 +1,32 @@
 const ActionRow = require('./ActionRow');
 const Button = require('./Button');
 
+/**
+ * Represents the entire components of a message.
+ */
 module.exports = class Components {
     constructor({
         __components = [],
         __buffer = null
     } = {}) {
-        this.components = __components;
+        this._components = __components;
         this._buffer = __buffer;
     }
 
     /**
-     * Returns a deep copy of this object.
-     * @returns {Components}
+     * Returns a copy of this instance.
+     * @returns {Components} The copy.
      */
     copy() {
         return new this.constructor({
-            __components: this.components,
+            __components: this._components,
             __buffer: this._buffer
         });
     }
 
     /**
-     * Adds an ActionRow to this object.
-     * @param {...Component} components The components in the row.
-     * @returns {Components}
+     * Adds an {@link ActionRow} to the components.
+     * @param  {...Component} components The components to add to the row.
      */
     addRow(...components) {
         if (components.length === 1 && components[0] instanceof Array) {
@@ -32,21 +34,20 @@ module.exports = class Components {
         }
 
         const row = new ActionRow(components);
-        this.components.push(row);
+        this._components.push(row);
         this._buffer = row;
         return this;
     }
 
     /**
-     * Adds a component.
+     * Adds a component while automatically wrapping.
      * @param {Component} component The component to add.
-     * @returns {Components}
      */
     addComponent(component) {
         if (!this._buffer) {
             this.addRow();
-        } else if (this._buffer.length >= 5) {
-            this.addRow();  // Max component length is 5
+        } else if (!this._buffer.canAdd(component)) {
+            this.addRow();
         }
 
         this._buffer.addComponent(component);
@@ -54,20 +55,72 @@ module.exports = class Components {
     }
 
     /**
-     * Adds a button.
-     * @param {Object} options The options to provide.
-     * @param {?function} callback The function to call when the interaction is recieved.
-     * @returns 
+     * Implicity constructs and adds a button to the components.
+     * @param {?object} options The options to pass into the button constructor. 
+     * @param {?function} callback The interaction callback for when the button is pressed. 
      */
     addButton({ style, label, emoji, id, url, disabled } = {}, callback) {
         return this.addComponent(new Button({ style, label, emoji, id, url, disabled }, callback));
     }
 
     /**
-     * Returns the JSON object representing this class. (to be provided to Discord)
-     * @returns {Object[]}
+     * Iterates over all of the components.
+     * {@link ActionRow}s are not included here. 
+     * @yields {?Component}
+     */
+    *components() {
+        for (let component in this._components) {
+            yield* component.components;
+        }
+    }
+
+    /**
+     * Returns the visible component at a certain index.
+     * @param {number} index The index to view.
+     * @returns {?Component} The component at the given index, if any.
+     */
+    componentAt(index) {
+        let idx = 0;
+        for (let component in this.components()) {
+            if (idx++ === index) return component;
+        }
+    }
+
+    /**
+     * If a button is located at this index, disable it.
+     * @param {...number} indices The indices of the buttons to disable.
+     * @return {?Button} The button disabled, if any. 
+     * If more than one button was provided, this returns an array instead.
+     */
+    disableButtonAt(...indices) {
+        let success = [];
+        for (let idx in indices) {
+            let button = this.componentAt(idx);
+            if (button instanceof Button) {
+                button.disabled = true;
+                success.push(button)
+            }
+        }
+
+        return success.length <= 0 
+            ? undefined : (
+                success.length === 1 ? success[0] : success
+            );
+    }
+
+    /**
+     * The amount of components, excluding {@link ActionRow}s.
+     * @type {number}
+     */
+    get length() {
+        return [...this.components()].length;
+    }
+
+    /**
+     * Turns this into a JSON object.
+     * @returns {object} The raw JSON data.
      */
     toJSON() {
-        return this.components.map(c => c.toJSON());
+        return this._components.map(c => c.toJSON());
     }
 }

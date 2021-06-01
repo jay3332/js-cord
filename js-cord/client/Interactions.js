@@ -15,7 +15,7 @@ module.exports = async function handleInteraction(interaction) {
             // Probably a component
             const matches = client._components
                 .filter(c => c.type == data.type && c.id == data.customID); 
-            
+
             for (const match of matches) {
                 await maybePromise(match.callback, interaction, match);
             }

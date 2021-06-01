@@ -1,11 +1,20 @@
 const utils = require('./utils');
 const enums = require('./enums');
+const Errors = require('./errors/Errors');
 const Color = require('./models/Color');
 
+/**
+ * js-cord
+ */
 module.exports = {
+    /**
+     * The client class
+     */
     Client: require('./client/Client'),
-    Queue: require('./core/Queue'),
 
+    /**
+     * Discord models
+     */
     AllowedMentions: require('./models/AllowedMentions'),
     Asset: require('./models/Asset'),
     AuditLogEntry: require('./models/AuditLogEntry'),
@@ -29,6 +38,9 @@ module.exports = {
     TextChannel: require('./models/TextChannel'),
     User: require('./models/User'),
 
+    /**
+     * Interactions
+     */
     SlashCommand: require('./interactions/slash/SlashCommand'),
     SlashCommandOption: require('./interactions/slash/SlashCommandOption'),
     SlashContext: require('./interactions/slash/SlashContext'),
@@ -36,14 +48,26 @@ module.exports = {
     Component: require('./interactions/components/Component'),
     ActionRow: require('./interactions/components/ActionRow'),
     Button: require('./interactions/components/Button'),
+    Dropdown: require('./interactions/components/Dropdown'),
+    DropdownOption: require('./interactions/components/DropdownOption'),
 
+    /**
+     * Parent utilities
+     */
+    Queue: require('./core/Queue'),
     constants: require('./constants'),
     enums,
     utils,
 
+    /**
+     * Pagination
+     */
     BasePaginator: utils.BasePaginator,
     Paginator: utils.Paginator,
 
+    /**
+     * Enumerations
+     */
     AuditLogEvent: enums.AuditLogEvent,
     ButtonStyle: enums.ButtonStyle,
     ChannelType: enums.ChannelType,
@@ -55,7 +79,18 @@ module.exports = {
     SlashCommandOptionType: enums.SlashCommandOptionType,
     StickerFormatType: enums.StickerFormatType,
 
+    /**
+     * Plugins
+     */
     plugins: {
+        /**
+         * Commands plugin
+         */
         commands: require('./plugins/commands')
-    }
+    },
+
+    /**
+     * Errors
+     */
+    errors: Errors
 }

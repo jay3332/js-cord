@@ -1,3 +1,6 @@
+/**
+ * Discord enumerations.
+ */
 module.exports = {
     ChannelType: {
         text: 0,
@@ -98,9 +101,11 @@ module.exports = {
 
     ComponentType: {
         row: 1,
-        actionRow: 1,
         button: 2,
-        dropdown: 3
+        dropdown: 3,
+
+        actionRow: 1,
+        select: 3
     },
 
     ButtonStyle: {

@@ -23,6 +23,7 @@ module.exports = class Client extends Emitter {
         gatewayVersion = 9 } = {}
     ) {
         super();
+        Object.defineProperty(this, 'token', { writable: true });
 
         /**
          * Represents the internal cache of the client.
@@ -39,6 +40,7 @@ module.exports = class Client extends Emitter {
 
         this._slash = [];
         this._components = [];
+        this._dropdownOpts = [];
 
         /**
          * The default allowed mentions to use whenever the client sends a message.

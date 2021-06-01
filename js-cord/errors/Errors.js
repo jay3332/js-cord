@@ -34,6 +34,7 @@ function getErrors(errors, key = '') {
 
 module.exports = {
     DiscordError,
+    TimeoutError: class extends DiscordError {},
     BadFormat: class extends DiscordError {},
     ConstructionError: class extends DiscordError {},
     InvalidToken: class extends DiscordError {},
@@ -44,6 +45,8 @@ module.exports = {
             const statusText = response.statusText;
             const errors = getErrors(json.errors || json);
             super(`${status} ${statusText}: ${errors.join("\n")}`);
+            Object.defineProperty(this, 'json', { writable: true });
+            Object.defineProperty(this, 'response', { writable: true });
             
             this.json = json;
             this.status = status;

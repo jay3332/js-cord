@@ -2,6 +2,7 @@ const DiscordObject = require('./DiscordObject');
 const MessageBuilder = require('./MessageBuilder');
 const User = require('./User');
 const Member = require('./Member');
+const { parseEmoji } = require('../utils');
 
 /**
  * Represents a Discord message.
@@ -105,8 +106,33 @@ module.exports = class Message extends DiscordObject {
      * @param {object} options The options to pass into the {@link MessageBuilder}.
      * @returns {Message} The sent {@link Message}.
      */
-    async reply(content, options) {
+    async reply(content, options = {}) {
         options.reference = this.id;
         return await this.channel.send(content, options);
+    }
+
+    /**
+     * Deletes this message.
+     * @param {?number} delay How long to way before deleting the message.
+     * @returns {boolean} "true" if the message was successfully deleted. 
+     */
+    async delete(delay = 0) {
+        setTimeout(() => {
+            this.client.http.deleteMessage(this.channel.id, this.id);
+        }, delay);
+
+        return true;
+    }
+
+    /**
+     * Adds a reaction to this message.
+     * @param {string | PartialEmoji | Emoji} emoji The emoji to react with. 
+     */
+    async addReaction(emoji) {
+        if (typeof emoji === 'string') {
+            emoji = parseEmoji(emoji);
+        }
+        
+        await this.client.http.addReaction(this.channel.id, this.id, emoji);
     }
 }

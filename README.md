@@ -14,10 +14,6 @@ An API wrapper for Discord, made using Javascript.
 ## Why js-cord?
 I've always liked JavaScript's syntax better than Python's, but I tend to use Python more for developing Discord Bots because the API wrapper for Python (discord.py) has more features than the conventional discord.js. This wrapper fixes that, with built in command handling, pagination, debugging, and so much more.
 
-## Note
-You are currently looking at the rewrite branch, or the newer but unfinished branch of js-cord.  
-The old but stable branch can be found [here](https://github.com/jay3332/js-cord/tree/master).
-
 ## Table of Contents
 + [Useful Links](#useful-links)
 + [Features](#features)

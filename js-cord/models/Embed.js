@@ -12,27 +12,94 @@ const File = require('./File');
  */
 module.exports = class Embed {
     constructor(data) {
+        /**
+         * The type of this embed. Usually 'rich'.
+         * @type {string}
+         */
         this.type = 'rich';
-        this.footer = {}
-        this.author = {}
-        this.thumbnail = {}
-        this.image = {}
-        this.video = {}
-        this.provider = {}
-        this.fields = [];
-        this.files = [];
 
+        /**
+         * The footer for this embed. 
+         * @type {?Object}
+         */
+        this.footer = {}
+
+        /**
+         * The author for this embed.
+         * @type {?Object}
+         */
+        this.author = {}
+
+        /**
+         * The thumbnail for this embed.
+         * @type {?Object}
+         */
+        this.thumbnail = {}
+
+        /**
+         * The large image for this embed.
+         * @type {?Object}
+         */
+        this.image = {}
+        
+        /**
+         * The video for this embed.
+         * Rich embeds do not have this property.
+         * @type {?Object}
+         */
+        this.video = {}
+        
+        /**
+         * The embed's provider.
+         * Rich embeds do not have this property.
+         * @type {?Object}
+         */
+        this.provider = {}
+
+        /**
+         * The fields for this embed.
+         * There can be up to 25 of these.
+         * @type {?Array<object>}
+         */
+        this.fields = [];
+
+        this.files = [];
         if (data) this.loadData(data);
     }
 
     loadData(data) {
         if (data.type) this.type = data.type;
 
+        /**
+         * The embed's title.
+         * @type {?string}
+         */
         this.title = data.title;
+
+        /**
+         * The embed's description.
+         * @type {?string}
+         */
         this.description = data.description;
+
+        /**
+         * The title's URL.
+         * @type {?string}
+         */
         this.url = data.url;
+
+        /**
+         * The timestamp shown on the embed.
+         * @type {?Date}
+         */
         this.timestamp = new Date(Date.parse(data.timestamp));
+        
+        /**
+         * The color of the embed.
+         * @type {?Color}
+         */
         this.color = new Color(data.color || 0);
+
         this.fields = data.fields ? data.fields : [];
 
         if (data.footer) {
@@ -98,6 +165,9 @@ module.exports = class Embed {
             this.provider = data.provider;
     }
     
+    /**
+     * An alias for {@link Embed#color}.
+     */
     get colour() {
         return this.color;
     }
@@ -137,8 +207,8 @@ module.exports = class Embed {
     }
 
     /**
-     * An alias for the second parameter of {@link Embed#setTitle}.
-     * @param {string} url The embed title's new hyperlink.
+     * Sets the title's URL.
+     * @param {string} url The new URL of this embed.
      * @returns {Embed}
      */
     setURL(url) {
@@ -168,8 +238,7 @@ module.exports = class Embed {
     }
 
     /**
-     * Sets the embed color.
-     * @param {number | string | Color} color The embed's new color.
+     * An alias for {@link Embed#setColor}.
      * @returns {Embed}
      */
     setColour(colour) {
@@ -204,10 +273,10 @@ module.exports = class Embed {
     } 
 
     /**
-     * Adds a field to the embed.
-     * @param {string} name The embed field name.
-     * @param {string} value The content of the field.
-     * @param {boolean} inline Whether the field should be inline.
+     * Adds a field to this embed.
+     * @param {string} name The name [title] of this field.
+     * @param {string} value The value [description] of this field. 
+     * @param {?boolean} inline Whether or not this field is inline or not.
      * @returns {Embed}
      */
     addField(name, value, inline) {
@@ -226,11 +295,11 @@ module.exports = class Embed {
     }
 
     /**
-     * Sets a field at a specific index.
-     * @param {number} index The index for the field.
-     * @param {string} name The embed field name.
-     * @param {string} value The content of the field.
-     * @param {boolean} inline Whether the field should be inline.
+     * Overwrites an already existing field.
+     * @param {number} index The index of the field to overwrite. 
+     * @param {string} name The new name [title] of this field.
+     * @param {string} value The new value [description] of this field. 
+     * @param {?boolean} inline Whether or not this field is inline or not.
      * @returns {Embed}
      */
     setField(index, name, value, inline) {
@@ -239,12 +308,12 @@ module.exports = class Embed {
     }
 
     /**
-     * Splices a field. See [Array.prototype.splice]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice}.
-     * @param {number} index The index to start splicing at.
-     * @param {number} remove The amount of fields to replace.
-     * @param {string} name The embed field name.
-     * @param {string} value The content of the field.
-     * @param {boolean} inline Whether the field should be inline.
+     * Splices the embed fields.
+     * @param {number} index The index to start splicing from.
+     * @param {number} remove The amount of fields to remove at this index. 
+     * @param {string} name The name [title] of this field.
+     * @param {string} value The value [description] of this field. 
+     * @param {?boolean} inline Whether or not this field is inline or not. 
      * @returns {Embed}
      */
     spliceField(index, remove, name, value, inline) {
@@ -253,11 +322,11 @@ module.exports = class Embed {
     }
 
     /**
-     * Inserts a field at an index.
-     * @param {number} index The index to insert a field at.
-     * @param {string} name The embed field name.
-     * @param {string} value The content of the field.
-     * @param {boolean} inline Whether the field should be inline.
+     * Inserts a new field at the given index.
+     * @param {number} index The index to insert the field at.
+     * @param {string} name The name [title] of this field.
+     * @param {string} value The value [description] of this field. 
+     * @param {?boolean} inline Whether or not this field is inline or not.
      * @returns {Embed}
      */
     insertField(index, name, value, inline) {
@@ -266,7 +335,7 @@ module.exports = class Embed {
     }
 
     /**
-     * Resets the embed fields, essentially setting the fields to an empty array.
+     * Removes all the embed fields, essentially setting the fields to an empty array.
      * @returns {Embed}
      */
     clearFields() {
@@ -275,8 +344,8 @@ module.exports = class Embed {
     }
     
     /**
-     * Removes the last field from the embed.
-     * @returns {Embed}
+     * Pops a field from this embed.
+     * @return {?Object} The field that was popped.
      */
     popField() {
         this.fields.pop();
@@ -293,9 +362,9 @@ module.exports = class Embed {
     }
 
     /**
-     * Swaps 2 fields' positions.
-     * @param {number} index An index of a field.
-     * @param {number} otherIndex Another index of a field.
+     * Swaps a field with another one.
+     * @param {number} index The index to swap.
+     * @param {number} otherIndex The other index to swap with.
      * @returns {Embed}
      */
     swapField(index, otherIndex) {
@@ -304,9 +373,9 @@ module.exports = class Embed {
     }
 
     /**
-     * Finds an embed fields by field name/title.
-     * @param {string} name The field name.
-     * @returns {Object}
+     * Finds a field in this embed based on it's name.
+     * @param {string} name The name [title] of the field to find.
+     * @returns {?Object} The field found, if any.
      */
     findField(name) {
         return this.fields.find(field => field.name == name);
@@ -332,9 +401,9 @@ module.exports = class Embed {
     }
 
     /**
-     * Sets the embed's footer.
-     * @param {string} text The footer's text.
-     * @param {string} iconURL The URL of the footer icon.
+     * Sets and overwrites the current footer of this embed.
+     * @param {string} text The text of the footer.
+     * @param {?string} iconURL The icon URL of the footer.
      * @returns {Embed}
      */
     setFooter(text, iconURL) {
@@ -425,7 +494,7 @@ module.exports = class Embed {
 
     /**
      * Sets the embed thumbnail.
-     * @param {string} url The thumbnail URL.
+     * @param {string | File} url The thumbnail URL.
      * @returns {Embed}
      */
     setThumbnail(url) {
@@ -438,9 +507,8 @@ module.exports = class Embed {
     }
 
     /**
-     * Sets the embed image.
-     * @param {string} url The image URL.
-     * @returns {Embed}
+     * Sets the large image of this embed.
+     * @param {string | File} url The image URL of the new image.
      */
     setImage(url) {
         if (url instanceof File) {
@@ -452,14 +520,11 @@ module.exports = class Embed {
     }
 
     /**
-     * Returns the JSON representation of this embed.
-     * @returns {Object}
+     * Turns this embed into a JSON object.
+     * Note: This only takes into account rich embeds.
+     * @return {object}
      */
     toJSON() {
-        /**
-         * Note: This only takes into account rich embeds.
-         */
-
         return {
             type: this.type || 'rich',
             title: this.title || null,
