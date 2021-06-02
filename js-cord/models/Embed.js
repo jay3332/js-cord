@@ -5,9 +5,6 @@ const File = require('./File');
 /**
  * Represents embedded content of a Discord message.
  * You can also construct this class to send your own embeds.
- * 
- * Use `attachment://filename.extension` to send an instance of a {@link File}, for example `attachment://image.png`.
- * Only usable in thumbnail, image, and author/footer icons.
  * @param {?Object} data The raw JSON data, usually from Discord, to construct this embed with.
  */
 module.exports = class Embed {
