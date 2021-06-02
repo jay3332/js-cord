@@ -1,6 +1,12 @@
 const Color = require('./Color');
 const File = require('./File');
 
+/**
+ * @typedef {Object} EmbedField
+ * @property {string} name The field name. (title)
+ * @property {string} value The field value. (description)
+ * @property {boolean} inline Whether the field is inline.
+ */
 
 /**
  * Represents embedded content of a Discord message.
@@ -56,7 +62,7 @@ module.exports = class Embed {
         /**
          * The fields for this embed.
          * There can be up to 25 of these.
-         * @type {?Array<object>}
+         * @type {?EmbedField[]}
          */
         this.fields = [];
 
@@ -342,20 +348,18 @@ module.exports = class Embed {
     
     /**
      * Pops a field from this embed.
-     * @return {?Object} The field that was popped.
+     * @return {?EmbedField} The field that was popped.
      */
     popField() {
-        this.fields.pop();
-        return this;
+        return this.fields.pop();
     }
 
     /**
      * Removes the first field from the embed.
-     * @returns {Embed}
+     * @returns {?EmbedField} The field that was shifted.
      */
     shiftField() {
-        this.fields.shift();
-        return this;
+        return this.fields.shift();
     }
 
     /**
@@ -372,7 +376,7 @@ module.exports = class Embed {
     /**
      * Finds a field in this embed based on it's name.
      * @param {string} name The name [title] of the field to find.
-     * @returns {?Object} The field found, if any.
+     * @returns {?EmbedField} The field found, if any.
      */
     findField(name) {
         return this.fields.find(field => field.name == name);
@@ -380,7 +384,7 @@ module.exports = class Embed {
 
     /**
      * Completely overwrites the embed's fields with new ones.
-     * @param {Object[]} fields The new fields for the embed.
+     * @param {EmbedField[]} fields The new fields for the embed.
      * @returns {Embed}
      */
     setFields(fields) {
