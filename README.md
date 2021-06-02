@@ -5,7 +5,7 @@ js-cord
 </h1>
 <p align="center">
 <sup>
-An API wrapper for Discord, made using Javascript.
+An API wrapper for Discord, made using JavaScript.
 </sup>
 </p>
 
