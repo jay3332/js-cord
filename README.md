@@ -46,9 +46,11 @@ I've always liked JavaScript's syntax better than Python's, but I tend to use Py
 
 ## Installation
 You can install js-cord using `npm`:
+> Currently `npm install @jay3332/js-cord` until further notice.
 ```sh
 $ npm install js-cord
 ```
+
 Or, if you want the latest features, clone this repository directly:
 ```sh
 $ npm install git+https://github.com/jay3332/js-cord
