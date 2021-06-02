@@ -45,6 +45,9 @@ I tend to use Python more for developing Discord Bots because the API wrapper fo
     - Menus and paginators
 
 ## Installation
+js-cord is still in it's beta stage, therefore installing from NPM will install an older, ineffective version of js-cord.  
+For now, please install js-cord by cloning this repository.
+
 You can install js-cord using `npm`:
 ```sh
 $ npm install js-cord
