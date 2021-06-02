@@ -127,9 +127,10 @@ module.exports = class Bot extends Client {
      */
     getCommand(query) {
         query = query.trim();
-        const formatFn = this.commandsCaseInsensitive ? (s => s.toLowerCase()) : (s => s);
-        if (this.commandsCaseInsensitive) query = query.toLowerCase();
-        return this.commands.find(cmd => formatFn(cmd.qualifiedName) == query);
+        const _ = this.commandsCaseInsensitive ? (s => s.toLowerCase()) : (s => s);
+        if (this.commandsCaseInsensitive) query = _(query);
+
+        return this.commands.find(cmd => _(cmd.qualifiedName) == query);
 
         /* to-do: alias support */
     }

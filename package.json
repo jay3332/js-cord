@@ -10,6 +10,7 @@
         "@babel/preset-env": "^7.14.4",
         "argparse": "^1.0.0",
         "colorsys": "^1.0.0",
+        "mathjs": "^9.4.1",
         "node-fetch": "^2.6.1",
         "ws": "^7.4.4"
     },

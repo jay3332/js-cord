@@ -63,7 +63,15 @@ module.exports = async function emitEvent(client, event, data) {
         client.cache.messages.push(message);
         if (cachedMessage) await client.emit("messageEdit", cachedMessage, message);
         await client.emit("rawMessageEdit", message);
-    } 
+    } else if (event === "MESSAGE_DELETE") {
+        // Is the message in our cache?
+        const cachedMessage = client.cache.messages.find(
+            msg => msg.channel?.id == data.channel_id && msg.id == data.id
+        );
+
+        if (cachedMessage) await client.emit("messageDelete", cachedMessage);
+        await client.emit("rawMessageDelete", data);
+    }
     
     // interactions
     else if (event === "INTERACTION_CREATE") {
