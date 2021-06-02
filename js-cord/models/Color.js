@@ -13,42 +13,88 @@ module.exports = class Color {
         return (this.value >> (8 * byte)) & 0xff
     }
 
+    /**
+     * The decimal amount of red.
+     * @type {number}
+     */
     get r() {
         return this.getByte(2);
     }
 
+    /**
+     * The decimal amount of green.
+     * @type {number}
+     */
     get g() {
         return this.getByte(1);
     }
 
+    /**
+     * The decimal amount of blue.
+     * @type {number}
+     */
     get b() {
         return this.getByte(0);
     }
 
+    /**
+     * The hex code representing this color.
+     * @type {string}
+     */
     get hex() {
         let raw = this.value.toString(16);
         return '0'.repeat(6 - raw.length) + raw;
     }
 
+    /**
+     * Returns an array of R, G, and B.
+     * @returns {number[]}
+     */
     toRGB() {
         return [ this.r, this.g, this.b ];
     }
 
+    /**
+     * Returns an array of H, S, and V.
+     * @returns {number[]}
+     */
     toHSV() {
         let rgb = this.toRGB();
         rgb = { r: rgb[0], g: rgb[1], b: rgb[2] };
         return Object.values(colorsys.rgb2Hsv(rgb));
     }
 
+    /**
+     * Creates a color object from RGB.
+     * @static
+     * @param {number} r The amount of red.
+     * @param {number} g The amount of green.
+     * @param {number} b The amount of blue.
+     * @returns {Color}
+     */
     static fromRGB(r, g, b) {
         return new Color((r << 16) + (g << 8) + b);
     }
 
+    /**
+     * Creates a color object from HSV.
+     * @static
+     * @param {number} h The hue.
+     * @param {number} s The saturation.
+     * @param {number} v The value.
+     * @returns {Color}
+     */
     static fromHSV(h, s, v) {
         let hsv = { h: h, s: s, v: v };
         return new Color.fromRGB(...Object.values(colorsys.hsv2Rgb(hsv)));
     }
 
+    /**
+     * Creates a color object from hex.
+     * @static
+     * @param {string} hex The hex color.
+     * @returns {Color}
+     */
     static fromHex(hex) {
         if (hex.startsWith('#')) 
             hex = hex.slice(1,);
@@ -59,15 +105,30 @@ module.exports = class Color {
         return new Color(parseInt(hex, 16));
     }
 
+    /**
+     * The default color. (black)
+     * @static
+     * @returns {Color}
+     */
     static default() {
         return new Color(0);
     }
 
+    /**
+     * Generates a random color.
+     * @static
+     * @returns {Color}
+     */
     static random() {
         let hue = Math.floor(Math.random() * 360);
         return Color.fromHSV(hue, 100, 100);
     }
 
+    /**
+     * Generates a true random color.
+     * @static
+     * @returns {Color}
+     */
     static trueRandom() {
         let value = Math.floor(Math.random() * (256 ** 3 - 1));
         return new Color(value);

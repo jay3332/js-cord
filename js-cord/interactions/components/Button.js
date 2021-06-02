@@ -8,6 +8,11 @@ const PartialEmoji = require('../../models/PartialEmoji');
  * Represents a button component.
  */
 module.exports = class Button extends Component {
+    /**
+     * The constructor for the Button class.
+     * @param {Object} options The options to provide for this button.
+     * @param {?function} callback The function to call when recieving the interaction.
+     */
     constructor({
         style = ButtonStyle.primary,
         label,
@@ -91,6 +96,7 @@ module.exports = class Button extends Component {
     /**
      * Stops your button from being interacted with.
      * In reality, this just sets it's callback to nothing.
+     * @returns {Button}
      */
     stop() {
         this.callback = () => {};
