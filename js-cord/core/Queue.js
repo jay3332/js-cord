@@ -1,6 +1,9 @@
 /*
     Credit to Sapphire for this utility class.
     https://github.com/sapphiredev/utilities/blob/main/packages/async-queue/src/lib/AsyncQueue.ts
+    
+    The MIT License (MIT)
+    Copyright © 2020 The Sapphire Community and its contributors
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software
     and associated documentation files (the “Software”), to deal in the Software without restriction, 
