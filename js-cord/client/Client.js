@@ -16,6 +16,7 @@ const Guild = require('../models/Guild');
  * @param {?number} options.apiVersion The REST API version to use for requests.
  * @param {?number} options.gatewayVersion The gateway version to use for interacting with Discord's gateway.
  * @param {?boolean} options.shard Whether or not to shard the bot. Must be explicitly enabled for large bots.
+ * @param {?number} options.shardCount The amount of shards to connect to. This should usually never be used.
  */
 module.exports = class Client extends Emitter {
     #apiVersion;
@@ -26,7 +27,8 @@ module.exports = class Client extends Emitter {
         intents = Intents.default(), 
         apiVersion = 9,
         gatewayVersion = 9,
-        shard = false 
+        shard = false,
+        shardCount = null
     } = {}) {
         super();
         Object.defineProperty(this, 'token', { writable: true });
@@ -94,12 +96,13 @@ module.exports = class Client extends Emitter {
 
         this.#apiVersion = apiVersion;
         this.#gatewayVersion = gatewayVersion;
-        this._shardCount = null;
+        this._shardCount = shardCount;
         this._shards = [];
     }
 
     /**
      * Returns an array of websockets corresponding to the bot's shards.
+     * Only valid for sharded clients.
      * @type {?Websocket}
      */
     get shards() {
@@ -145,6 +148,7 @@ module.exports = class Client extends Emitter {
 
     /**
      * Returns an array of numbers corresponding to it's shard's latency.
+     * Only valid for sharded clients.
      * @type {?Array<number>}
      */
     get latencies() {
@@ -162,11 +166,17 @@ module.exports = class Client extends Emitter {
         this.http = new HTTPClient(this, this.apiVersion);
     }
 
-    #establishWebsocket() {
+    async #establishWebsocket() {
         if (!this.sharded) {
             this.ws = new Websocket(this, this.gatewayVersion);
         }
-        this.http.getRecommendedShardCount().then(count => {
+        
+        return await (async () => {
+            if (!this._shardCount) {
+                return await this.http.getRecommendedShardCount();
+            }
+            return this._shardCount
+        })().then(count => {
             this._shardCount = count;
             for (let i = 0; i < count; i++) {
                 const shard = new Websocket(this, this.gatewayVersion, i);
@@ -178,14 +188,13 @@ module.exports = class Client extends Emitter {
 
     /**
      * Starts the bot.
-     * @async
      * @param {string} token The token to use to login into the gateway.
      */
     async start(token) {
         this.#putToken(token);
         this.#establishHTTP();
-        this.#establishWebsocket();
-        await this.ws.start();
+        await this.#establishWebsocket();
+        await this.ws.start()
     }
 
     /**
@@ -193,7 +202,7 @@ module.exports = class Client extends Emitter {
      * @param {string} token The authentication token given by Discord.
      */
     login(token) {
-        this.start(token).then();
+        this.start(token);
     }
 
     /**
