@@ -82,7 +82,7 @@ module.exports = class Websocket {
             }));
         } else if (op == 10) {
             await this.doHeartbeat();
-            payload = {
+            let payload = {
                 op: 2,
                 d: {
                     token: this.client.token,
