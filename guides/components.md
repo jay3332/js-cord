@@ -150,6 +150,6 @@ Like the other options, set the `defer` option to `true`:
 await interaction.respond({ defer: true });
 
 setTimeout(() => {
-    interaction.respond(`${interaction.author.name} clicked the button.`);
+    interaction.message.edit(`${interaction.author.name} clicked the button.`);
 }, 2000);
 ```

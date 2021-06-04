@@ -5,14 +5,14 @@ js-cord
 </h1>
 <p align="center">
 <sup>
-An API wrapper for Discord, made using Javascript.
+An API wrapper for Discord, made using JavaScript.
 </sup>
 </p>
 
 ----
 
 ## Why js-cord?
-I've always liked JavaScript's syntax better than Python's, but I tend to use Python more for developing Discord Bots because the API wrapper for Python (discord.py) has more features than the conventional discord.js. This wrapper fixes that, with built in command handling, pagination, debugging, and so much more.
+I tend to use Python more for developing Discord Bots because the API wrapper for Python (discord.py) has more features than the conventional discord.js. This wrapper fixes that, with built in command handling, pagination, debugging, and so much more.
 
 ## Table of Contents
 + [Useful Links](#useful-links)
@@ -45,6 +45,9 @@ I've always liked JavaScript's syntax better than Python's, but I tend to use Py
     - Menus and paginators
 
 ## Installation
+js-cord is still in it's beta stage, therefore installing from NPM will install an older, ineffective version of js-cord.  
+For now, please install js-cord by cloning this repository.
+
 You can install js-cord using `npm`:
 ```sh
 $ npm install js-cord
