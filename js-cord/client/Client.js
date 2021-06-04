@@ -10,7 +10,12 @@ const Guild = require('../models/Guild');
 
 /**
  * Represents a client connection to the Discord API and Gateway.
- * @param {object?} options The options to use for the client. 
+ * @param {?object} options The options to use for the client.
+ * @param {?object} options.allowedMentions The default allowed mentions to use when sending messages.
+ * @param {?Intents} options.intents The intents to use when connecting to the gateway.
+ * @param {?number} options.apiVersion The REST API version to use for requests.
+ * @param {?number} options.gatewayVersion The gateway version to use for interacting with Discord's gateway.
+ * @param {?boolean} options.shard Whether or not to shard the bot. Must be explicitly enabled for large bots.
  */
 module.exports = class Client extends Emitter {
     #apiVersion;
@@ -138,6 +143,16 @@ module.exports = class Client extends Emitter {
         return sum(this.shards, s => s.latency) / this.shards.length;
     }
 
+    /**
+     * Returns an array of numbers corresponding to it's shard's latency.
+     * @type {?Array<number>}
+     */
+    get latencies() {
+        if (!this.sharded)
+            return [this.latency];
+        return this.shards.map(s => s.latency);
+    }
+
     #putToken(token) {
         if (!token) throw new InvalidToken('Token is undefined.');
         this.token = token;
@@ -219,6 +234,7 @@ module.exports = class Client extends Emitter {
 
     /**
      * Gets all of the users currently stored in the internal cache.
+     * @type {Array<User>}
      */
     get users() {
         return [...this.cache.users.values()];
@@ -226,6 +242,7 @@ module.exports = class Client extends Emitter {
 
     /**
      * Gets all of the channels currently stored in the internal cache.
+     * @type {Array<Channel>}
      */
     get channels() {
         return [...this.cache.channels.values()];
@@ -233,6 +250,7 @@ module.exports = class Client extends Emitter {
 
     /**
      * Gets all of the guilds currently stored in the internal cache.
+     * @type {Array<Guild>}
      */
     get guilds() {
         return [...this.cache.guilds.values()];
@@ -240,6 +258,7 @@ module.exports = class Client extends Emitter {
 
     /**
      * Gets all of the roles currently stored in the internal cache.
+     * @type {Array<Role>}
      */
     get roles() {
         return [...this.cache.roles.values()];
