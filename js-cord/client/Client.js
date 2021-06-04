@@ -186,6 +186,13 @@ module.exports = class Client extends Emitter {
         });
     }
 
+    #startWebsockets() {
+        if (!this.sharded) {
+            return this.ws.start();
+        }
+        this._shards.forEach(s => s.start());
+    }
+
     /**
      * Starts the bot.
      * @param {string} token The token to use to login into the gateway.
@@ -194,7 +201,7 @@ module.exports = class Client extends Emitter {
         this.#putToken(token);
         this.#establishHTTP();
         await this.#establishWebsocket();
-        await this.ws.start()
+        this.#startWebsockets();
     }
 
     /**
