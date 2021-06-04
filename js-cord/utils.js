@@ -375,6 +375,16 @@ module.exports = {
         return parseFloat(process.hrtime().join('.')) * 1000
     },
 
+    /**
+     * Returns a [pseudo]random integer given the range.
+     * @param {number} min The minimum number, inclusive.
+     * @param {number} max The maximum number, also inclusive.
+     * @return {number} The number chosen.
+     */
+    randint(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+
     timeoutPromise(timeout, callback, error) {
         error = error ||
             (t => new Error(`Promise timed out after ${t} milliseconds.`));

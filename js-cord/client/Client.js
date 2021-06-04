@@ -20,8 +20,9 @@ module.exports = class Client extends Emitter {
         allowedMentions,
         intents = Intents.default(), 
         apiVersion = 9,
-        gatewayVersion = 9 } = {}
-    ) {
+        gatewayVersion = 9,
+        shard = false 
+    } = {}) {
         super();
         Object.defineProperty(this, 'token', { writable: true });
 
@@ -43,17 +44,26 @@ module.exports = class Client extends Emitter {
         this._dropdownOpts = [];
 
         /**
+         * Whether or not sharding is handled for this client.
+         * @type {boolean}
+         */
+        this.sharded = shard;
+
+        /**
          * The default allowed mentions to use whenever the client sends a message.
+         * @type {object}
          */
         this.allowedMentions = allowedMentions;
         
         /**
          * The intents to use when connecting to the gateway.
+         * @type {Intents}
          */
         this.intents = intents;
 
         /**
          * Whether or not the client has made at least one heartbeat with the websocket yet.
+         * @type {boolean}
          */
         this.loggedIn = false;
 
@@ -61,25 +71,41 @@ module.exports = class Client extends Emitter {
 
         /**
          * The HTTPClient the client uses to make HTTP requests.
+         * @type {HTTPClient}
          */
         this.http = undefined;
 
         /**
          * The websocket the client uses to interact with the gateway.
+         * @type {Websocket}
          */
         this.ws = undefined;
 
         /**
          * The client's {@link ClientUser} object. 
+         * @type {ClientUser}
          */
         this.user = undefined;
 
         this.#apiVersion = apiVersion;
         this.#gatewayVersion = gatewayVersion;
+        this._shardCount = null;
+        this._shards = [];
+    }
+
+    /**
+     * Returns an array of websockets corresponding to the bot's shards.
+     * @type {?Websocket}
+     */
+    get shards() {
+        if (!this.sharded) 
+            throw new TypeError('Client must be sharded to use this getter.');
+        return this._shards;
     }
 
     /**
      * Returns this client's User ID.
+     * @type {?string}
      */
     get id() {
         return this.user?.id;
@@ -87,6 +113,7 @@ module.exports = class Client extends Emitter {
 
     /**
      * Gets the requested API version the client will use.
+     * @type {number}
      */
     get apiVersion() {
         return this.#apiVersion;
@@ -94,6 +121,7 @@ module.exports = class Client extends Emitter {
 
     /**
      * Gets the requested gateway version the client will use.
+     * @type {number}
      */
     get gatewayVersion() {
         return this.#gatewayVersion;
@@ -101,11 +129,13 @@ module.exports = class Client extends Emitter {
 
     /**
      * Returns the bot's latency in milliseconds.
+     * If this bot is sharded, this returns the average shard latency.
+     * @type {?number}
      */
     get latency() {
-        let latencies = this.ws.latencies;
-        let lastThree = latencies.slice(-3);
-        return (sum(lastThree) / lastThree.length) * 1000
+        if (!this.sharded)
+            return this.ws.latency;
+        return sum(this.shards, s => s.latency) / this.shards.length;
     }
 
     #putToken(token) {
@@ -118,7 +148,17 @@ module.exports = class Client extends Emitter {
     }
 
     #establishWebsocket() {
-        this.ws = new Websocket(this, this.gatewayVersion);
+        if (!this.sharded) {
+            this.ws = new Websocket(this, this.gatewayVersion);
+        }
+        this.http.getRecommendedShardCount().then(count => {
+            this._shardCount = count;
+            for (let i = 0; i < count; i++) {
+                const shard = new Websocket(this, this.gatewayVersion, i);
+                this._shards.push(shard);
+            }
+            this.ws = this._shards[0];
+        });
     }
 
     /**
