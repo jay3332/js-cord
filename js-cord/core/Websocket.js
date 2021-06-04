@@ -72,7 +72,7 @@ module.exports = class Websocket {
             // it's an event
             this.sequence = rawData.s || this.sequence;
             await this.client.emit('gatewayEventReceive', rawData.t, data);
-            await EventEmitter(this.client, rawData.t, data)
+            await EventEmitter(this.client, this, rawData.t, data)
         } else if (op == 1) {
             // it's a heartbeat, we should send one back.
             // we should also start timing:

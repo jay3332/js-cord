@@ -14,19 +14,24 @@ const WHITELISTED_EVENTS = [
     "GUILD_MEMBERS_CHUNK"
 ];
 
-module.exports = async function emitEvent(client, event, data) {
+module.exports = async function emitEvent(client, ws, event, data) {
     event = event.toUpperCase().replace(" ", "_");
     if (!client.loggedIn && !WHITELISTED_EVENTS.includes(event))
         // we don't wanna start emitting events with no data
         return;
 
     if (event === "READY") {
-        client.startupTimestamp = parseFloat(process.hrtime().join("."));
-        client.ws.sessionID = data.session_id;
-        client.loggedIn = true;
-        client.user = new ClientUser(client, data.user);
-        await client.emit("ready")
-        
+        ws.sessionID = data.session_id;
+    
+        if (!ws.shardID) {
+            client.loggedIn = true;
+            client.user = new ClientUser(client, data.user);
+            client.startupTimestamp = parseFloat(process.hrtime().join("."));
+            await client.emit("ready");
+        }  
+        if (client.sharded) {
+            await client.emit("shardReady", ws.shardID);
+        }
     } else if (event === "RESUMED") {
         await client.emit("resumed");
     } else if (event === "RECONNECT") {
