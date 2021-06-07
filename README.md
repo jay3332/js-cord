@@ -69,7 +69,7 @@ client.on('ready', () => {
 });
 
 client.on('message', async (msg) => {
-    if (msg.content === 'ping')) {
+    if (msg.content === 'ping') {
         await msg.reply('Pong!');
     }
 });
