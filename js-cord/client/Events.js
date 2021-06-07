@@ -16,8 +16,9 @@ const WHITELISTED_EVENTS = [
 
 module.exports = async function emitEvent(client, ws, event, data) {
     event = event.toUpperCase().replace(" ", "_");
+
+    // we don't want to start emitting events with no data
     if (!client.loggedIn && !WHITELISTED_EVENTS.includes(event))
-        // we don't wanna start emitting events with no data
         return;
 
     if (event === "READY") {
