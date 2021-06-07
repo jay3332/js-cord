@@ -14,14 +14,7 @@ const WHITELISTED_EVENTS = [
     "GUILD_MEMBERS_CHUNK"
 ];
 
-/**
- * Executes an event's callback function, if any.
- * @param {Client} client
- * @param {string} event The event to emit.
- * @param {Object} data The data provided by Discord.
- * @returns 
- */
-module.exports = async function emitEvent(client, event, data) {
+module.exports = async function emitEvent(client, ws, event, data) {
     event = event.toUpperCase().replace(" ", "_");
 
     // we don't want to start emitting events with no data
@@ -29,12 +22,17 @@ module.exports = async function emitEvent(client, event, data) {
         return;
 
     if (event === "READY") {
-        client.startupTimestamp = parseFloat(process.hrtime().join("."));
-        client.ws.sessionID = data.session_id;
-        client.loggedIn = true;
-        client.user = new ClientUser(client, data.user);
-        await client.emit("ready")
-        
+        ws.sessionID = data.session_id;
+    
+        if (!ws.shardID) {
+            client.loggedIn = true;
+            client.user = new ClientUser(client, data.user);
+            client.startupTimestamp = parseFloat(process.hrtime().join("."));
+            await client.emit("ready");
+        }  
+        if (client.sharded) {
+            await client.emit("shardReady", ws.shardID);
+        }
     } else if (event === "RESUMED") {
         await client.emit("resumed");
     } else if (event === "RECONNECT") {
@@ -71,7 +69,15 @@ module.exports = async function emitEvent(client, event, data) {
         client.cache.messages.push(message);
         if (cachedMessage) await client.emit("messageEdit", cachedMessage, message);
         await client.emit("rawMessageEdit", message);
-    } 
+    } else if (event === "MESSAGE_DELETE") {
+        // Is the message in our cache?
+        const cachedMessage = client.cache.messages.find(
+            msg => msg.channel?.id == data.channel_id && msg.id == data.id
+        );
+
+        if (cachedMessage) await client.emit("messageDelete", cachedMessage);
+        await client.emit("rawMessageDelete", data);
+    }
     
     // interactions
     else if (event === "INTERACTION_CREATE") {

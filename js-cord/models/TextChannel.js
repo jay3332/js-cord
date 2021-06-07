@@ -38,7 +38,7 @@ module.exports = class TextChannel extends GuildChannel {
      */
     getMessage(id) {
         let cache = this.client.cache.messages;
-        return cache.find(msg => msg.channel.id == this.id && msg.id == id);
+        return cache.find(msg => msg.channel?.id == this.id && msg.id == id);
     }
 
     /**

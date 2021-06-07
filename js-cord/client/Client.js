@@ -10,7 +10,13 @@ const Guild = require('../models/Guild');
 
 /**
  * Represents a client connection to the Discord API and Gateway.
- * @param {object?} options The options to use for the client. 
+ * @param {?object} options The options to use for the client.
+ * @param {?object} options.allowedMentions The default allowed mentions to use when sending messages.
+ * @param {?Intents} options.intents The intents to use when connecting to the gateway.
+ * @param {?number} options.apiVersion The REST API version to use for requests.
+ * @param {?number} options.gatewayVersion The gateway version to use for interacting with Discord's gateway.
+ * @param {?boolean} options.shard Whether or not to shard the bot. Must be explicitly enabled for large bots.
+ * @param {?number} options.shardCount The amount of shards to connect to. This should usually never be used.
  */
 module.exports = class Client extends Emitter {
     #apiVersion;
@@ -20,8 +26,10 @@ module.exports = class Client extends Emitter {
         allowedMentions,
         intents = Intents.default(), 
         apiVersion = 9,
-        gatewayVersion = 9 } = {}
-    ) {
+        gatewayVersion = 9,
+        shard = false,
+        shardCount = null
+    } = {}) {
         super();
         Object.defineProperty(this, 'token', { writable: true });
 
@@ -43,17 +51,26 @@ module.exports = class Client extends Emitter {
         this._dropdownOpts = [];
 
         /**
+         * Whether or not sharding is handled for this client.
+         * @type {boolean}
+         */
+        this.sharded = shard;
+
+        /**
          * The default allowed mentions to use whenever the client sends a message.
+         * @type {object}
          */
         this.allowedMentions = allowedMentions;
         
         /**
          * The intents to use when connecting to the gateway.
+         * @type {Intents}
          */
         this.intents = intents;
 
         /**
          * Whether or not the client has made at least one heartbeat with the websocket yet.
+         * @type {boolean}
          */
         this.loggedIn = false;
 
@@ -61,25 +78,42 @@ module.exports = class Client extends Emitter {
 
         /**
          * The HTTPClient the client uses to make HTTP requests.
+         * @type {HTTPClient}
          */
         this.http = undefined;
 
         /**
          * The websocket the client uses to interact with the gateway.
+         * @type {Websocket}
          */
         this.ws = undefined;
 
         /**
          * The client's {@link ClientUser} object. 
+         * @type {ClientUser}
          */
         this.user = undefined;
 
         this.#apiVersion = apiVersion;
         this.#gatewayVersion = gatewayVersion;
+        this._shardCount = shardCount;
+        this._shards = [];
+    }
+
+    /**
+     * Returns an array of websockets corresponding to the bot's shards.
+     * Only valid for sharded clients.
+     * @type {?Websocket}
+     */
+    get shards() {
+        if (!this.sharded) 
+            throw new TypeError('Client must be sharded to use this getter.');
+        return this._shards;
     }
 
     /**
      * Returns this client's User ID.
+     * @type {?string}
      */
     get id() {
         return this.user?.id;
@@ -87,6 +121,7 @@ module.exports = class Client extends Emitter {
 
     /**
      * Gets the requested API version the client will use.
+     * @type {number}
      */
     get apiVersion() {
         return this.#apiVersion;
@@ -94,6 +129,7 @@ module.exports = class Client extends Emitter {
 
     /**
      * Gets the requested gateway version the client will use.
+     * @type {number}
      */
     get gatewayVersion() {
         return this.#gatewayVersion;
@@ -101,11 +137,24 @@ module.exports = class Client extends Emitter {
 
     /**
      * Returns the bot's latency in milliseconds.
+     * If this bot is sharded, this returns the average shard latency.
+     * @type {?number}
      */
     get latency() {
-        let latencies = this.ws.latencies;
-        let lastThree = latencies.slice(-3);
-        return (sum(lastThree) / lastThree.length) * 1000
+        if (!this.sharded)
+            return this.ws.latency;
+        return sum(this.shards, s => s.latency) / this.shards.length;
+    }
+
+    /**
+     * Returns an array of numbers corresponding to it's shard's latency.
+     * Only valid for sharded clients.
+     * @type {?Array<number>}
+     */
+    get latencies() {
+        if (!this.sharded)
+            return [this.latency];
+        return this.shards.map(s => s.latency);
     }
 
     #putToken(token) {
@@ -117,20 +166,42 @@ module.exports = class Client extends Emitter {
         this.http = new HTTPClient(this, this.apiVersion);
     }
 
-    #establishWebsocket() {
-        this.ws = new Websocket(this, this.gatewayVersion);
+    async #establishWebsocket() {
+        if (!this.sharded) {
+            this.ws = new Websocket(this, this.gatewayVersion);
+        }
+        
+        return await (async () => {
+            if (!this._shardCount) {
+                return await this.http.getRecommendedShardCount();
+            }
+            return this._shardCount
+        })().then(count => {
+            this._shardCount = count;
+            for (let i = 0; i < count; i++) {
+                const shard = new Websocket(this, this.gatewayVersion, i);
+                this._shards.push(shard);
+            }
+            this.ws = this._shards[0];
+        });
+    }
+
+    #startWebsockets() {
+        if (!this.sharded) {
+            return this.ws.start();
+        }
+        this._shards.forEach(s => s.start());
     }
 
     /**
      * Starts the bot.
-     * @async
      * @param {string} token The token to use to login into the gateway.
      */
     async start(token) {
         this.#putToken(token);
         this.#establishHTTP();
-        this.#establishWebsocket();
-        await this.ws.start();
+        await this.#establishWebsocket();
+        this.#startWebsockets();
     }
 
     /**
@@ -138,7 +209,7 @@ module.exports = class Client extends Emitter {
      * @param {string} token The authentication token given by Discord.
      */
     login(token) {
-        this.start(token).then();
+        this.start(token);
     }
 
     /**
@@ -179,6 +250,7 @@ module.exports = class Client extends Emitter {
 
     /**
      * Gets all of the users currently stored in the internal cache.
+     * @type {Array<User>}
      */
     get users() {
         return [...this.cache.users.values()];
@@ -186,6 +258,7 @@ module.exports = class Client extends Emitter {
 
     /**
      * Gets all of the channels currently stored in the internal cache.
+     * @type {Array<Channel>}
      */
     get channels() {
         return [...this.cache.channels.values()];
@@ -193,6 +266,7 @@ module.exports = class Client extends Emitter {
 
     /**
      * Gets all of the guilds currently stored in the internal cache.
+     * @type {Array<Guild>}
      */
     get guilds() {
         return [...this.cache.guilds.values()];
@@ -200,6 +274,7 @@ module.exports = class Client extends Emitter {
 
     /**
      * Gets all of the roles currently stored in the internal cache.
+     * @type {Array<Role>}
      */
     get roles() {
         return [...this.cache.roles.values()];

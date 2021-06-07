@@ -1,16 +1,18 @@
 const { DiscordError } = require("../errors/Errors");
 const EventEmitter = require('../client/Events');
+const { sum } = require('../utils');
 const ws = require('ws');
 
 module.exports = class Websocket {
     #gatewayVersion;
     #started;
 
-    constructor(client, v=9) {
+    constructor(client, v=9, shardID) {
         if (!client.http) 
             throw new DiscordError('Cannot retrieve sufficient information (No valid HTTP connection.)');
 
         this.client = client;
+        this.shardID = shardID;
         this.#gatewayVersion = v;
         this.latencies = [];
         this.lastPing = null;
@@ -18,6 +20,12 @@ module.exports = class Websocket {
         this.sessionID = null;
         this.#started = false;
         this.ws = undefined;
+    }
+
+    get id() {
+        if (!this.client.sharded)
+            throw new TypeError('Client must be sharded to use this getter.');
+        return this.shardID;
     }
 
     get socketURL() {
@@ -64,7 +72,7 @@ module.exports = class Websocket {
             // it's an event
             this.sequence = rawData.s || this.sequence;
             await this.client.emit('gatewayEventReceive', rawData.t, data);
-            await EventEmitter(this.client, rawData.t, data)
+            await EventEmitter(this.client, this, rawData.t, data)
         } else if (op == 1) {
             // it's a heartbeat, we should send one back.
             // we should also start timing:
@@ -74,7 +82,7 @@ module.exports = class Websocket {
             }));
         } else if (op == 10) {
             await this.doHeartbeat();
-            await this.send(JSON.stringify({
+            let payload = {
                 op: 2,
                 d: {
                     token: this.client.token,
@@ -85,7 +93,14 @@ module.exports = class Websocket {
                         '$device': "js-cord"
                     }
                 }
-            }));
+            }
+            if (this.client.sharded)
+                payload.shard = [
+                    this.shardID,
+                    this.client._shardCount
+                ];
+
+            await this.send(JSON.stringify(payload));
 
             setInterval(async() => await this.doHeartbeat(), data.heartbeat_interval);
         } else if (op == 11) {
@@ -95,5 +110,11 @@ module.exports = class Websocket {
                 this.latencies.push(current - this.lastPing);
             }
         }
+    }
+
+    get latency() {
+        let latencies = this.latencies;
+        let lastThree = latencies.slice(-3);
+        return (sum(lastThree) / lastThree.length) * 1000
     }
 }

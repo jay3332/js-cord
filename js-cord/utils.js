@@ -3,14 +3,14 @@ class Markdown {
         return text.replace(/```/g, '\\`\\`\\`')
     }
     static escapeInlineCode(text) {
-        return text.replace(/[^\\]`/g, '\\`')
+        return text.replace(/([^\\]?)`/g, '$1\\`')
     }
     static escapeBold(text) {
         return text.replace(/\*\*/g, '\\*\\*')
     }
     static escapeItalic(text) {
-        return text.replace(/[^\\]?\*/g, '\\*')
-            .replace(/[^\\]_/g, '\\_')
+        return text.replace(/([^\\]?)\*/g, '$1\\*')
+            .replace(/([^\\]?)_/g, '$1\\_')
     }
     static escapeUnderline(text) {
         return text.replace(/__/g, '\\_\\_')
@@ -24,7 +24,7 @@ class Markdown {
 
     static hasInviteLink(text) {
         if (typeof text !== 'string') return false;
-        const invRegex = /(https?:\/\/)?(discord\.gg|discord(app)?\.com\/invite)\/\w+/g;
+        const invRegex = /(https?:\/\/)?(discord\.gg|discord(app)?\.com\/invite)\/\w+/;
         return !!text.match(invRegex);
     }
 
@@ -242,7 +242,7 @@ module.exports = {
      */
     parseEmoji: emoji => {
         const re = /<(?<animated>a?):(?<name>[a-zA-Z0-9_]{2,32}):(?<id>[0-9]{17,})>/;
-        let groups = re.exec(emoji).groups;
+        let groups = re.exec(emoji)?.groups;
         if (groups) {
             groups.animated = !!groups.animated;
             return groups;
@@ -373,6 +373,16 @@ module.exports = {
      */
     get time() {
         return parseFloat(process.hrtime().join('.')) * 1000
+    },
+
+    /**
+     * Returns a [pseudo]random integer given the range.
+     * @param {number} min The minimum number, inclusive.
+     * @param {number} max The maximum number, also inclusive.
+     * @return {number} The number chosen.
+     */
+    randint(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     },
 
     timeoutPromise(timeout, callback, error) {
