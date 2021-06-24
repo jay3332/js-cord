@@ -80,19 +80,19 @@ module.exports = class Client extends Emitter {
          * The HTTPClient the client uses to make HTTP requests.
          * @type {HTTPClient}
          */
-        this.http = undefined;
+        this.http = null;
 
         /**
          * The websocket the client uses to interact with the gateway.
          * @type {Websocket}
          */
-        this.ws = undefined;
+        this.ws = null;
 
         /**
          * The client's {@link ClientUser} object. 
          * @type {ClientUser}
          */
-        this.user = undefined;
+        this.user = null;
 
         this.#apiVersion = apiVersion;
         this.#gatewayVersion = gatewayVersion;
@@ -103,7 +103,7 @@ module.exports = class Client extends Emitter {
     /**
      * Returns an array of websockets corresponding to the bot's shards.
      * Only valid for sharded clients.
-     * @type {?Websocket}
+     * @type {?Websocket[]}
      */
     get shards() {
         if (!this.sharded) 

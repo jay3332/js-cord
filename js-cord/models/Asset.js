@@ -2,7 +2,7 @@ const { BadFormat } = require('../errors/Errors');
 const { CDN_URL } = require('../constants');
 
 const DEFAULT_VALID_FORMATS = [ 'png', 'jpg', 'jpeg', 'webp', 'gif' ];
-const DEFAULT_VALID_SIZES   = [ 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096 ];
+const DEFAULT_VALID_SIZES   = [ 16, 32, 64, 128, 256, 512, 1024, 2048, 4096 ];
 
 /**
  * Represents a Discord asset or image.

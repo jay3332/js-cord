@@ -32,7 +32,7 @@ module.exports = class SnowflakeSet extends Map {
             if (predicate(value))
                 passed.push(value);
         }
-        return passed
+        return passed;
     }
 
     /**
