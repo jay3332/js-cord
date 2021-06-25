@@ -72,6 +72,38 @@ declare module "js-cord" {
         #putToken(token: string): void;
     }
 
+    interface ClientCache {
+        guilds: SnowflakeSet,
+        channels: SnowflakeSet,
+        users: SnowflakeSet,
+        messages: SnowflakeSet,
+        emojis: SnowflakeSet,
+        roles: SnowflakeSet,
+        commands: SnowflakeSet
+    }
+    
+    interface ClientOptions {
+        allowedMentions?: object,
+        intents?: Intents,
+        apiVersion?: number,
+        gatewayVersion?: number,
+        shard?: boolean,
+        shardCount?: number | null
+    }
+    
+    export class ClientUser extends User {
+        public locale: string;
+        public mfaEnabled: boolean;
+        public verified: boolean;
+    }
+    
+    interface CollectOptions {
+        timeout?: number;
+        check?: (...args: any[]) => boolean;
+        limit?: number;
+        suppress?: boolean;
+    }
+
     export class Connection {
         constructor(http?: HTTPClient, ws?: Websocket);
         
@@ -83,43 +115,12 @@ declare module "js-cord" {
         private _components: any[];
         private _dropdownOpts: any[];
     }
-
-    interface ClientCache {
-        guilds: SnowflakeSet,
-        channels: SnowflakeSet,
-        users: SnowflakeSet,
-        messages: SnowflakeSet,
-        emojis: SnowflakeSet,
-        roles: SnowflakeSet,
-        commands: SnowflakeSet
-    }
-
-    interface ClientOptions {
-        allowedMentions?: object,
-        intents?: Intents,
-        apiVersion?: number,
-        gatewayVersion?: number,
-        shard?: boolean,
-        shardCount?: number | null
-    }
-
-    export class ClientUser extends User {
-        public locale: string;
-        public mfaEnabled: boolean;
-        public verified: boolean;
-    }
-
-    interface CollectOptions {
-        timeout?: number;
-        check?: (...args: any[]) => boolean;
-        limit?: number;
-        suppress?: boolean;
-    }
-
+    
     export class DiscordObject {
         constructor(id: Snowflake);
         public createdAt: Date;
         public id: Snowflake;
+        equals(other: DiscordObject): boolean;
     }
 
     export class Emitter {

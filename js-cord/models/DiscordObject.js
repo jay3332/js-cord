@@ -17,4 +17,17 @@ module.exports = class DiscordObject {
          */
         this.id = id;
     }
+
+    /**
+     * Check whether or not another object is equal to this one.
+     * This may be unreliable as some snowflakes can interfere with others
+     * 
+     * For example, this would return true if you compare a guild with it's default role.
+     * 
+     * @param {DiscordObject} other The object to compare with.
+     * @returns {boolean} Whether or not the two objects are equal.
+     */
+    equals(other) {
+        return other.id == this.id;
+    }
 }
