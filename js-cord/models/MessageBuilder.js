@@ -138,33 +138,20 @@ module.exports = class MessageBuilder {
         if (!(this.options.embed || this.options.embeds))
             return;
 
-        if (this.type === 'webhook') {
-            if (this.options.embed)
-                this.options.embeds = [this.options.embed];
-            if (this.options.embeds.some(embed => !embed instanceof Embed))
-                throw new TypeError('Embeds must be an Embed object.');
-            this.options.embeds.forEach(embed => {
-                if (embed.files.length) {
-                    if (!this.options.files) 
-                        this.options.files = [];
-                    this.options.files.push(...embed.files);
-                    delete embed.files;
-                }
-            })
-            this.payload.embeds = this.options.embeds.map(embed => embed.toJSON());
-            return;
-        }
+        if (this.options.embed)
+            this.options.embeds = [this.options.embed];
+        if (this.options.embeds.some(embed => !embed instanceof Embed))
+            throw new TypeError('Embeds must be an Embed object.');
 
-        if (!this.options.embed instanceof Embed) 
-            throw new TypeError('Embed must be an Embed object.');
-
-        if (this.options.embed.files.length) {
-            if (!this.options.files) 
-                this.options.files = [];
-            this.options.files.push(this.options.embed.file);
-            delete this.options.embed.files;
-        }
-        this.payload.embed = this.options.embed.toJSON();
+        this.options.embeds.forEach(embed => {
+            if (embed.files.length) {
+                if (!this.options.files) 
+                    this.options.files = [];
+                this.options.files.push(...embed.files);
+                delete embed.files;
+            }
+        })
+        this.payload.embeds = this.options.embeds.slice(0, 10).map(embed => embed.toJSON());
         return this;
     }
 
