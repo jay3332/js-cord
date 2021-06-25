@@ -40,7 +40,7 @@ module.exports = class Emitter {
      * Unlike {@link Emitter#on}, there can be multiple instances of these listeners.
      * 
      * @param {string} event The event to listen for.
-     * @param {function} callback THe callback for when the event is emitted.
+     * @param {function} callback The callback for when the event is emitted.
      */
     listen(event, callback) {
         this.listeners.push({
@@ -62,13 +62,14 @@ module.exports = class Emitter {
     }
 
     removeStrictListener(event) {
-        delete this.strictListeners[event]
+        delete this.strictListeners[event];
     }
 
     /**
      * Emits an event.
+     * @async
      * @param {string} event The event to emit.
-     * @param  {...any} parameters The parameters to pass into the events' callbacks.
+     * @param {...any} parameters The parameters to pass into the events' callbacks.
      */
     async emit(event, ...parameters) {
         let listeners = this.listeners.filter(listener => listener.event === event);
@@ -88,6 +89,7 @@ module.exports = class Emitter {
 
     /**
      * Collects the payloads of events that are emitted.
+     * @async
      * @param {string} event The event to listen for.
      * @param {?object} options The options to use when collecting.
      * @param {?number} options.limit The maximum amount of events to collect.
@@ -144,6 +146,7 @@ module.exports = class Emitter {
 
     /**
      * Waits for an event to be emitted, then returns the payload.
+     * @async
      * @param {string} event The event to wait for to emit.
      * @param {?object} options The options to use when waiting.
      * @param {?function} options.check The check function for the event.

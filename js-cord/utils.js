@@ -3,14 +3,14 @@ class Markdown {
         return text.replace(/```/g, '\\`\\`\\`')
     }
     static escapeInlineCode(text) {
-        return text.replace(/[^\\]`/g, '\\`')
+        return text.replace(/([^\\]?)`/g, '$1\\`')
     }
     static escapeBold(text) {
         return text.replace(/\*\*/g, '\\*\\*')
     }
     static escapeItalic(text) {
-        return text.replace(/[^\\]?\*/g, '\\*')
-            .replace(/[^\\]_/g, '\\_')
+        return text.replace(/([^\\]?)\*/g, '$1\\*')
+            .replace(/([^\\]?)_/g, '$1\\_')
     }
     static escapeUnderline(text) {
         return text.replace(/__/g, '\\_\\_')
@@ -24,7 +24,7 @@ class Markdown {
 
     static hasInviteLink(text) {
         if (typeof text !== 'string') return false;
-        const invRegex = /(https?:\/\/)?(discord\.gg|discord(app)?\.com\/invite)\/\w+/g;
+        const invRegex = /(https?:\/\/)?(discord\.gg|discord(app)?\.com\/invite)\/\w+/;
         return !!text.match(invRegex);
     }
 

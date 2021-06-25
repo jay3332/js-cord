@@ -6,7 +6,7 @@ const Requester = require('./Requester');
 
 class Route {
     constructor(v, method='GET', route='/') {
-        if (route.startsWith('/')) route = route.slice(1,);
+        if (route.startsWith('/')) route = route.slice(1);
         this.baseURL = `${HTTP_URL}/v${v}`; 
         this.method = method;
         this.route = route;
@@ -152,6 +152,10 @@ module.exports = class HTTPClient {
         return await this.request(this.route('GET', `/guilds/${guildID}`));
     }
 
+    async createGuild(name) {
+        return await this.request(this.route('POST', '/guilds'), { name: name });
+    }
+
     async editGuild(guildID, payload) {
         return await this.request(this.route('PATCH', `/guilds/${guildID}`), payload);
     }
@@ -179,10 +183,6 @@ module.exports = class HTTPClient {
     async getMembers(guildID, /*limit, after*/) {
         const route = `/guilds/${guildID}/members`;
         return await this.request(this.route('GET', route));
-    }
-
-    async createGuild(name) {
-        return await this.request(this.route('POST', '/guilds'), {name: name});
     }
 
     async respondToInteraction(id, token, type, payload) {

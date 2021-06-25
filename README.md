@@ -49,9 +49,11 @@ js-cord is still in it's beta stage, therefore installing from NPM will install 
 For now, please install js-cord by cloning this repository.
 
 You can install js-cord using `npm`:
+> Currently `npm install @jay3332/js-cord` until further notice.
 ```sh
 $ npm install js-cord
 ```
+
 Or, if you want the latest features, clone this repository directly:
 ```sh
 $ npm install git+https://github.com/jay3332/js-cord
@@ -69,7 +71,7 @@ client.on('ready', () => {
 });
 
 client.on('message', async (msg) => {
-    if (msg.content === 'ping')) {
+    if (msg.content === 'ping') {
         await msg.reply('Pong!');
     }
 });

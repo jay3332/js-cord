@@ -2,6 +2,10 @@ const SlashContext = require('../interactions/slash/SlashContext');
 const { InteractionType } = require('../enums');
 const { maybePromise } = require('../utils');
 
+/**
+ * Properly executes the callback function of an interaction.
+ * @param {Interaction} interaction
+ */
 module.exports = async function handleInteraction(interaction) {
     let data;
     let client = interaction.client;

@@ -51,7 +51,7 @@ module.exports = class Components {
         }
 
         this._buffer.addComponent(component);
-        return this
+        return this;
     }
 
     /**
