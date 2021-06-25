@@ -115,7 +115,7 @@ module.exports = class MessageBuilder {
                 // This is an action row.
                 const components = component.components;
                 // Only store components with a callback
-                this.client._components.push(...components.filter(c => c.id && c.callback));
+                this.client._connection._components.push(...components.filter(c => c.id && c.callback));
             })
         }
 

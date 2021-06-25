@@ -8,6 +8,8 @@ const Websocket = require('../core/Websocket');
 const Emitter = require('./Emitter');
 const Guild = require('../models/Guild');
 
+const Connection = require('../core/Connection');
+
 /**
  * Represents a client connection to the Discord API and Gateway.
  * @param {?object} options The options to use for the client.
@@ -33,22 +35,7 @@ module.exports = class Client extends Emitter {
         super();
         Object.defineProperty(this, 'token', { writable: true });
 
-        /**
-         * Represents the internal cache of the client.
-         */
-        this.cache = {
-            guilds: new SnowflakeSet(),
-            channels: new SnowflakeSet(),
-            users: new SnowflakeSet(),
-            messages: new SnowflakeSet(),
-            emojis: new SnowflakeSet(),
-            roles: new SnowflakeSet(),
-            commands: new SnowflakeSet()
-        }
-
-        this._slash = [];
-        this._components = [];
-        this._dropdownOpts = [];
+        this._connection = new Connection();
 
         /**
          * Whether or not sharding is handled for this client.
@@ -98,6 +85,14 @@ module.exports = class Client extends Emitter {
         this.#gatewayVersion = gatewayVersion;
         this._shardCount = shardCount;
         this._shards = [];
+    }
+
+    /**
+     * Represents the internal cache of the client.
+     * @type {object}
+     */
+    get cache() {
+        return this.connection.cache
     }
 
     /**
@@ -321,7 +316,7 @@ module.exports = class Client extends Emitter {
             command = { id: command };
         }
         const id = command.id;
-        this._slash.push({ id: id, callback: callback });
+        this._connection._slash.push({ id: id, callback: callback });
     }
 
     /**

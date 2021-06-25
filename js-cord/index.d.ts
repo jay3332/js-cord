@@ -63,15 +63,25 @@ declare module "js-cord" {
         public readonly latency: number;
         public readonly latencies: number[];
 
-        private _slash: any[];
-        private _components: any[];
-        private _dropdownOpts: any[];
+        private _connection: Connection;
         private _shardCount: number | null;
         private _shards: Websocket[];
         
         #apiVersion: number;
         #gatewayVersion: number;
         #putToken(token: string): void;
+    }
+
+    export class Connection {
+        constructor(http?: HTTPClient, ws?: Websocket);
+        
+        public cache: ClientCache;
+        public http?: HTTPClient;
+        public ws?: Websocket;
+        
+        private _slash: any[];
+        private _components: any[];
+        private _dropdownOpts: any[];
     }
 
     interface ClientCache {
