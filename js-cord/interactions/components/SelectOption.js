@@ -1,7 +1,7 @@
 const PartialEmoji = require('../../models/PartialEmoji');
 
 
-module.exports = class DropdownOption {
+module.exports = class SelectOption {
     constructor({
         label,
         value,

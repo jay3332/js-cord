@@ -102,10 +102,11 @@ module.exports = {
     ComponentType: {
         row: 1,
         button: 2,
-        dropdown: 3,
+        selectMenu: 3,
 
         actionRow: 1,
-        select: 3
+        select: 3,
+        dropdown: 3
     },
 
     ButtonStyle: {

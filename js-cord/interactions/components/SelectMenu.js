@@ -1,9 +1,9 @@
 const Component = require('./Component');
-const DropdownOption = require('./DropdownOption');
+const SelectOption = require('./SelectOption');
 const { urandom } = require('../../utils');
 
 
-module.exports = class Dropdown extends Component {
+module.exports = class SelectMenu extends Component {
     constructor({
         placeholder,
         id,
@@ -17,18 +17,18 @@ module.exports = class Dropdown extends Component {
         this.placeholder = placeholder;
         this.minValues = minValues;
         this.maxValues = maxValues;
-        this.options = options.some(o => o instanceof DropdownOption)
+        this.options = options.some(o => o instanceof SelectOption)
             ? options : options.map(o => DropdownOption.fromJSON(o));
 
         this.callback = callback || (() => {});
     }
 
     addOption(options, callback) {
-        if (options instanceof DropdownOption) {
+        if (options instanceof SelectOption) {
             this.options.push(options);
             return this
         }
-        this.options.push(new DropdownOption(options, callback));
+        this.options.push(new SelectOption(options, callback));
         return this
     }
 

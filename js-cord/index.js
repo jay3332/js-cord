@@ -36,8 +36,8 @@ module.exports = {
     Component: require('./interactions/components/Component'),
     ActionRow: require('./interactions/components/ActionRow'),
     Button: require('./interactions/components/Button'),
-    Dropdown: require('./interactions/components/Dropdown'),
-    DropdownOption: require('./interactions/components/DropdownOption'),
+    SelectMenu: require('./interactions/components/SelectMenu'),
+    SelectOption: require('./interactions/components/SelectOption'),
 
     Queue: require('./core/Queue'),
     constants: require('./constants'),
