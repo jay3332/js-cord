@@ -105,3 +105,8 @@ dist
 
 .vscode/
 .DS_Store
+
+# Tests
+package-lock.json
+node_modules
+tests
