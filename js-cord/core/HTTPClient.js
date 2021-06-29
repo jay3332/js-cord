@@ -180,9 +180,53 @@ module.exports = class HTTPClient {
         return await this.request(this.route('GET', `/guilds/${guildID}/members/${userID}`));
     }
 
-    async getMembers(guildID, /*limit, after*/) {
+    async kickMember(guildID, userID) {
+        const route = `/guilds/${guildID}/members/${userID}`
+        return await this.request(this.route('DELETE', route));
+    }
+
+    async banMember(guildID, userID) {
+        const route = `/guilds/${guildID}/bans/${userID}`;
+        return await this.request(this.route('PUT', route));
+    }
+
+    async getMembers(guildID, /* limit, after */) {
         const route = `/guilds/${guildID}/members`;
         return await this.request(this.route('GET', route));
+    }
+
+    async addRole(guildID, userID, roleID) {
+        const route = `/guilds/${guildID}/members/${userID}/roles/${roleID}`;
+        return await this.request(this.route('PUT', route));
+    }
+    
+    // https://github.com/discordjs/discord.js/blob/e37ef3af2151e556527ccd8e98ec531bdcc0ed70/src/rest/APIRouter.js
+    // ok i am the leave for now!1!!!!1!1!!
+
+    async removeRole(guildID, userID, roleID) {
+        const route = `/guilds/${guildID}/members/${userID}/roles/${roleID}`;
+        return await this.request(this.route('DELETE', route));
+    }
+
+    async createRole(guildID, {
+        name = 'new role',
+        permissions,
+        color = 0,
+        hoist = false,
+        mentionable = false
+    } = {}) {
+        let payload = {
+            name,
+            color,
+            hoist,
+            mentionable
+        }
+        if (permissions != undefined) 
+            payload.permissions = permissions;
+        return await this.request(
+            this.route('POST', `/guilds/${guildID}/roles`), 
+            payload
+        );
     }
 
     async respondToInteraction(id, token, type, payload) {

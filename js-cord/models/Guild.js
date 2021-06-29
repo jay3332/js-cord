@@ -161,6 +161,34 @@ module.exports = class Guild extends DiscordObject {
     }
 
     /**
+     * Forces a request to Discord to get a member by their ID.
+     * {@link #getMember} should be used instead, in order to cut down on requests.
+     *  
+     * @param {string} id The User ID of the member to fetch.
+     * @returns {Promise<?Member>} The member fetched, if any. 
+     */
+    fetchMember(id) {
+        return this.client.http.getMember(this.id, id).then(
+            member => new Member(this.client, member)
+        );
+    }
+
+    /**
+     * Creates a role in this guild.
+     * @param {?string} name The name of the role. 
+     * @param {?object} options The options for the role. 
+     * @returns {Promise<?Role>} The created role, if any.
+    */
+    createRole(name, options) {
+        if (typeof name === 'object') {
+            options = name;
+            name = undefined
+        }
+        options = { name: name, ...options };
+        return this.client.http.createRole(this.id, options);
+    }
+
+    /**
      * Creates a slash command in this guild.
      * @param {SlashCommand} command The command to create.
      * @param {?function} callback The temporary callback for when the command is invoked.
