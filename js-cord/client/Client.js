@@ -87,6 +87,10 @@ module.exports = class Client extends Emitter {
         this._shards = [];
     }
 
+    get connection() {
+        return this._connection;
+    }
+    
     /**
      * Represents the internal cache of the client.
      * @type {object}
