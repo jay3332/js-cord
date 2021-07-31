@@ -531,8 +531,8 @@ module.exports = class Embed {
             title: this.title || null,
             description: this.description || null,
             url: this.url || null,
-            timestamp: this.timestamp ? this.timestamp.toISOString() : null,
-            color: this.color ? this.color.value : null,
+            timestamp: this.timestamp?.toISOString(),
+            color: this.color?.value,
             footer: Object.keys(this.footer).length 
                 ? {
                     name: this.footer.name || null,
